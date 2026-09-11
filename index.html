@@ -27,7 +27,7 @@
           GeoJSONを読み込む
           <input id="geojsonInput" type="file" accept=".geojson,.json,application/geo+json">
         </label>
-        <div class="hint">GeoJSON FeatureCollection を想定。各Featureの id または properties.id を選挙区IDとして利用します。</div>
+        <div class="hint">GeoJSON FeatureCollection を想定。各Featureの id / properties.id / code / name を選挙区IDとして利用できます。</div>
         <label>選挙区IDのプロパティ
           <select id="idField">
             <option value="auto">自動判定</option>
@@ -43,17 +43,25 @@
         <label>制度
           <select id="system">
             <option value="smd">小選挙区制（最多得票）</option>
-            <option value="mmd2">2人区（デモ）</option>
-            <option value="pr">比例代表（デモ）</option>
+            <option value="mmd">複数人区（上位得票）</option>
+            <option value="pr">比例代表（D'Hondt）</option>
           </select>
+        </label>
+        <label>選挙区あたり議席数
+          <input id="seatCount" type="number" min="1" max="20" value="2">
         </label>
         <label>選挙名
           <input id="electionTitle" value="2026年 岡山県選挙・サンプル">
         </label>
+        <div class="hint">小選挙区では1議席に固定。複数人区・比例区ではここで議席数を変更できます。</div>
       </section>
 
       <section>
         <h2>3. 選挙結果</h2>
+        <div class="result-mode">
+          <label class="radio"><input type="radio" name="resultMode" value="winner" checked> 当選者を直接設定</label>
+          <label class="radio"><input type="radio" name="resultMode" value="votes"> 得票数から自動計算</label>
+        </div>
         <div id="districtList" class="district-list"></div>
       </section>
 
@@ -63,8 +71,9 @@
       </section>
 
       <section class="help">
-        <strong>設計方針</strong>
-        <p>地図形状・政党・制度・選挙結果を分離しています。将来、衆院選・参院選・地方議会・架空選挙などへ拡張できます。</p>
+        <strong>今回の追加機能</strong>
+        <p>得票数入力では、小選挙区は最多得票、複数人区は上位得票、比例区はD'Hondt方式で議席配分します。</p>
+        <p>複数人区・比例区では、地図上に各議席を表す色付きボールを表示します。ボールの数と色で選挙区内の議席構成を直感的に確認できます。</p>
       </section>
     </aside>
 
