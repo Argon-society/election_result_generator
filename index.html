@@ -3,109 +3,203 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#10233f">
-  <title>Election Map Studio — Premium</title>
+  <meta name="theme-color" content="#18212b">
+  <title>Election Map Studio — Professional</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 </head>
 <body>
-<header class="topbar">
-  <div class="brand">
-    <div class="brand-mark">EM</div>
-    <div><h1>Election Map Studio</h1><p>選挙結果を、地図で伝える。</p></div>
+<header class="app-header">
+  <div class="header-left">
+    <div class="app-symbol">EM</div>
+    <div>
+      <div class="app-name">Election Map Studio</div>
+      <div class="app-sub">選挙結果地図作成・集計ツール</div>
+    </div>
   </div>
-  <div class="top-actions">
-    <button id="loadSampleBtn" class="ghost">サンプルを開く</button>
-    <button id="exportSvgBtn" class="gold">SVGを書き出す</button>
+  <div class="header-actions">
+    <button id="newProjectBtn">新規</button>
+    <button id="loadProjectBtn">プロジェクト読込</button>
+    <button id="saveProjectBtn">保存</button>
+    <button id="exportSvgBtn" class="primary">SVG</button>
+    <button id="exportPngBtn">PNG</button>
   </div>
 </header>
 
-<main class="shell">
-  <aside class="sidebar">
-    <div class="side-scroll">
-      <section class="section">
-        <div class="section-title"><span class="step">01</span><div><b>地図データ</b><small>GeoJSON / FeatureCollection</small></div></div>
-        <label class="dropzone" id="dropzone">
-          <input id="geojsonInput" type="file" accept=".geojson,.json,application/geo+json">
-          <span class="upload-icon">↑</span>
-          <strong>GeoJSONを読み込む</strong>
-          <small>クリックまたはファイルをドロップ</small>
-        </label>
-        <label>選挙区ID
-          <select id="idField">
-            <option value="auto">自動判定</option><option value="id">Feature.id</option>
-            <option value="name">properties.name</option><option value="code">properties.code</option>
-          </select>
-        </label>
-        <div id="dataStatus" class="notice">岡山県サンプルを読み込み済み</div>
-      </section>
+<div class="app-layout">
+  <aside class="control-panel">
+    <div class="panel-scroll">
 
-      <section class="section">
-        <div class="section-title"><span class="step">02</span><div><b>選挙制度</b><small>集計ルールを設定</small></div></div>
-        <label>制度
-          <select id="system">
-            <option value="smd">小選挙区制</option>
-            <option value="mmd">複数人区</option>
-            <option value="pr">比例代表</option>
-          </select>
-        </label>
-        <div class="two">
-          <label>議席数<input id="seatCount" type="number" min="1" max="50" value="2"></label>
-          <label>方式
-            <select id="allocationMethod">
-              <option value="dhondt">D'Hondt</option>
-              <option value="sainte-lague">Sainte-Laguë</option>
+      <section class="control-section">
+        <div class="section-heading">
+          <span class="section-index">01</span>
+          <div><strong>地図</strong><small>GeoJSON / 選挙区識別</small></div>
+        </div>
+
+        <div id="dropzone" class="file-box">
+          <input id="geojsonInput" type="file" accept=".geojson,.json,application/geo+json">
+          <strong>GeoJSONを開く</strong>
+          <span>クリックまたはドラッグ＆ドロップ</span>
+        </div>
+
+        <div class="field-row">
+          <label class="field">
+            <span>選挙区ID</span>
+            <select id="idField">
+              <option value="auto">自動</option>
+              <option value="id">Feature.id</option>
+              <option value="name">properties.name</option>
+              <option value="code">properties.code</option>
             </select>
           </label>
         </div>
-        <div id="systemHint" class="hint">比例代表では得票数を議席に自動配分します。</div>
+
+        <div class="status-line" id="dataStatus">サンプル地図を読込済み</div>
       </section>
 
-      <section class="section">
-        <div class="section-title"><span class="step">03</span><div><b>結果入力</b><small>当選者または得票数</small></div></div>
-        <div class="segmented">
-          <button class="active" data-mode="votes">得票数</button>
-          <button data-mode="winner">当選者</button>
+      <section class="control-section">
+        <div class="section-heading">
+          <span class="section-index">02</span>
+          <div><strong>選挙制度</strong><small>日本の制度プリセット / 集計方法</small></div>
         </div>
-        <div id="districtList" class="district-list"></div>
+
+        <label class="field">
+          <span>制度プリセット</span>
+          <select id="preset">
+            <option value="shugiin-smd">衆議院・小選挙区</option>
+            <option value="shugiin-pr">衆議院・比例代表（ブロック）</option>
+            <option value="sangiin-district">参議院・選挙区</option>
+            <option value="sangiin-pr">参議院・比例代表（全国）</option>
+            <option value="mmd-sntv">大選挙区・単記非移譲式</option>
+            <option value="mmd-party">複数人区・党派順位方式</option>
+            <option value="custom">カスタム</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>集計モード</span>
+          <select id="system">
+            <option value="smd">小選挙区・最多得票</option>
+            <option value="mmd">複数人区・得票順位</option>
+            <option value="pr">比例代表・政党得票</option>
+          </select>
+        </label>
+
+        <div class="field-grid-2">
+          <label class="field">
+            <span>議席数</span>
+            <input id="seatCount" type="number" min="1" max="1000" value="1">
+          </label>
+          <label class="field">
+            <span>比例配分</span>
+            <select id="allocationMethod">
+              <option value="dhondt">ドント式</option>
+              <option value="sainte-lague">サン＝ラグ式</option>
+            </select>
+          </label>
+        </div>
+
+        <div id="systemOptions"></div>
+        <div class="info-box" id="systemHint"></div>
       </section>
 
-      <section class="section">
-        <div class="section-title"><span class="step">04</span><div><b>表示</b><small>地図の情報量を調整</small></div></div>
-        <label class="check"><input id="showLabels" type="checkbox" checked> 選挙区名を表示</label>
-        <label class="check"><input id="showBalls" type="checkbox" checked> 議席ボールを表示</label>
-        <label class="check"><input id="showVoteShare" type="checkbox"> 得票率を表示</label>
-        <label>地図タイトル<input id="electionTitle" value="2026年 岡山県選挙・サンプル"></label>
+      <section class="control-section results-section">
+        <div class="section-heading">
+          <span class="section-index">03</span>
+          <div><strong>結果入力</strong><small>得票数 / 順位を明示的に設定</small></div>
+        </div>
+
+        <div class="mode-tabs">
+          <button class="active" data-mode="votes">得票数</button>
+          <button data-mode="ranking">設定順位</button>
+        </div>
+
+        <div class="result-tools">
+          <button id="fillDemoBtn">サンプル結果</button>
+          <button id="clearResultsBtn">結果を消去</button>
+        </div>
+
+        <div id="resultEditor"></div>
       </section>
 
-      <section class="section">
-        <div class="section-title"><span class="step">05</span><div><b>政党</b><small>色と名称</small></div></div>
-        <div id="partyLegend" class="party-list"></div>
+      <section class="control-section">
+        <div class="section-heading">
+          <span class="section-index">04</span>
+          <div><strong>表示</strong><small>凡例・ラベル・当選ボール</small></div>
+        </div>
+
+        <label class="check-row"><input id="showLabels" type="checkbox" checked> <span>選挙区名</span></label>
+        <label class="check-row"><input id="showBalls" type="checkbox" checked> <span>当選議席ボール</span></label>
+        <label class="check-row"><input id="showVoteShare" type="checkbox" checked> <span>得票率</span></label>
+        <label class="check-row"><input id="showNames" type="checkbox" checked> <span>候補者・党派名</span></label>
+
+        <label class="field">
+          <span>地図タイトル</span>
+          <input id="electionTitle" value="選挙結果地図">
+        </label>
+        <label class="field">
+          <span>副題</span>
+          <input id="electionSubtitle" value="Election Map Studio">
+        </label>
+      </section>
+
+      <section class="control-section">
+        <div class="section-heading">
+          <span class="section-index">05</span>
+          <div><strong>政党</strong><small>色・正式名称</small></div>
+        </div>
+        <div id="partyLegend"></div>
+      </section>
+
+      <section class="control-section">
+        <div class="section-heading">
+          <span class="section-index">06</span>
+          <div><strong>検証</strong><small>データ不備を表示</small></div>
+        </div>
+        <div id="validation"></div>
       </section>
     </div>
-    <footer class="side-footer">Election Map Studio <span>Premium Prototype</span></footer>
+
+    <div class="panel-footer">
+      <span id="saveState">未保存の変更あり</span>
+      <span>v4 Professional</span>
+    </div>
   </aside>
 
-  <section class="workspace">
-    <div class="workspace-bar">
-      <div><span class="live"></span><span id="status">編集内容はリアルタイム反映</span></div>
-      <div class="view-actions">
-        <button id="zoomOut" aria-label="縮小">−</button>
+  <main class="workspace">
+    <div class="workspace-toolbar">
+      <div class="toolbar-left">
+        <span class="document-title" id="documentTitle">選挙結果地図</span>
+        <span class="separator">|</span>
+        <span id="statusText">準備完了</span>
+      </div>
+      <div class="toolbar-right">
+        <button id="zoomOut">−</button>
         <button id="zoomReset">100%</button>
-        <button id="zoomIn" aria-label="拡大">＋</button>
-        <button id="fitMap">地図に合わせる</button>
+        <button id="zoomIn">＋</button>
+        <button id="fitMap">全体表示</button>
       </div>
     </div>
-    <div id="mapViewport">
-      <svg id="map" viewBox="0 0 1200 820" aria-label="選挙結果地図"></svg>
-    </div>
-    <div class="summarybar">
+
+    <section class="map-frame">
+      <svg id="map" viewBox="0 0 1280 860" role="img" aria-label="選挙結果地図">
+        <defs>
+          <pattern id="gridPattern" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e9edf1" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <rect x="0" y="0" width="1280" height="860" fill="url(#gridPattern)"></rect>
+      </svg>
+    </section>
+
+    <div class="statusbar">
       <div><strong id="mapTitle"></strong><span id="mapSubtitle"></span></div>
       <div id="seatSummary"></div>
     </div>
-  </section>
-</main>
+  </main>
+</div>
 
+<input type="file" id="projectInput" accept=".json,application/json" hidden>
 <div id="toast" class="toast"></div>
 <script src="app.js"></script>
 </body>

@@ -4,25 +4,25 @@
       "id": "A",
       "name": "政党A",
       "shortName": "A党",
-      "color": "#d73027"
+      "color": "#b03a2e"
     },
     {
       "id": "B",
       "name": "政党B",
       "shortName": "B党",
-      "color": "#4575b4"
+      "color": "#2f5f8f"
     },
     {
       "id": "C",
       "name": "政党C",
       "shortName": "C党",
-      "color": "#1a9850"
+      "color": "#3f7f55"
     },
     {
       "id": "D",
       "name": "無所属",
       "shortName": "無所属",
-      "color": "#777777"
+      "color": "#6d7379"
     }
   ]
 }
