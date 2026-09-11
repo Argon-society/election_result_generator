@@ -4,165 +4,250 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#18212b">
-  <title>Election Map Studio — Professional</title>
+  <title>Election Map Studio — Wikipedia Style Result Generator</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 </head>
 <body>
 <header class="app-header">
   <div class="header-left">
-    <div class="app-symbol">EM</div>
+    <div class="app-symbol">EMS</div>
     <div>
       <div class="app-name">Election Map Studio</div>
-      <div class="app-sub">選挙結果地図作成・集計ツール</div>
+      <div class="app-sub">選挙結果地図・統計ジェネレータ</div>
     </div>
   </div>
   <div class="header-actions">
-    <button id="newProjectBtn">新規</button>
-    <button id="loadProjectBtn">プロジェクト読込</button>
-    <button id="saveProjectBtn">保存</button>
-    <button id="exportSvgBtn" class="primary">SVG</button>
-    <button id="exportPngBtn">PNG</button>
+    <button id="undoBtn" title="元に戻す (Ctrl+Z)">↶ 戻す</button>
+    <button id="redoBtn" title="やり直す (Ctrl+Y)">↷ 進む</button>
+    <div class="action-divider"></div>
+    <button id="newProjectBtn" title="新規作成">新規</button>
+    <button id="loadProjectBtn" title="プロジェクト読込 (.emproj.json)">読込</button>
+    <button id="saveProjectBtn" title="プロジェクト保存 (.emproj.json)">保存</button>
+    <div class="action-divider"></div>
+    <button id="exportSvgBtn" class="primary" title="高品質SVG書き出し（Wikipedia対応）">SVG出力</button>
+    <button id="exportPngBtn" title="PNG画像書き出し">PNG出力</button>
   </div>
 </header>
 
 <div class="app-layout">
   <aside class="control-panel">
-    <div class="panel-scroll">
+    <nav class="panel-tabs" role="tablist">
+      <button class="tab-btn active" data-tab="tab-system">
+        <span class="tab-num">01</span><span class="tab-label">制度</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-parties">
+        <span class="tab-num">02</span><span class="tab-label">政党</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-districts">
+        <span class="tab-num">03</span><span class="tab-label">選挙区</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-pr">
+        <span class="tab-num">04</span><span class="tab-label">比例区</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-display">
+        <span class="tab-num">05</span><span class="tab-label">表示</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-verify">
+        <span class="tab-num">06</span><span class="tab-label">検証</span>
+      </button>
+    </nav>
 
-      <section class="control-section">
-        <div class="section-heading">
-          <span class="section-index">01</span>
-          <div><strong>地図</strong><small>GeoJSON / 選挙区識別</small></div>
+    <div class="panel-scroll">
+      <!-- 01 制度タブ -->
+      <section id="tab-system" class="tab-content active">
+        <div class="section-banner">
+          <strong>選挙制度・前提設定</strong>
+          <small>選挙区・比例区の構造と配分原則</small>
         </div>
 
+        <div class="form-group">
+          <label class="field">
+            <span>制度プリセット</span>
+            <select id="presetSelect">
+              <option value="parallel-shugiin">小選挙区比例代表並立制（衆議院モデル）</option>
+              <option value="smd-simple">単純小選挙区制（一律1人区・比例なし）</option>
+              <option value="mmd-sntv">大選挙区・中選挙区制（単記非移譲式・比例なし）</option>
+              <option value="parallel-custom">大選挙区比例代表並立制（複数人区＋比例）</option>
+              <option value="pr-pure">純粋比例代表制（比例区のみ）</option>
+              <option value="custom">カスタム選挙制度</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="info-box" id="presetHint"></div>
+
+        <div class="form-subheading">制度詳細パラメータ</div>
+
+        <div class="field-grid-2">
+          <label class="field">
+            <span>選挙区デフォルト定数</span>
+            <input id="defaultDistrictSeats" type="number" min="1" max="20" value="1">
+          </label>
+          <label class="field">
+            <span>比例配分基準方式</span>
+            <select id="defaultPrAllocation">
+              <option value="dhondt">ドント式 (D'Hondt)</option>
+              <option value="sainte-lague">サン＝ラグ式 (Sainte-Laguë)</option>
+              <option value="largest-remainder-hare">最大剰余式 (Hare基数)</option>
+              <option value="largest-remainder-droop">最大剰余式 (Droop基数)</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="form-subheading">地図データソース</div>
         <div id="dropzone" class="file-box">
           <input id="geojsonInput" type="file" accept=".geojson,.json,application/geo+json">
-          <strong>GeoJSONを開く</strong>
+          <strong>GeoJSON地図を開く</strong>
           <span>クリックまたはドラッグ＆ドロップ</span>
         </div>
-
         <div class="field-row">
           <label class="field">
-            <span>選挙区ID</span>
+            <span>選挙区ID属性フィールド</span>
             <select id="idField">
-              <option value="auto">自動</option>
+              <option value="auto">自動判別</option>
               <option value="id">Feature.id</option>
               <option value="name">properties.name</option>
               <option value="code">properties.code</option>
             </select>
           </label>
         </div>
+        <div class="status-line" id="dataStatus">サンプル地図を読込中...</div>
 
-        <div class="status-line" id="dataStatus">サンプル地図を読込済み</div>
+        <div class="form-subheading">カスタム制度の利活用</div>
+        <div class="btn-group-row">
+          <button id="exportSystemBtn">制度定義を保存 (.emsys.json)</button>
+          <button id="importSystemBtn">制度定義を読込</button>
+        </div>
       </section>
 
-      <section class="control-section">
-        <div class="section-heading">
-          <span class="section-index">02</span>
-          <div><strong>選挙制度</strong><small>日本の制度プリセット / 集計方法</small></div>
+      <!-- 02 政党タブ -->
+      <section id="tab-parties" class="tab-content">
+        <div class="section-banner">
+          <strong>政党・党派設定</strong>
+          <small>党名・略称・表示色・配色の管理</small>
         </div>
 
-        <label class="field">
-          <span>制度プリセット</span>
-          <select id="preset">
-            <option value="shugiin-smd">衆議院・小選挙区</option>
-            <option value="shugiin-pr">衆議院・比例代表（ブロック）</option>
-            <option value="sangiin-district">参議院・選挙区</option>
-            <option value="sangiin-pr">参議院・比例代表（全国）</option>
-            <option value="mmd-sntv">大選挙区・単記非移譲式</option>
-            <option value="mmd-party">複数人区・党派順位方式</option>
-            <option value="custom">カスタム</option>
-          </select>
-        </label>
-
-        <label class="field">
-          <span>集計モード</span>
-          <select id="system">
-            <option value="smd">小選挙区・最多得票</option>
-            <option value="mmd">複数人区・得票順位</option>
-            <option value="pr">比例代表・政党得票</option>
-          </select>
-        </label>
-
-        <div class="field-grid-2">
-          <label class="field">
-            <span>議席数</span>
-            <input id="seatCount" type="number" min="1" max="1000" value="1">
-          </label>
-          <label class="field">
-            <span>比例配分</span>
-            <select id="allocationMethod">
-              <option value="dhondt">ドント式</option>
-              <option value="sainte-lague">サン＝ラグ式</option>
-            </select>
-          </label>
+        <div class="party-tools">
+          <button id="addPartyBtn" class="small-btn">＋ 新規党派を追加</button>
+          <button id="resetPartiesBtn" class="small-btn">政党を初期化</button>
         </div>
 
-        <div id="systemOptions"></div>
-        <div class="info-box" id="systemHint"></div>
+        <div id="partyListContainer" class="party-editor-list"></div>
       </section>
 
-      <section class="control-section results-section">
-        <div class="section-heading">
-          <span class="section-index">03</span>
-          <div><strong>結果入力</strong><small>得票数 / 順位を明示的に設定</small></div>
+      <!-- 03 選挙区タブ -->
+      <section id="tab-districts" class="tab-content">
+        <div class="section-banner">
+          <strong>選挙区ごとの選挙結果</strong>
+          <small>定数・当落選人・得票数 / 順位の設定</small>
         </div>
 
         <div class="mode-tabs">
-          <button class="active" data-mode="votes">得票数</button>
-          <button data-mode="ranking">設定順位</button>
+          <button class="active" data-district-mode="votes">得票数入力（自動当落判定）</button>
+          <button data-district-mode="manual">当選者・順位直接指定</button>
         </div>
 
         <div class="result-tools">
-          <button id="fillDemoBtn">サンプル結果</button>
-          <button id="clearResultsBtn">結果を消去</button>
+          <button id="fillDistrictDemoBtn">サンプル結果入力</button>
+          <button id="clearDistrictResultsBtn">結果をクリア</button>
         </div>
 
-        <div id="resultEditor"></div>
+        <div class="search-box-row">
+          <input type="text" id="districtFilterInput" placeholder="選挙区を検索・絞り込み...">
+        </div>
+
+        <div id="districtListContainer" class="district-editor-list"></div>
       </section>
 
-      <section class="control-section">
-        <div class="section-heading">
-          <span class="section-index">04</span>
-          <div><strong>表示</strong><small>凡例・ラベル・当選ボール</small></div>
+      <!-- 04 比例区タブ -->
+      <section id="tab-pr" class="tab-content">
+        <div class="section-banner">
+          <strong>比例代表区（ブロック）設定</strong>
+          <small>地図外ブロックの任意作成・得票数/率入力</small>
         </div>
 
-        <label class="check-row"><input id="showLabels" type="checkbox" checked> <span>選挙区名</span></label>
-        <label class="check-row"><input id="showBalls" type="checkbox" checked> <span>当選議席ボール</span></label>
-        <label class="check-row"><input id="showVoteShare" type="checkbox" checked> <span>得票率</span></label>
-        <label class="check-row"><input id="showNames" type="checkbox" checked> <span>候補者・党派名</span></label>
+        <div class="pr-actions-bar">
+          <button id="addPrBlockBtn" class="primary">＋ 新しい比例区を追加</button>
+          <button id="clearPrBlocksBtn">比例区を全消去</button>
+        </div>
 
+        <div id="prBlockListContainer" class="pr-blocks-list"></div>
+      </section>
+
+      <!-- 05 表示設定タブ -->
+      <section id="tab-display" class="tab-content">
+        <div class="section-banner">
+          <strong>地図表現・レイアウト設定</strong>
+          <small>Wikipediaスタイル描画・シェーディング・装飾</small>
+        </div>
+
+        <div class="form-subheading">タイトル・テキスト</div>
         <label class="field">
-          <span>地図タイトル</span>
-          <input id="electionTitle" value="選挙結果地図">
+          <span>大見出し（選挙名）</span>
+          <input id="electionTitle" value="第50回衆議院議員総選挙（岡山県）">
         </label>
         <label class="field">
-          <span>副題</span>
-          <input id="electionSubtitle" value="Election Map Studio">
+          <span>副題（制度・日付等）</span>
+          <input id="electionSubtitle" value="小選挙区（一律1人区）および比例中国ブロック結果">
         </label>
+
+        <div class="form-subheading">選挙区領域の配色（得票率シェーディング）</div>
+        <label class="field">
+          <span>シェーディング方式</span>
+          <select id="shadingMethod">
+            <option value="winner-share-steps">最大党派得票率（4段階階調・Wikipedia標準）</option>
+            <option value="winner-share-continuous">最大党派得票率（連続グラデーション）</option>
+            <option value="solid">単色ベタ塗り（得票率無関係）</option>
+          </select>
+        </label>
+        <div class="info-box">
+          複数人区（中選挙区）においては、党派ごとの合算得票率で比較し、最大党派の色と濃淡が反映されます。
+        </div>
+
+        <div class="form-subheading">議席ボール（〇オブジェクト）</div>
+        <label class="check-row">
+          <input id="showBalls" type="checkbox" checked>
+          <span>選挙区内に定数分の〇オブジェクトを表示</span>
+        </label>
+        <label class="field">
+          <span>〇オブジェクトの表示スタイル</span>
+          <select id="ballStyle">
+            <option value="number">数字入り（1位・2位...）</option>
+            <option value="simple">シンプル丸（番号なし）</option>
+          </select>
+        </label>
+
+        <div class="form-subheading">比例代表ブロックのレイアウト</div>
+        <label class="field">
+          <span>比例区ブロックの配置位置</span>
+          <select id="prLayoutPosition">
+            <option value="right">右サイドパネル（Wikipedia標準配置）</option>
+            <option value="bottom">下部パネル</option>
+            <option value="none">非表示（地図のみ）</option>
+          </select>
+        </label>
+
+        <div class="form-subheading">ラベル・文字表示</div>
+        <label class="check-row"><input id="showDistrictNames" type="checkbox" checked> <span>選挙区名</span></label>
+        <label class="check-row"><input id="showWinnerNames" type="checkbox" checked> <span>当選者名 / 当選党派名</span></label>
+        <label class="check-row"><input id="showShareText" type="checkbox" checked> <span>得票率テキスト</span></label>
+        <label class="check-row"><input id="showLegend" type="checkbox" checked> <span>Wikipedia風凡例（党派議席集計・シェーディング階調）</span></label>
       </section>
 
-      <section class="control-section">
-        <div class="section-heading">
-          <span class="section-index">05</span>
-          <div><strong>政党</strong><small>色・正式名称</small></div>
+      <!-- 06 検証タブ -->
+      <section id="tab-verify" class="tab-content">
+        <div class="section-banner">
+          <strong>集計検証・データ整合性</strong>
+          <small>定数・合計得票率・ID重複のチェック</small>
         </div>
-        <div id="partyLegend"></div>
-      </section>
-
-      <section class="control-section">
-        <div class="section-heading">
-          <span class="section-index">06</span>
-          <div><strong>検証</strong><small>データ不備を表示</small></div>
-        </div>
-        <div id="validation"></div>
+        <div id="validationContainer"></div>
       </section>
     </div>
 
     <div class="panel-footer">
       <span id="saveState">未保存の変更あり</span>
-      <span>v4 Professional</span>
+      <span>Wikipedia Map Generator v5</span>
     </div>
   </aside>
 
@@ -174,33 +259,40 @@
         <span id="statusText">準備完了</span>
       </div>
       <div class="toolbar-right">
-        <button id="zoomOut">−</button>
-        <button id="zoomReset">100%</button>
-        <button id="zoomIn">＋</button>
-        <button id="fitMap">全体表示</button>
+        <button id="zoomOut" title="縮小">−</button>
+        <button id="zoomReset" title="初期倍率に戻す">100%</button>
+        <button id="zoomIn" title="拡大">＋</button>
+        <button id="fitMap" title="地図全体を表示">全体表示</button>
       </div>
     </div>
 
-    <section class="map-frame">
-      <svg id="map" viewBox="0 0 1280 860" role="img" aria-label="選挙結果地図">
+    <section class="map-frame" id="mapFrame">
+      <svg id="map" viewBox="0 0 1440 900" role="img" aria-label="選挙結果地図">
         <defs>
           <pattern id="gridPattern" width="20" height="20" patternUnits="userSpaceOnUse">
             <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e9edf1" stroke-width="1"/>
           </pattern>
         </defs>
-        <rect x="0" y="0" width="1280" height="860" fill="url(#gridPattern)"></rect>
+        <rect id="bgRect" x="0" y="0" width="1440" height="900" fill="#ffffff"></rect>
       </svg>
     </section>
 
     <div class="statusbar">
-      <div><strong id="mapTitle"></strong><span id="mapSubtitle"></span></div>
-      <div id="seatSummary"></div>
+      <div class="statusbar-title">
+        <strong id="barTitle"></strong>
+        <span id="barSubtitle"></span>
+      </div>
+      <div id="totalSeatSummary" class="seat-summary-chips"></div>
     </div>
   </main>
 </div>
 
+<!-- 隠しファイルインプット -->
 <input type="file" id="projectInput" accept=".json,application/json" hidden>
+<input type="file" id="systemInput" accept=".json,application/json" hidden>
+
 <div id="toast" class="toast"></div>
+
 <script src="app.js"></script>
 </body>
 </html>

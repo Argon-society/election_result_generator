@@ -1,126 +1,926 @@
-
-:root{
-  --bg:#eef1f4;
-  --panel:#f8f9fa;
-  --paper:#ffffff;
-  --line:#c8ced5;
-  --line-dark:#929aa4;
-  --text:#20262d;
-  --muted:#66717c;
-  --navy:#18212b;
-  --navy-2:#242f3a;
-  --accent:#2c5275;
-  --focus:#305d86;
-  --danger:#9b2e2e;
-  --ok:#376c4e;
-  --shadow:0 1px 2px rgba(0,0,0,.07);
+:root {
+  --bg: #eef1f5;
+  --panel-bg: #f8fafc;
+  --paper: #ffffff;
+  --line: #d1d7de;
+  --line-light: #e5e9ee;
+  --line-dark: #8c959f;
+  --text: #1f2328;
+  --text-secondary: #57606a;
+  --navy: #18212b;
+  --navy-dark: #0f151c;
+  --navy-light: #263342;
+  --accent: #2c5282;
+  --accent-hover: #1e3a5f;
+  --danger: #cf222e;
+  --danger-bg: #ffebe9;
+  --ok: #1a7f37;
+  --ok-bg: #dafbe1;
+  --warn: #9a6700;
+  --warn-bg: #fff8c5;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 3px 6px rgba(0,0,0,0.09);
+  --radius: 3px;
 }
-*{box-sizing:border-box}
-html,body{margin:0;height:100%;font-family:"Yu Gothic UI","Meiryo",sans-serif;color:var(--text);background:var(--bg)}
-button,input,select{font:inherit}
-button{border:1px solid var(--line-dark);background:#fff;color:var(--text);height:32px;padding:0 12px;border-radius:2px;cursor:pointer}
-button:hover{background:#f1f3f5}
-button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #5b88ad;outline-offset:1px}
-button.primary{background:var(--navy);border-color:var(--navy);color:#fff}
-button.primary:hover{background:#101821}
-.app-header{height:58px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid #0f151b}
-.header-left{display:flex;align-items:center;gap:12px}
-.app-symbol{width:34px;height:34px;border:1px solid #aab7c4;display:grid;place-items:center;font-size:12px;font-weight:700;letter-spacing:.05em}
-.app-name{font-size:15px;font-weight:700;letter-spacing:.01em}
-.app-sub{font-size:11px;color:#b9c2cb;margin-top:2px}
-.header-actions{display:flex;gap:6px}
-.header-actions button{height:30px;background:#25313d;border-color:#56616c;color:#eef2f5}
-.header-actions button:hover{background:#31404d}
-.header-actions .primary{background:#fff;color:var(--navy);border-color:#fff}
 
-.app-layout{display:grid;grid-template-columns:360px 1fr;height:calc(100vh - 58px);min-height:520px}
-.control-panel{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;min-width:0}
-.panel-scroll{overflow:auto;padding:12px}
-.control-section{border:1px solid var(--line);background:#fff;margin-bottom:10px;box-shadow:var(--shadow)}
-.section-heading{display:flex;gap:9px;align-items:flex-start;padding:11px 12px 10px;border-bottom:1px solid #dfe3e7;background:#f3f5f7}
-.section-index{font-family:Consolas,"Courier New",monospace;font-size:12px;font-weight:700;color:#4e5964;padding-top:1px}
-.section-heading strong{display:block;font-size:13px;letter-spacing:.03em}
-.section-heading small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
-.control-section>.field,.control-section>.field-row,.control-section>.field-grid-2,.control-section>.info-box,.control-section>.check-row,.control-section>#systemOptions,.control-section>#resultEditor,.control-section>#partyLegend,.control-section>#validation,.control-section>.mode-tabs,.control-section>.result-tools,.control-section>.status-line{margin-left:12px;margin-right:12px}
-.field{display:block;margin-top:10px}
-.field>span{display:block;font-size:11px;color:#46515c;margin-bottom:4px}
-.field input,.field select{width:100%;height:32px;border:1px solid var(--line);background:#fff;padding:0 8px;border-radius:2px;color:var(--text)}
-.field-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.file-box{margin:12px;border:1px dashed #9ba5af;background:#fafbfc;min-height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center;cursor:pointer;position:relative}
-.file-box:hover{background:#f2f5f7;border-color:#667788}
-.file-box input{position:absolute;inset:0;opacity:0;cursor:pointer}
-.file-box strong{font-size:12px}
-.file-box span{font-size:10px;color:var(--muted)}
-.status-line{margin-top:9px;margin-bottom:12px;font-size:10px;color:var(--muted);padding:7px 8px;background:#f4f6f7;border-left:3px solid #8b98a4}
-.info-box{margin-top:9px;margin-bottom:12px;font-size:10px;line-height:1.55;color:#4e5964;background:#f4f6f7;border:1px solid #d6dce1;padding:8px}
-.mode-tabs{display:grid;grid-template-columns:1fr 1fr;margin-top:11px}
-.mode-tabs button{border-radius:0;background:#f4f5f6}
-.mode-tabs button+button{border-left:0}
-.mode-tabs button.active{background:var(--navy);border-color:var(--navy);color:#fff}
-.result-tools{display:flex;gap:6px;margin-top:8px}
-.result-tools button{font-size:11px;height:28px}
-#resultEditor{margin-top:9px;margin-bottom:12px}
-.district-block{border-top:1px solid #d9dde1;padding:9px 0}
-.district-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
-.district-name{font-weight:700;font-size:12px}
-.district-meta{font-size:10px;color:var(--muted)}
-.result-row{display:grid;grid-template-columns:70px 1fr 82px;gap:5px;align-items:center;margin-top:5px}
-.result-row .rank{font-size:10px;color:var(--muted)}
-.result-row input,.result-row select{height:29px;border:1px solid var(--line);padding:0 6px;background:#fff;border-radius:2px}
-.result-row .votes{font-family:Consolas,"Courier New",monospace;text-align:right}
-.result-table-note{font-size:10px;color:var(--muted);padding:6px 0}
-.check-row{display:flex;align-items:center;gap:7px;font-size:11px;margin-top:9px}
-.check-row input{margin:0}
-.party-row{display:grid;grid-template-columns:14px 1fr auto;gap:7px;align-items:center;padding:7px 0;border-top:1px solid #e1e4e7;font-size:11px}
-.swatch{width:13px;height:13px;border:1px solid rgba(0,0,0,.22)}
-.party-seat{font-family:Consolas,monospace;color:#53606b}
-.validation-item{font-size:10px;line-height:1.45;padding:7px 8px;border-top:1px solid #e1e4e7}
-.validation-item.ok{border-left:3px solid var(--ok);background:#f4f8f5}
-.validation-item.warn{border-left:3px solid #b27b22;background:#fbf8f0}
-.validation-item.error{border-left:3px solid var(--danger);background:#fbf3f3}
-.panel-footer{height:30px;border-top:1px solid var(--line);padding:0 12px;display:flex;align-items:center;justify-content:space-between;font-size:10px;color:#69737d;background:#f1f3f5}
-
-.workspace{min-width:0;display:flex;flex-direction:column}
-.workspace-toolbar{height:44px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 12px}
-.toolbar-left{display:flex;align-items:center;gap:8px;font-size:11px}
-.document-title{font-weight:700}
-.separator{color:#a0a7ae}
-.toolbar-right{display:flex;gap:5px}
-.toolbar-right button{height:28px;min-width:30px;padding:0 9px}
-.map-frame{flex:1;min-height:0;background:#fff}
-#map{width:100%;height:100%;display:block}
-.statusbar{min-height:42px;border-top:1px solid var(--line);background:#f7f8f9;padding:7px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-#mapTitle{font-size:12px;font-weight:700}
-#mapSubtitle{font-size:10px;color:var(--muted);margin-left:8px}
-#seatSummary{font-size:10px;color:#4b5560;white-space:nowrap}
-
-.toast{position:fixed;right:18px;bottom:18px;background:#20272e;color:#fff;border:1px solid #0f151a;padding:8px 11px;font-size:11px;opacity:0;pointer-events:none;transition:opacity .12s}
-.toast.show{opacity:1}
-
-.map-heading{font-size:25px;font-weight:700;fill:#1e252c}
-.map-subheading{font-size:11px;fill:#65707b}
-.district{stroke:#fff;stroke-width:2.4;cursor:pointer}
-.district:hover{stroke:#2e3640;stroke-width:2.8}
-.district.selected{stroke:#111820;stroke-width:3.4}
-.district-label{font-size:13px;font-weight:700;text-anchor:middle;fill:#202a33;paint-order:stroke;stroke:#fff;stroke-width:5px;pointer-events:none}
-.district-winner{font-size:11px;font-weight:700;text-anchor:middle;fill:#25313c;paint-order:stroke;stroke:#fff;stroke-width:4px;pointer-events:none}
-.district-share{font-size:9px;text-anchor:middle;fill:#5a6670;pointer-events:none}
-.seat-ball{stroke:#fff;stroke-width:1.6;cursor:pointer}
-.seat-ball-label{font-size:7px;font-weight:700;text-anchor:middle;dominant-baseline:middle;fill:#fff;paint-order:stroke;stroke:#2c3237;stroke-width:1.2px;pointer-events:none}
-.map-note{font-size:9px;fill:#7a848d}
-.pr-group-label{font-size:10px;font-weight:700;fill:#47515a}
-
-@media (max-width: 900px){
-  .app-layout{grid-template-columns:1fr;grid-template-rows:48vh 52vh;height:auto}
-  .control-panel{order:2;border-right:0;border-top:1px solid var(--line)}
-  .workspace{order:1;min-height:52vh}
-  .header-actions button:nth-child(1),.header-actions button:nth-child(2){display:none}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  overflow: hidden;
 }
-@media (max-width: 560px){
-  .app-header{padding:0 10px}
-  .app-sub{display:none}
-  .header-actions{gap:3px}
-  .header-actions button{padding:0 7px}
-  .workspace-toolbar{padding:0 7px}
-  .toolbar-left #statusText{display:none}
+
+button, input, select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  border: 1px solid var(--line-dark);
+  background: #ffffff;
+  color: var(--text);
+  height: 30px;
+  padding: 0 10px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: background-color .1s, border-color .1s;
+}
+button:hover { background: #f3f4f6; }
+button:active { background: #e5e7eb; }
+button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+button.primary {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #ffffff;
+}
+button.primary:hover { background: var(--navy-light); border-color: var(--navy-light); }
+button.small-btn {
+  height: 24px;
+  padding: 0 7px;
+  font-size: 11px;
+}
+button.danger-btn {
+  color: var(--danger);
+  border-color: #f8b4b4;
+}
+button.danger-btn:hover { background: var(--danger-bg); }
+
+/* ヘッダー */
+.app-header {
+  height: 52px;
+  background: var(--navy);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--navy-dark);
+  z-index: 10;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.app-symbol {
+  width: 32px;
+  height: 32px;
+  background: #ffffff;
+  color: var(--navy);
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .05em;
+  border-radius: var(--radius);
+}
+.app-name {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+.app-sub {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 1px;
+}
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.header-actions button {
+  background: #253342;
+  border-color: #485b70;
+  color: #f1f5f9;
+}
+.header-actions button:hover { background: #334458; }
+.header-actions button.primary {
+  background: #ffffff;
+  color: var(--navy);
+  border-color: #ffffff;
+  font-weight: 700;
+}
+.header-actions button.primary:hover { background: #e2e8f0; }
+.action-divider {
+  width: 1px;
+  height: 20px;
+  background: #3e4f63;
+  margin: 0 3px;
+}
+
+/* アプリ全体レイアウト */
+.app-layout {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  height: calc(100vh - 52px);
+  min-height: 480px;
+}
+
+/* 左ペイン：コントロールパネル */
+.control-panel {
+  background: var(--panel-bg);
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* タブバー */
+.panel-tabs {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  background: #e9ecef;
+  border-bottom: 1px solid var(--line);
+}
+.tab-btn {
+  height: 44px;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  padding: 2px 0;
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+.tab-btn:hover { background: #dee2e6; color: var(--text); }
+.tab-btn.active {
+  background: #ffffff;
+  border-bottom-color: var(--navy);
+  color: var(--navy);
+  font-weight: 700;
+}
+.tab-num {
+  font-family: Consolas, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  opacity: .8;
+}
+.tab-label {
+  font-size: 11px;
+}
+
+/* パネル内部スクロール領域 */
+.panel-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+}
+
+/* セクション共通見出し */
+.section-banner {
+  border-bottom: 2px solid var(--navy);
+  padding-bottom: 8px;
+  margin-bottom: 14px;
+}
+.section-banner strong {
+  display: block;
+  font-size: 14px;
+  color: var(--navy);
+  letter-spacing: .02em;
+}
+.section-banner small {
+  display: block;
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.form-subheading {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-top: 16px;
+  margin-bottom: 8px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid var(--line-light);
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+/* フォーム項目 */
+.field {
+  display: block;
+  margin-bottom: 10px;
+}
+.field > span {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #424a53;
+  margin-bottom: 4px;
+}
+.field input, .field select {
+  width: 100%;
+  height: 30px;
+  border: 1px solid var(--line);
+  background: #ffffff;
+  padding: 0 8px;
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 12px;
+}
+.field-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+.check-row input[type="checkbox"] {
+  margin: 0;
+  cursor: pointer;
+}
+.btn-group-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+.btn-group-row button {
+  flex: 1;
+}
+
+/* インフォボックス・ステータス行 */
+.info-box {
+  font-size: 11px;
+  line-height: 1.55;
+  color: #3b4249;
+  background: #f1f4f8;
+  border: 1px solid #d0d7de;
+  border-left: 3px solid var(--accent);
+  padding: 8px 10px;
+  margin: 10px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.status-line {
+  font-size: 11px;
+  color: var(--text-secondary);
+  padding: 6px 8px;
+  background: #f6f8fa;
+  border-left: 3px solid var(--line-dark);
+  margin: 8px 0;
+}
+
+/* ファイルドロップボックス */
+.file-box {
+  margin: 10px 0;
+  border: 1px dashed var(--line-dark);
+  background: #ffffff;
+  min-height: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  border-radius: var(--radius);
+  transition: background-color .15s, border-color .15s;
+}
+.file-box:hover {
+  background: #f3f6f9;
+  border-color: var(--accent);
+}
+.file-box input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.file-box strong { font-size: 12px; }
+.file-box span { font-size: 10px; color: var(--text-secondary); }
+
+/* モード切替タブ（選挙区・比例） */
+.mode-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.mode-tabs button {
+  border: none;
+  border-radius: 0;
+  background: #f1f3f5;
+  height: 28px;
+  font-size: 11px;
+}
+.mode-tabs button + button {
+  border-left: 1px solid var(--line);
+}
+.mode-tabs button.active {
+  background: var(--navy);
+  color: #ffffff;
+  font-weight: 700;
+}
+.result-tools {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.result-tools button {
+  flex: 1;
+  font-size: 11px;
+  height: 26px;
+}
+.search-box-row {
+  margin-bottom: 10px;
+}
+.search-box-row input {
+  width: 100%;
+  height: 28px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0 8px;
+  font-size: 11px;
+}
+
+/* 政党エディタ */
+.party-tools {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.party-editor-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.party-edit-card {
+  display: grid;
+  grid-template-columns: 28px 1fr 80px 26px;
+  gap: 6px;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  padding: 6px 8px;
+  border-radius: var(--radius);
+}
+.party-edit-card input[type="color"] {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid var(--line-dark);
+  cursor: pointer;
+  border-radius: var(--radius);
+}
+.party-edit-card input[type="text"] {
+  height: 26px;
+  border: 1px solid var(--line);
+  padding: 0 6px;
+  font-size: 12px;
+  border-radius: var(--radius);
+}
+.party-edit-card .party-del-btn {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: var(--danger);
+  border-color: transparent;
+  background: transparent;
+}
+.party-edit-card .party-del-btn:hover {
+  background: var(--danger-bg);
+  border-color: #fca5a5;
+}
+
+/* 選挙区カードリスト */
+.district-editor-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.district-card {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px;
+  transition: border-color .15s, box-shadow .15s;
+}
+.district-card.selected {
+  border-color: var(--navy);
+  box-shadow: 0 0 0 2px rgba(24, 33, 43, 0.2);
+}
+.district-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--line-light);
+}
+.district-card-title {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--navy);
+}
+.district-card-seats {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+}
+.district-card-seats input {
+  width: 44px;
+  height: 24px;
+  text-align: center;
+  font-weight: 700;
+}
+.candidate-row {
+  display: grid;
+  grid-template-columns: 1fr 90px 84px 22px;
+  gap: 5px;
+  align-items: center;
+  margin-top: 5px;
+}
+.candidate-row input, .candidate-row select {
+  height: 26px;
+  font-size: 11px;
+  border: 1px solid var(--line);
+  padding: 0 5px;
+  border-radius: var(--radius);
+}
+.candidate-row .votes-input {
+  font-family: Consolas, monospace;
+  text-align: right;
+}
+.candidate-row .del-cand-btn {
+  width: 20px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--danger);
+  cursor: pointer;
+}
+.district-summary-line {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--line-light);
+  font-size: 11px;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.district-winners-badge {
+  display: flex;
+  gap: 4px;
+}
+.seat-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  padding: 1px 6px;
+  border-radius: 10px;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+}
+
+/* 比例代表ブロックリスト */
+.pr-actions-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.pr-actions-bar button {
+  flex: 1;
+}
+.pr-blocks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.pr-block-card {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+}
+.pr-block-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.pr-block-card-title {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--navy);
+}
+.pr-block-del-btn {
+  font-size: 11px;
+  color: var(--danger);
+  border-color: #fca5a5;
+  background: transparent;
+  height: 24px;
+  padding: 0 6px;
+}
+.pr-party-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 60px;
+  gap: 6px;
+  align-items: center;
+  margin-top: 5px;
+}
+.pr-party-row .party-label {
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pr-party-row input {
+  height: 26px;
+  font-size: 11px;
+  padding: 0 6px;
+  text-align: right;
+  font-family: Consolas, monospace;
+}
+.pr-party-row .pr-seat-chip {
+  font-family: Consolas, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  background: #f1f4f8;
+  padding: 3px 0;
+  border-radius: var(--radius);
+  border: 1px solid var(--line-light);
+}
+
+/* 検証アイテム */
+.validation-item {
+  font-size: 11px;
+  line-height: 1.5;
+  padding: 8px 10px;
+  margin-bottom: 6px;
+  border-radius: var(--radius);
+  border-left: 3px solid transparent;
+}
+.validation-item.ok {
+  border-left-color: var(--ok);
+  background: var(--ok-bg);
+  color: #116329;
+}
+.validation-item.warn {
+  border-left-color: var(--warn);
+  background: var(--warn-bg);
+  color: #7d4e00;
+}
+.validation-item.error {
+  border-left-color: var(--danger);
+  background: var(--danger-bg);
+  color: #a40e26;
+}
+
+/* パネルフッター */
+.panel-footer {
+  height: 32px;
+  border-top: 1px solid var(--line);
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-secondary);
+  background: #f1f3f5;
+}
+
+/* 右ペイン：ワークスペース */
+.workspace {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+}
+.workspace-toolbar {
+  height: 42px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+}
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+.document-title {
+  font-weight: 700;
+  color: var(--navy);
+}
+.separator { color: var(--line-dark); }
+.toolbar-right {
+  display: flex;
+  gap: 5px;
+}
+.toolbar-right button {
+  height: 28px;
+  padding: 0 9px;
+  font-size: 11px;
+}
+
+.map-frame {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  background: #ffffff;
+  overflow: hidden;
+}
+#map {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ステータスバー（画面下部） */
+.statusbar {
+  min-height: 44px;
+  border-top: 1px solid var(--line);
+  background: #f8fafc;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.statusbar-title strong {
+  font-size: 12px;
+  color: var(--navy);
+}
+.statusbar-title span {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-left: 8px;
+}
+.seat-summary-chips {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.seat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+.seat-chip-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.2);
+}
+
+/* トースト通知 */
+.toast {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  background: var(--navy);
+  color: #ffffff;
+  padding: 9px 14px;
+  font-size: 12px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s;
+  z-index: 100;
+}
+.toast.show { opacity: 1; }
+
+/* SVG内部スタイリング（Wikipedia仕様） */
+.district-poly {
+  stroke: #ffffff;
+  stroke-width: 2.2;
+  cursor: pointer;
+  transition: stroke .1s, stroke-width .1s;
+}
+.district-poly:hover {
+  stroke: #18212b;
+  stroke-width: 2.8;
+}
+.district-poly.selected {
+  stroke: #000000;
+  stroke-width: 3.4;
+}
+
+.map-svg-title {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  fill: #18212b;
+}
+.map-svg-subtitle {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  fill: #57606a;
+}
+.map-svg-meta {
+  font-family: Consolas, monospace;
+  font-size: 9px;
+  fill: #8c959f;
+}
+
+.district-label-text {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-anchor: middle;
+  fill: #1a202c;
+  paint-order: stroke;
+  stroke: #ffffff;
+  stroke-width: 5px;
+  pointer-events: none;
+}
+.district-winner-text {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  text-anchor: middle;
+  fill: #2d3748;
+  paint-order: stroke;
+  stroke: #ffffff;
+  stroke-width: 4px;
+  pointer-events: none;
+}
+.district-share-text {
+  font-family: Consolas, monospace;
+  font-size: 10px;
+  font-weight: 600;
+  text-anchor: middle;
+  fill: #4a5568;
+  paint-order: stroke;
+  stroke: #ffffff;
+  stroke-width: 3px;
+  pointer-events: none;
+}
+
+/* 議席ボール（〇オブジェクト） */
+.seat-ball-circle {
+  stroke: #ffffff;
+  stroke-width: 1.8;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
+}
+.seat-ball-number {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
+  font-size: 8px;
+  font-weight: 800;
+  text-anchor: middle;
+  dominant-baseline: central;
+  fill: #ffffff;
+  paint-order: stroke;
+  stroke: #18212b;
+  stroke-width: 1.5px;
+  pointer-events: none;
+}
+
+/* 比例代表ブロック（SVG内） */
+.pr-panel-bg {
+  fill: #f8fafc;
+  stroke: #d0d7de;
+  stroke-width: 1.2;
+  rx: 4;
+}
+.pr-panel-title {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  fill: #18212b;
+}
+.pr-block-box {
+  fill: #ffffff;
+  stroke: #e2e8f0;
+  stroke-width: 1;
+  rx: 3;
+}
+.pr-block-name {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  fill: #24292f;
+}
+.pr-block-meta {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
+  font-size: 10px;
+  fill: #57606a;
+}
+.pr-seat-label {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
+  font-size: 10px;
+  fill: #334155;
+}
+
+/* 凡例パネル（SVG内） */
+.legend-panel-bg {
+  fill: #ffffff;
+  stroke: #d0d7de;
+  stroke-width: 1;
+  rx: 3;
+}
+.legend-heading {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  fill: #18212b;
+}
+.legend-party-name {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  fill: #24292f;
+}
+.legend-party-seats {
+  font-family: Consolas, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  text-anchor: end;
+  fill: #18212b;
+}
+.shading-legend-label {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
+  font-size: 9px;
+  fill: #57606a;
+}
+
+/* レスポンシブ */
+@media (max-width: 960px) {
+  .app-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: 50vh 50vh;
+    height: auto;
+  }
+  .control-panel {
+    order: 2;
+    border-right: none;
+    border-top: 1px solid var(--line);
+  }
+  .workspace {
+    order: 1;
+    min-height: 50vh;
+  }
 }

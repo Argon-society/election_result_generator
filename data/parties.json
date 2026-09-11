@@ -1,28 +1,12 @@
 {
   "parties": [
-    {
-      "id": "A",
-      "name": "政党A",
-      "shortName": "A党",
-      "color": "#b03a2e"
-    },
-    {
-      "id": "B",
-      "name": "政党B",
-      "shortName": "B党",
-      "color": "#2f5f8f"
-    },
-    {
-      "id": "C",
-      "name": "政党C",
-      "shortName": "C党",
-      "color": "#3f7f55"
-    },
-    {
-      "id": "D",
-      "name": "無所属",
-      "shortName": "無所属",
-      "color": "#6d7379"
-    }
+    { "id": "ldp", "name": "自由民主党", "shortName": "自民", "color": "#dc2626" },
+    { "id": "cdp", "name": "立憲民主党", "shortName": "立憲", "color": "#2563eb" },
+    { "id": "ishin", "name": "日本維新の会", "shortName": "維新", "color": "#16a34a" },
+    { "id": "komei", "name": "公明党", "shortName": "公明", "color": "#ea580c" },
+    { "id": "dpp", "name": "国民民主党", "shortName": "国民", "color": "#ca8a04" },
+    { "id": "jcp", "name": "日本共産党", "shortName": "共産", "color": "#991b1b" },
+    { "id": "reiwa", "name": "れいわ新選組", "shortName": "れいわ", "color": "#db2777" },
+    { "id": "ind", "name": "無所属・その他", "shortName": "無所属", "color": "#64748b" }
   ]
 }
