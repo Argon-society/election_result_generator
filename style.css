@@ -3,23 +3,23 @@
   --panel-bg: #f8fafc;
   --paper: #ffffff;
   --line: #d1d7de;
-  --line-light: #e5e9ee;
+  --line-light: #e2e8f0;
   --line-dark: #8c959f;
-  --text: #1f2328;
-  --text-secondary: #57606a;
+  --text: #1e293b;
+  --text-secondary: #64748b;
   --navy: #18212b;
   --navy-dark: #0f151c;
   --navy-light: #263342;
-  --accent: #2c5282;
-  --accent-hover: #1e3a5f;
-  --danger: #cf222e;
-  --danger-bg: #ffebe9;
-  --ok: #1a7f37;
-  --ok-bg: #dafbe1;
-  --warn: #9a6700;
-  --warn-bg: #fff8c5;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --danger: #dc2626;
+  --danger-bg: #fee2e2;
+  --ok: #16a34a;
+  --ok-bg: #dcfce7;
+  --warn: #d97706;
+  --warn-bg: #fef3c7;
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
-  --shadow-md: 0 3px 6px rgba(0,0,0,0.09);
+  --shadow-md: 0 4px 10px rgba(0,0,0,0.12);
   --radius: 3px;
 }
 
@@ -54,8 +54,8 @@ button {
   gap: 4px;
   transition: background-color .1s, border-color .1s;
 }
-button:hover { background: #f3f4f6; }
-button:active { background: #e5e7eb; }
+button:hover { background: #f1f5f9; }
+button:active { background: #e2e8f0; }
 button:focus-visible, input:focus-visible, select:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 1px;
@@ -73,7 +73,8 @@ button.small-btn {
 }
 button.danger-btn {
   color: var(--danger);
-  border-color: #f8b4b4;
+  border-color: #fca5a5;
+  background: #ffffff;
 }
 button.danger-btn:hover { background: var(--danger-bg); }
 
@@ -144,7 +145,7 @@ button.danger-btn:hover { background: var(--danger-bg); }
 /* アプリ全体レイアウト */
 .app-layout {
   display: grid;
-  grid-template-columns: 420px 1fr;
+  grid-template-columns: 440px 1fr;
   height: calc(100vh - 52px);
   min-height: 480px;
 }
@@ -163,7 +164,7 @@ button.danger-btn:hover { background: var(--danger-bg); }
 .panel-tabs {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  background: #e9ecef;
+  background: #e2e8f0;
   border-bottom: 1px solid var(--line);
 }
 .tab-btn {
@@ -181,7 +182,7 @@ button.danger-btn:hover { background: var(--danger-bg); }
   cursor: pointer;
   color: var(--text-secondary);
 }
-.tab-btn:hover { background: #dee2e6; color: var(--text); }
+.tab-btn:hover { background: #cbd5e1; color: var(--text); }
 .tab-btn.active {
   background: #ffffff;
   border-bottom-color: var(--navy);
@@ -251,7 +252,7 @@ button.danger-btn:hover { background: var(--danger-bg); }
   display: block;
   font-size: 11px;
   font-weight: 600;
-  color: #424a53;
+  color: #334155;
   margin-bottom: 4px;
 }
 .field input, .field select {
@@ -291,13 +292,50 @@ button.danger-btn:hover { background: var(--danger-bg); }
   flex: 1;
 }
 
-/* インフォボックス・ステータス行 */
+/* 一括定数設定行 */
+.batch-seats-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.batch-seats-row input {
+  height: 28px;
+  text-align: center;
+  font-weight: 700;
+}
+.batch-seats-row button {
+  flex: 1;
+}
+
+/* 一括追加補助パネル */
+.batch-cand-panel {
+  background: #f1f5f9;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--navy);
+  padding: 10px;
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+}
+.batch-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+.batch-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+/* インフォボックス */
 .info-box {
   font-size: 11px;
   line-height: 1.55;
-  color: #3b4249;
-  background: #f1f4f8;
-  border: 1px solid #d0d7de;
+  color: #334155;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
   border-left: 3px solid var(--accent);
   padding: 8px 10px;
   margin: 10px 0;
@@ -307,7 +345,7 @@ button.danger-btn:hover { background: var(--danger-bg); }
   font-size: 11px;
   color: var(--text-secondary);
   padding: 6px 8px;
-  background: #f6f8fa;
+  background: #f1f5f9;
   border-left: 3px solid var(--line-dark);
   margin: 8px 0;
 }
@@ -317,7 +355,7 @@ button.danger-btn:hover { background: var(--danger-bg); }
   margin: 10px 0;
   border: 1px dashed var(--line-dark);
   background: #ffffff;
-  min-height: 64px;
+  min-height: 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -330,7 +368,7 @@ button.danger-btn:hover { background: var(--danger-bg); }
   transition: background-color .15s, border-color .15s;
 }
 .file-box:hover {
-  background: #f3f6f9;
+  background: #f1f5f9;
   border-color: var(--accent);
 }
 .file-box input {
@@ -342,43 +380,7 @@ button.danger-btn:hover { background: var(--danger-bg); }
 .file-box strong { font-size: 12px; }
 .file-box span { font-size: 10px; color: var(--text-secondary); }
 
-/* モード切替タブ（選挙区・比例） */
-.mode-tabs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin-bottom: 10px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-.mode-tabs button {
-  border: none;
-  border-radius: 0;
-  background: #f1f3f5;
-  height: 28px;
-  font-size: 11px;
-}
-.mode-tabs button + button {
-  border-left: 1px solid var(--line);
-}
-.mode-tabs button.active {
-  background: var(--navy);
-  color: #ffffff;
-  font-weight: 700;
-}
-.result-tools {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 10px;
-}
-.result-tools button {
-  flex: 1;
-  font-size: 11px;
-  height: 26px;
-}
-.search-box-row {
-  margin-bottom: 10px;
-}
+/* 検索ボックス */
 .search-box-row input {
   width: 100%;
   height: 28px;
@@ -441,7 +443,7 @@ button.danger-btn:hover { background: var(--danger-bg); }
 .district-editor-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 .district-card {
   background: #ffffff;
@@ -452,7 +454,7 @@ button.danger-btn:hover { background: var(--danger-bg); }
 }
 .district-card.selected {
   border-color: var(--navy);
-  box-shadow: 0 0 0 2px rgba(24, 33, 43, 0.2);
+  box-shadow: 0 0 0 2px rgba(24, 33, 43, 0.25);
 }
 .district-card-head {
   display: flex;
@@ -470,7 +472,7 @@ button.danger-btn:hover { background: var(--danger-bg); }
 .district-card-seats {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   font-size: 11px;
 }
 .district-card-seats input {
@@ -479,19 +481,55 @@ button.danger-btn:hover { background: var(--danger-bg); }
   text-align: center;
   font-weight: 700;
 }
+
+/* 候補者行（順位バッジ・↑↓ボタン・党派・名前・得票数） */
 .candidate-row {
   display: grid;
-  grid-template-columns: 1fr 90px 84px 22px;
-  gap: 5px;
+  grid-template-columns: 24px 38px 84px 1fr 78px 20px;
+  gap: 4px;
   align-items: center;
   margin-top: 5px;
+  background: #f8fafc;
+  padding: 3px 6px;
+  border-radius: var(--radius);
+  border: 1px solid #edf2f7;
 }
-.candidate-row input, .candidate-row select {
-  height: 26px;
+.rank-badge {
+  font-family: Consolas, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--navy);
+  text-align: center;
+}
+.rank-badge.winner {
+  color: #ffffff;
+  background: var(--navy);
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+}
+.rank-btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.rank-btn {
+  height: 13px;
+  line-height: 11px;
+  font-size: 9px;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: #ffffff;
+  cursor: pointer;
+}
+.candidate-row select, .candidate-row input {
+  height: 24px;
   font-size: 11px;
   border: 1px solid var(--line);
-  padding: 0 5px;
+  padding: 0 4px;
   border-radius: var(--radius);
+  background: #ffffff;
 }
 .candidate-row .votes-input {
   font-family: Consolas, monospace;
@@ -505,6 +543,7 @@ button.danger-btn:hover { background: var(--danger-bg); }
   background: transparent;
   color: var(--danger);
   cursor: pointer;
+  font-size: 12px;
 }
 .district-summary-line {
   margin-top: 8px;
@@ -519,6 +558,7 @@ button.danger-btn:hover { background: var(--danger-bg); }
 .district-winners-badge {
   display: flex;
   gap: 4px;
+  flex-wrap: wrap;
 }
 .seat-badge {
   display: inline-flex;
@@ -558,11 +598,6 @@ button.danger-btn:hover { background: var(--danger-bg); }
   justify-content: space-between;
   margin-bottom: 10px;
 }
-.pr-block-card-title {
-  font-weight: 700;
-  font-size: 13px;
-  color: var(--navy);
-}
 .pr-block-del-btn {
   font-size: 11px;
   color: var(--danger);
@@ -597,7 +632,7 @@ button.danger-btn:hover { background: var(--danger-bg); }
   font-size: 11px;
   font-weight: 700;
   text-align: center;
-  background: #f1f4f8;
+  background: #f1f5f9;
   padding: 3px 0;
   border-radius: var(--radius);
   border: 1px solid var(--line-light);
@@ -638,7 +673,7 @@ button.danger-btn:hover { background: var(--danger-bg); }
   justify-content: space-between;
   font-size: 11px;
   color: var(--text-secondary);
-  background: #f1f3f5;
+  background: #f1f5f9;
 }
 
 /* 右ペイン：ワークスペース */
@@ -647,6 +682,7 @@ button.danger-btn:hover { background: var(--danger-bg); }
   display: flex;
   flex-direction: column;
   background: #ffffff;
+  position: relative;
 }
 .workspace-toolbar {
   height: 42px;
@@ -689,6 +725,55 @@ button.danger-btn:hover { background: var(--danger-bg); }
   width: 100%;
   height: 100%;
   display: block;
+  background-color: #ffffff; /* 不透明背景 */
+}
+
+/* クイックインスペクター（地図上でその場編集） */
+.district-inspector {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  width: 320px;
+  max-height: 440px;
+  background: #ffffff;
+  border: 1px solid var(--navy);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  display: none;
+  flex-direction: column;
+  z-index: 50;
+}
+.district-inspector.show {
+  display: flex;
+}
+.inspector-head {
+  padding: 8px 10px;
+  background: var(--navy);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.inspector-head strong { font-size: 13px; }
+.inspector-head span { color: #cbd5e1 !important; }
+.inspector-body {
+  padding: 10px;
+  overflow-y: auto;
+  flex: 1;
+}
+.inspector-footer {
+  padding: 8px 10px;
+  background: #f8fafc;
+  border-top: 1px solid var(--line);
+  font-size: 11px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.insp-cand-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
 /* ステータスバー（画面下部） */
@@ -752,7 +837,7 @@ button.danger-btn:hover { background: var(--danger-bg); }
 }
 .toast.show { opacity: 1; }
 
-/* SVG内部スタイリング（Wikipedia仕様） */
+/* SVG内部スタイリング（Wikipedia仕様・不透明描画保証） */
 .district-poly {
   stroke: #ffffff;
   stroke-width: 2.2;
@@ -760,30 +845,26 @@ button.danger-btn:hover { background: var(--danger-bg); }
   transition: stroke .1s, stroke-width .1s;
 }
 .district-poly:hover {
-  stroke: #18212b;
-  stroke-width: 2.8;
+  stroke: #1e293b;
+  stroke-width: 3.0;
 }
 .district-poly.selected {
-  stroke: #000000;
-  stroke-width: 3.4;
+  stroke: #0f172a;
+  stroke-width: 3.8;
+  filter: drop-shadow(0 0 3px rgba(0,0,0,0.4));
 }
 
 .map-svg-title {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
   font-size: 26px;
   font-weight: 800;
-  fill: #18212b;
+  fill: #0f172a;
 }
 .map-svg-subtitle {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
   font-size: 12px;
   font-weight: 500;
-  fill: #57606a;
-}
-.map-svg-meta {
-  font-family: Consolas, monospace;
-  font-size: 9px;
-  fill: #8c959f;
+  fill: #475569;
 }
 
 .district-label-text {
@@ -791,7 +872,7 @@ button.danger-btn:hover { background: var(--danger-bg); }
   font-size: 13px;
   font-weight: 700;
   text-anchor: middle;
-  fill: #1a202c;
+  fill: #0f172a;
   paint-order: stroke;
   stroke: #ffffff;
   stroke-width: 5px;
@@ -802,7 +883,7 @@ button.danger-btn:hover { background: var(--danger-bg); }
   font-size: 11px;
   font-weight: 600;
   text-anchor: middle;
-  fill: #2d3748;
+  fill: #1e293b;
   paint-order: stroke;
   stroke: #ffffff;
   stroke-width: 4px;
@@ -811,9 +892,9 @@ button.danger-btn:hover { background: var(--danger-bg); }
 .district-share-text {
   font-family: Consolas, monospace;
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   text-anchor: middle;
-  fill: #4a5568;
+  fill: #334155;
   paint-order: stroke;
   stroke: #ffffff;
   stroke-width: 3px;
@@ -824,7 +905,7 @@ button.danger-btn:hover { background: var(--danger-bg); }
 .seat-ball-circle {
   stroke: #ffffff;
   stroke-width: 1.8;
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.25));
 }
 .seat-ball-number {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
@@ -834,15 +915,15 @@ button.danger-btn:hover { background: var(--danger-bg); }
   dominant-baseline: central;
   fill: #ffffff;
   paint-order: stroke;
-  stroke: #18212b;
-  stroke-width: 1.5px;
+  stroke: #0f172a;
+  stroke-width: 1.6px;
   pointer-events: none;
 }
 
 /* 比例代表ブロック（SVG内） */
 .pr-panel-bg {
   fill: #f8fafc;
-  stroke: #d0d7de;
+  stroke: #cbd5e1;
   stroke-width: 1.2;
   rx: 4;
 }
@@ -850,11 +931,11 @@ button.danger-btn:hover { background: var(--danger-bg); }
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
   font-size: 14px;
   font-weight: 700;
-  fill: #18212b;
+  fill: #0f172a;
 }
 .pr-block-box {
   fill: #ffffff;
-  stroke: #e2e8f0;
+  stroke: #cbd5e1;
   stroke-width: 1;
   rx: 3;
 }
@@ -862,12 +943,12 @@ button.danger-btn:hover { background: var(--danger-bg); }
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
   font-size: 12px;
   font-weight: 700;
-  fill: #24292f;
+  fill: #1e293b;
 }
 .pr-block-meta {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
   font-size: 10px;
-  fill: #57606a;
+  fill: #64748b;
 }
 .pr-seat-label {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
@@ -878,7 +959,7 @@ button.danger-btn:hover { background: var(--danger-bg); }
 /* 凡例パネル（SVG内） */
 .legend-panel-bg {
   fill: #ffffff;
-  stroke: #d0d7de;
+  stroke: #cbd5e1;
   stroke-width: 1;
   rx: 3;
 }
@@ -886,25 +967,25 @@ button.danger-btn:hover { background: var(--danger-bg); }
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
   font-size: 12px;
   font-weight: 700;
-  fill: #18212b;
+  fill: #0f172a;
 }
 .legend-party-name {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
   font-size: 11px;
   font-weight: 600;
-  fill: #24292f;
+  fill: #1e293b;
 }
 .legend-party-seats {
   font-family: Consolas, monospace;
   font-size: 11px;
   font-weight: 700;
   text-anchor: end;
-  fill: #18212b;
+  fill: #0f172a;
 }
 .shading-legend-label {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
   font-size: 9px;
-  fill: #57606a;
+  fill: #64748b;
 }
 
 /* レスポンシブ */
