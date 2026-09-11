@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Election Map Studio</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Election Map Studio</h1>
+      <p>選挙区データと選挙結果から、Wikipedia風の選挙結果地図を生成</p>
+    </div>
+    <div class="top-actions">
+      <button id="sampleBtn" class="secondary">岡山県サンプル</button>
+      <button id="exportBtn" class="primary">SVGを書き出す</button>
+    </div>
+  </header>
+
+  <main class="app">
+    <aside class="panel">
+      <section>
+        <h2>1. 地図</h2>
+        <label class="file-label">
+          GeoJSONを読み込む
+          <input id="geojsonInput" type="file" accept=".geojson,.json,application/geo+json">
+        </label>
+        <div class="hint">GeoJSON FeatureCollection を想定。各Featureの id または properties.id を選挙区IDとして利用します。</div>
+        <label>選挙区IDのプロパティ
+          <select id="idField">
+            <option value="auto">自動判定</option>
+            <option value="id">Feature.id</option>
+            <option value="name">properties.name</option>
+            <option value="code">properties.code</option>
+          </select>
+        </label>
+      </section>
+
+      <section>
+        <h2>2. 選挙制度</h2>
+        <label>制度
+          <select id="system">
+            <option value="smd">小選挙区制（最多得票）</option>
+            <option value="mmd2">2人区（デモ）</option>
+            <option value="pr">比例代表（デモ）</option>
+          </select>
+        </label>
+        <label>選挙名
+          <input id="electionTitle" value="2026年 岡山県選挙・サンプル">
+        </label>
+      </section>
+
+      <section>
+        <h2>3. 選挙結果</h2>
+        <div id="districtList" class="district-list"></div>
+      </section>
+
+      <section>
+        <h2>4. 政党</h2>
+        <div id="partyLegend" class="party-list"></div>
+      </section>
+
+      <section class="help">
+        <strong>設計方針</strong>
+        <p>地図形状・政党・制度・選挙結果を分離しています。将来、衆院選・参院選・地方議会・架空選挙などへ拡張できます。</p>
+      </section>
+    </aside>
+
+    <section class="canvas-panel">
+      <div class="canvas-toolbar">
+        <div><span class="status-dot"></span><span id="status">岡山県サンプルを表示中</span></div>
+        <div class="small-actions">
+          <button id="zoomOut">−</button>
+          <button id="zoomReset">リセット</button>
+          <button id="zoomIn">＋</button>
+        </div>
+      </div>
+      <div id="mapWrap">
+        <svg id="map" viewBox="0 0 1000 760" role="img" aria-label="選挙結果地図"></svg>
+      </div>
+      <div class="map-footer">
+        <div id="mapTitle"></div>
+        <div id="mapLegend"></div>
+      </div>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
