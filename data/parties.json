@@ -7,6 +7,9 @@
     { "id": "dpp", "name": "国民民主党", "shortName": "国民", "color": "#ca8a04" },
     { "id": "jcp", "name": "日本共産党", "shortName": "共産", "color": "#991b1b" },
     { "id": "reiwa", "name": "れいわ新選組", "shortName": "れいわ", "color": "#db2777" },
+    { "id": "sansei", "name": "参政党", "shortName": "参政", "color": "#f97316" },
+    { "id": "sdp", "name": "社会民主党", "shortName": "社民", "color": "#4f46e5" },
+    { "id": "cpj", "name": "日本保守党", "shortName": "保守", "color": "#1e3a8a" },
     { "id": "ind", "name": "無所属・その他", "shortName": "無所属", "color": "#64748b" }
   ]
 }

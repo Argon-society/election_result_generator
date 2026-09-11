@@ -1,6 +1,6 @@
 /**
  * Election Map Studio — Wikipedia Style Result Generator
- * v5 Professional (Comprehensive Overhaul & Quality Polish)
+ * v5.2 Professional (Comprehensive Overhaul & Quality Polish)
  */
 
 const SVG_W = 1440, SVG_H = 900;
@@ -101,7 +101,7 @@ const PRESETS = {
     name: "小選挙区比例代表並立制（衆議院モデル）",
     defaultSeats: 1,
     allocation: "dhondt",
-    hint: "小選挙区（一律1人区・最多得票当選）と、地図外の比例代表ブロック（ドント式配分）を組み合わせた制度です。選挙区ごとに定数を個別に変更することも可能です。",
+    hint: "小選挙区（一律1人区・最多得票当選）と、地図外の比例代表ブロック（ドント式配分）を組み合わせた制度です。各区で得票数または順位を自由に設定できます。",
     defaultPrBlocks: () => JSON.parse(JSON.stringify(SAMPLE_PR_BLOCKS))
   },
   "smd-simple": {
@@ -244,12 +244,18 @@ function calculatePrAllocation(seats, method, votesMap) {
 }
 
 // --- 選挙区集計 (District Calculation Engine) ---
+/**
+ * 選挙区単位の集計処理
+ * - mode === "votes": 得票数順で順位を自動決定し、最大党派得票率を算出
+ * - mode === "rank": 手動順位（rank）を尊重（得票数は非破壊で保持）
+ */
 function recalcDistrict(id) {
   const d = districts[id];
   if (!d) return;
 
   const seats = Math.max(1, Number(d.seats) || 1);
   d.seats = seats;
+  if (!d.mode) d.mode = "votes"; // デフォルト
 
   const candList = (d.candidates || []).map((c, idx) => ({
     id: c.id || `cand-${Math.random().toString(36).slice(2, 7)}`,
@@ -259,10 +265,8 @@ function recalcDistrict(id) {
     rank: Number(c.rank) || (idx + 1)
   }));
 
-  const hasAnyVotes = candList.some(c => c.votes !== null && !isNaN(c.votes) && c.votes >= 0);
-
-  if (hasAnyVotes) {
-    // 得票数によって自動的に順位付け
+  if (d.mode === "votes") {
+    // 得票数モード：票数の降順で順位を自動決定
     candList.sort((a, b) => {
       const vA = a.votes !== null ? a.votes : -1;
       const vB = b.votes !== null ? b.votes : -1;
@@ -270,7 +274,6 @@ function recalcDistrict(id) {
     });
     candList.forEach((c, idx) => { c.rank = idx + 1; });
 
-    d.hasVotes = true;
     d.candidates = candList;
     d.winners = candList.slice(0, seats).map(c => c.party);
 
@@ -297,17 +300,16 @@ function recalcDistrict(id) {
     });
 
     d.maxParty = bestPid;
-    d.maxPartyShare = total > 0 ? (maxV / total) * 100 : 0;
+    d.maxPartyShare = total > 0 ? (maxV / total) * 100 : null;
   } else {
-    // 得票数未設定：手動順位（rank）をそのまま尊重
+    // 順位直接指定モード：ユーザー指定のrank（1位、2位…）をそのまま使用
     candList.sort((a, b) => a.rank - b.rank || a.name.localeCompare(b.name, "ja"));
     candList.forEach((c, idx) => { c.rank = idx + 1; });
 
-    d.hasVotes = false;
     d.candidates = candList;
     d.winners = candList.slice(0, seats).map(c => c.party);
     d.maxParty = d.winners[0] || null;
-    d.maxPartyShare = null;
+    d.maxPartyShare = null; // 順位指定時は得票率なし（党派本色）
     d.totalVotes = 0;
     d.partyVotes = {};
   }
@@ -353,32 +355,35 @@ function recalcAll() {
 // --- シェーディング関数 (Wikipediaスタイル配色・透明化防止) ---
 function getDistrictFillColor(district) {
   if (!district || !district.maxParty) {
-    return "#cbd5e1";
+    return "#cbd5e1"; // 未設定時も不透明グレー
   }
 
   const p = partyById(district.maxParty);
   const baseHex = (d3.color(p.color) || d3.color("#64748b")).formatHex();
   const method = $("#shadingMethod").value;
 
-  if (!district.hasVotes || district.maxPartyShare === null || method === "solid") {
+  // 1. 順位直接指定モードまたは得票率なしの場合は「党派本色（純色）」で鮮明に表示
+  if (district.mode === "rank" || district.maxPartyShare === null || method === "solid") {
     return baseHex;
   }
 
   const share = district.maxPartyShare;
 
+  // 2. 4段階階調（Wikipedia標準グラデーション・白抜け防止）
   if (method === "winner-share-steps") {
-    let ratio = 0.50;
+    let ratio = 0.50; // < 40%
     if (share >= 60) ratio = 1.00;
     else if (share >= 50) ratio = 0.82;
     else if (share >= 40) ratio = 0.65;
     return d3.interpolateRgb("#ffffff", baseHex)(ratio);
   }
 
+  // 3. 連続グラデーション
   const ratio = Math.max(0.45, Math.min(1.0, 0.45 + 0.55 * ((share - 20) / 55)));
   return d3.interpolateRgb("#ffffff", baseHex)(ratio);
 }
 
-// --- 履歴管理 (Undo / Redo) ---
+// --- 履歴管理 & LocalStorage自動保存 ---
 function pushHistory() {
   if (isHistoryLocked) return;
   const snap = snapshot();
@@ -386,6 +391,7 @@ function pushHistory() {
   if (historyStack.length > 50) historyStack.shift();
   futureStack = [];
   markDirty();
+  saveToLocalStorage();
 }
 
 function undo() {
@@ -408,9 +414,32 @@ function redo() {
   notify("操作をやり直しました");
 }
 
+function saveToLocalStorage() {
+  try {
+    localStorage.setItem("ems_v5_autosave", JSON.stringify(snapshot()));
+  } catch (e) {
+    console.warn("LocalStorage save failed", e);
+  }
+}
+
+function loadFromLocalStorage() {
+  try {
+    const raw = localStorage.getItem("ems_v5_autosave");
+    if (!raw) return false;
+    const s = JSON.parse(raw);
+    if (s && s.geoData && s.districts) {
+      restore(s);
+      return true;
+    }
+  } catch (e) {
+    console.warn("LocalStorage load failed", e);
+  }
+  return false;
+}
+
 function snapshot() {
   return {
-    version: 5,
+    version: 5.2,
     title: $("#electionTitle").value,
     subtitle: $("#electionSubtitle").value,
     preset: currentPreset,
@@ -418,6 +447,7 @@ function snapshot() {
     showBalls: $("#showBalls").checked,
     ballStyle: $("#ballStyle").value,
     prLayoutPosition: $("#prLayoutPosition").value,
+    showMajorityBar: $("#showMajorityBar").checked,
     showDistrictNames: $("#showDistrictNames").checked,
     showWinnerNames: $("#showWinnerNames").checked,
     showShareText: $("#showShareText").checked,
@@ -439,8 +469,9 @@ function restore(s) {
   $("#presetSelect").value = currentPreset;
   $("#shadingMethod").value = s.shadingMethod || "winner-share-steps";
   $("#showBalls").checked = s.showBalls !== false;
-  $("#ballStyle").value = s.ballStyle || "number";
-  $("#prLayoutPosition").value = s.prLayoutPosition || "right";
+  $("#ballStyle").value = s.ballStyle || "simple"; // デフォルトシンプル丸
+  $("#prLayoutPosition").value = s.prLayoutPosition || "bottom"; // デフォルト下部配置
+  $("#showMajorityBar").checked = s.showMajorityBar !== false;
   $("#showDistrictNames").checked = s.showDistrictNames !== false;
   $("#showWinnerNames").checked = s.showWinnerNames !== false;
   $("#showShareText").checked = s.showShareText !== false;
@@ -487,7 +518,11 @@ async function init() {
   }));
   parties = partiesData.parties;
 
-  await loadSampleData(false);
+  const restored = loadFromLocalStorage();
+  if (!restored) {
+    await loadSampleData(false);
+  }
+
   bindEvents();
   updatePresetHint();
   updateBatchPartyOptions();
@@ -526,6 +561,7 @@ async function loadSampleData(makeHistory = true) {
       id,
       name: sample.name || f.properties?.name || id,
       seats: 1,
+      mode: "votes",
       candidates: candList
     };
   });
@@ -683,14 +719,17 @@ function renderMap() {
   const showNames = $("#showWinnerNames").checked;
   const showShare = $("#showShareText").checked;
   const showLegend = $("#showLegend").checked;
+  const showMajorityBar = $("#showMajorityBar").checked;
 
   let mapExtent;
-  if (prPosition === "right" && prBlocks.length > 0) {
-    mapExtent = [[40, 80], [1020, 840]];
-  } else if (prPosition === "bottom" && prBlocks.length > 0) {
-    mapExtent = [[40, 80], [1400, 620]];
+  if (prPosition === "bottom" && prBlocks.length > 0) {
+    // 下部パネル方式（推奨・デフォルト）
+    mapExtent = [[40, 75], [1400, 570]];
+  } else if (prPosition === "right" && prBlocks.length > 0) {
+    // 右サイドパネル方式（重複を根本解消した厳密な境界）
+    mapExtent = [[40, 75], [960, 840]];
   } else {
-    mapExtent = [[40, 80], [1400, 840]];
+    mapExtent = [[40, 75], [1400, 840]];
   }
 
   projection = d3.geoIdentity().reflectY(true).fitExtent(mapExtent, geoData);
@@ -712,11 +751,16 @@ function renderMap() {
     headerGroup.append("text").attr("class", "map-svg-subtitle").attr("x", 40).attr("y", 68).text(subtitle);
   }
 
-  // 2. 地図ポリゴン描画（不透明度100%を完全保証）
+  // 2. Wikipedia規格：総議席積み上げバー（過半数ライン付き）
+  if (showMajorityBar) {
+    renderMajoritySeatBar();
+  }
+
+  // 3. 地図ポリゴン描画（不透明度100%を完全保証）
   const features = geoData.features;
   const districtList = features.map(f => {
     const id = idOf(f);
-    const d = districts[id] || { seats: 1, winners: [], maxParty: null, maxPartyShare: null, hasVotes: false };
+    const d = districts[id] || { seats: 1, winners: [], maxParty: null, maxPartyShare: null, mode: "votes" };
     const centroid = pathGenerator.centroid(f);
     return {
       feature: f,
@@ -726,7 +770,7 @@ function renderMap() {
       winners: d.winners || [],
       maxParty: d.maxParty,
       maxPartyShare: d.maxPartyShare,
-      hasVotes: d.hasVotes,
+      mode: d.mode,
       districtObj: d,
       cx: centroid[0] || 0,
       cy: centroid[1] || 0
@@ -746,11 +790,11 @@ function renderMap() {
     .append("title")
     .text(d => {
       const pName = d.maxParty ? partyById(d.maxParty).name : "当選者なし";
-      const shareStr = d.maxPartyShare !== null ? `(${d.maxPartyShare.toFixed(1)}%)` : "(手動順位)";
+      const shareStr = d.maxPartyShare !== null ? `(${d.maxPartyShare.toFixed(1)}%)` : "(順位指定)";
       return `${d.name} (定数 ${d.seats})\n最多得票・1位: ${pName} ${shareStr}`;
     });
 
-  // 3. ラベル描画
+  // 4. ラベル描画
   if ($("#showDistrictNames").checked) {
     textLayer.selectAll(".district-label-text")
       .data(districtList, d => d.id)
@@ -784,7 +828,7 @@ function renderMap() {
       .text(d => d.maxPartyShare !== null ? `${d.maxPartyShare.toFixed(1)}%` : "");
   }
 
-  // 4. 定数分の〇オブジェクト（議席ボール）
+  // 5. 定数分の〇オブジェクト（議席ボール）
   if (showBalls) {
     const balls = [];
     districtList.forEach(d => {
@@ -823,12 +867,12 @@ function renderMap() {
     }
   }
 
-  // 5. 比例代表ブロック（重複を完全解消した動的レイアウト描画）
+  // 6. 比例代表ブロック描画（下部または右サイド）
   if (prPosition !== "none" && prBlocks.length > 0) {
     renderPrSvgBlocks(prPosition);
   }
 
-  // 6. Wikipedia風凡例パネル
+  // 7. Wikipedia風凡例パネル
   if (showLegend) {
     renderSvgLegend(prPosition);
   }
@@ -837,17 +881,82 @@ function renderMap() {
 }
 
 /**
- * 比例代表区のSVG描画（コンテンツ重複完全解消版）
+ * Wikipedia風 総議席積み上げバー（過半数ライン付き）
+ */
+function renderMajoritySeatBar() {
+  const counts = computeTotalSeats();
+  const activeParties = parties.filter(p => (counts.total[p.id] || 0) > 0);
+  const grandTotal = Object.values(counts.total).reduce((a, b) => a + b, 0);
+  if (grandTotal === 0) return;
+
+  const barX = 720;
+  const barY = 24;
+  const barW = 680;
+  const barH = 22;
+  const majorityThreshold = Math.floor(grandTotal / 2) + 1;
+
+  const g = headerGroup.append("g").attr("transform", `translate(${barX},${barY})`);
+
+  // バー枠
+  g.append("rect")
+    .attr("x", 0).attr("y", 0)
+    .attr("width", barW).attr("height", barH)
+    .attr("fill", "#e2e8f0").attr("rx", 3);
+
+  // 積み上げセグメント
+  let curX = 0;
+  activeParties.forEach(p => {
+    const seats = counts.total[p.id] || 0;
+    const segW = (seats / grandTotal) * barW;
+    if (segW > 0) {
+      g.append("rect")
+        .attr("x", curX).attr("y", 0)
+        .attr("width", segW).attr("height", barH)
+        .attr("fill", p.color)
+        .append("title")
+        .text(`${p.name}: ${seats}議席 (${((seats / grandTotal) * 100).toFixed(1)}%)`);
+
+      if (segW > 24) {
+        g.append("text")
+          .attr("x", curX + segW / 2).attr("y", barH / 2)
+          .attr("text-anchor", "middle").attr("dominant-baseline", "central")
+          .attr("fill", "#ffffff").attr("font-size", "10px").attr("font-weight", "700")
+          .attr("paint-order", "stroke").attr("stroke", "#0f172a").attr("stroke-width", "1.2px")
+          .text(seats);
+      }
+      curX += segW;
+    }
+  });
+
+  // 過半数ライン
+  const majX = (majorityThreshold / grandTotal) * barW;
+  g.append("line")
+    .attr("x1", majX).attr("y1", -4)
+    .attr("x2", majX).attr("y2", barH + 4)
+    .attr("stroke", "#b91c1c").attr("stroke-width", 2.5)
+    .attr("stroke-dasharray", "3,2");
+
+  g.append("text")
+    .attr("class", "majority-line-text")
+    .attr("x", majX).attr("y", -6)
+    .attr("text-anchor", "middle")
+    .text(`過半数: ${majorityThreshold} / ${grandTotal}`);
+}
+
+let lastPrLayout = null;
+
+/**
+ * 比例代表区のSVG描画（下部方式・右サイド方式完全対応＆重複ゼロ設計）
  */
 function renderPrSvgBlocks(position) {
   const isRight = position === "right";
-  const startX = isRight ? 1040 : 40;
-  const startY = isRight ? 80 : 640;
-  const panelW = isRight ? 360 : 1360;
-  const panelH = isRight ? 780 : 220;
+  const startX = isRight ? 1000 : 40;
+  const startY = isRight ? 75 : 590;
+  const panelW = isRight ? 400 : 1360;
+  const panelH = isRight ? 790 : 270;
 
   // パネル背景
-  prPanelGroup.append("rect")
+  const panelBg = prPanelGroup.append("rect")
     .attr("class", "pr-panel-bg")
     .attr("x", startX)
     .attr("y", startY)
@@ -859,24 +968,31 @@ function renderPrSvgBlocks(position) {
   prPanelGroup.append("text")
     .attr("class", "pr-panel-title")
     .attr("x", startX + 16)
-    .attr("y", startY + 28)
-    .text(`比例代表ブロック （合計 ${totalPrSeats} 議席）`);
+    .attr("y", startY + 26)
+    .text(`比例代表ブロック （計 ${totalPrSeats} 議席）`);
 
-  let curY = startY + 44;
+  let curY = startY + 40;
   let curX = startX + 14;
 
+  // 下部モード時に凡例が同居できるか判定（1〜2ブロック時、右側に凡例スペースを確保）
+  const showLegend = $("#showLegend").checked;
+  const legendSpaceW = (!isRight && showLegend && prBlocks.length <= 2) ? 410 : 0;
+  const availableW = panelW - 28 - legendSpaceW;
+
   prBlocks.forEach((block, bIdx) => {
-    const blockW = isRight ? panelW - 28 : Math.min(420, (panelW - 40) / prBlocks.length);
+    const blockW = isRight
+      ? panelW - 28
+      : Math.min(480, Math.floor((availableW - (prBlocks.length - 1) * 14) / prBlocks.length));
     const seatOrder = block.seatOrder || [];
 
     // 議席ボールの行数計算
     const ballRadius = 7;
     const gap = 18;
-    const maxCols = Math.max(1, Math.floor((blockW - 24) / gap));
+    const maxCols = Math.max(1, Math.floor((blockW - 28) / gap));
     const numRows = Math.max(1, Math.ceil(seatOrder.length / maxCols));
     const ballAreaH = numRows * 20;
 
-    // サマリーテキストの開始Y座標（ボール群の真下にマージンを空けて確実に配置）
+    // サマリーテキスト位置（ボール群直下にマージン配置）
     const summaryStartY = 38 + ballAreaH + 10;
     const activeParties = parties.filter(p => (block.allocated?.[p.id] || 0) > 0);
     const summaryRows = activeParties.length > 5 ? 2 : 1;
@@ -885,8 +1001,11 @@ function renderPrSvgBlocks(position) {
     // ブロック全体の高さを中身に合わせて動的に決定（重複ゼロ）
     const blockH = Math.max(90, summaryStartY + summaryAreaH);
 
+    const bx = isRight ? curX : curX + bIdx * (blockW + 14);
+    const by = isRight ? curY : curY;
+
     const blockG = prPanelGroup.append("g")
-      .attr("transform", `translate(${isRight ? curX : curX + bIdx * (blockW + 12)},${isRight ? curY : curY})`);
+      .attr("transform", `translate(${bx},${by})`);
 
     // ブロック枠
     blockG.append("rect")
@@ -923,10 +1042,10 @@ function renderPrSvgBlocks(position) {
     seatOrder.forEach((pid, idx) => {
       const col = idx % maxCols;
       const row = Math.floor(idx / maxCols);
-      const bx = col * gap;
-      const by = row * 20;
+      const bX = col * gap;
+      const bY = row * 20;
 
-      const bg = ballLayerG.append("g").attr("transform", `translate(${bx},${by})`);
+      const bg = ballLayerG.append("g").attr("transform", `translate(${bX},${bY})`);
       bg.append("circle")
         .attr("r", ballRadius)
         .attr("fill", partyById(pid).color)
@@ -936,7 +1055,7 @@ function renderPrSvgBlocks(position) {
         .text(`${idx + 1}議席目: ${partyById(pid).name}`);
     });
 
-    // 獲得党派別サマリーテキスト（重なりゼロで配置）
+    // 獲得党派別サマリーテキスト（重なりゼロ）
     const summaryG = blockG.append("g").attr("transform", `translate(12, ${summaryStartY})`);
 
     if (activeParties.length === 0) {
@@ -963,16 +1082,70 @@ function renderPrSvgBlocks(position) {
       curY += blockH + 12;
     }
   });
+
+  lastPrLayout = {
+    position,
+    startX,
+    startY,
+    panelW,
+    panelH,
+    lastPrBottomY: curY,
+    panelBg,
+    legendSpaceW
+  };
+
+  // 右サイドパネル時に凡例非表示なら高さをコンテンツに最適化
+  if (isRight && !showLegend) {
+    const compactH = Math.min(790, Math.max(140, curY + 14 - startY));
+    panelBg.attr("height", compactH);
+  }
 }
 
 /**
  * Wikipedia風凡例（議席集計表 ＋ シェーディング階調凡例）
  */
 function renderSvgLegend(prPosition) {
-  const legX = 40;
-  const legY = prPosition === "bottom" ? 480 : 700;
-  const legW = 340;
-  const legH = 150;
+  const counts = computeTotalSeats();
+  const activeParties = parties.filter(p => (counts.total[p.id] || 0) > 0 || (counts.district[p.id] || 0) > 0);
+  const displayParties = activeParties.length > 0 ? activeParties.slice(0, 7) : parties.slice(0, 5);
+
+  // 必要高さを動的に計算（オーバーフローゼロ）
+  const legH = 88 + displayParties.length * 16;
+  let legX = 40, legY = 690, legW = 380;
+
+  if (prPosition === "bottom" && lastPrLayout && prBlocks.length > 0) {
+    if (prBlocks.length <= 2) {
+      // 下部方式（1〜2ブロック）：下部パネル内の右側に美しく同居（地図領域を完全フリーに）
+      legX = lastPrLayout.startX + lastPrLayout.panelW - 394;
+      legY = lastPrLayout.startY + 12;
+      legW = 380;
+    } else {
+      // 3ブロック以上：地図領域の左下に配置
+      legX = 40;
+      legY = 570 - legH - 10;
+      legW = 340;
+    }
+  } else if (prPosition === "right" && lastPrLayout && prBlocks.length > 0) {
+    legW = 372;
+    const candidateY = lastPrLayout.lastPrBottomY + 10;
+    if (candidateY + legH <= 870) {
+      // 右サイドパネル内に縦連結（PRブロック直下に整然と配置）
+      legX = lastPrLayout.startX + 14;
+      legY = candidateY;
+      const neededPanelH = (legY + legH + 14) - lastPrLayout.startY;
+      lastPrLayout.panelBg.attr("height", Math.max(neededPanelH, 300));
+    } else {
+      // PRブロックが多くて縦に収まらない場合：地図左下に退避して重複回避
+      legX = 40;
+      legY = 840 - legH;
+      lastPrLayout.panelBg.attr("height", 790);
+    }
+  } else {
+    // 比例区非表示時
+    legX = 40;
+    legY = 840 - legH;
+    legW = 340;
+  }
 
   const g = legendGroup.append("g").attr("transform", `translate(${legX},${legY})`);
 
@@ -1006,39 +1179,40 @@ function renderSvgLegend(prPosition) {
     .text("勝者得票率階調:");
 
   steps.forEach((st, idx) => {
-    const sx = 95 + idx * 56;
+    const sx = 95 + idx * 54;
     shadeG.append("rect")
       .attr("x", sx)
       .attr("y", -10)
       .attr("width", 16)
       .attr("height", 12)
-      .attr("fill", getDistrictFillColor({ maxParty: samplePid, maxPartyShare: st.share, hasVotes: true }))
+      .attr("fill", getDistrictFillColor({ maxParty: samplePid, maxPartyShare: st.share, mode: "votes" }))
       .attr("stroke", "#ffffff")
       .attr("stroke-width", 1);
 
     shadeG.append("text")
       .attr("class", "shading-legend-label")
-      .attr("x", sx + 20)
+      .attr("x", sx + 19)
       .attr("y", 0)
       .text(st.label);
   });
 
   // 党派別議席数ミニテーブル
-  const counts = computeTotalSeats();
-  const activeParties = parties.filter(p => (counts.total[p.id] || 0) > 0 || (counts.district[p.id] || 0) > 0);
-  const displayParties = activeParties.length > 0 ? activeParties.slice(0, 6) : parties.slice(0, 5);
-
   const tableG = g.append("g").attr("transform", "translate(12, 54)");
+  const colW = legW - 24;
+  const colParty = 0;
+  const colDistrict = Math.floor(colW * 0.48);
+  const colPr = Math.floor(colW * 0.73);
+  const colTotal = colW;
 
-  tableG.append("text").attr("class", "shading-legend-label").attr("x", 0).attr("y", 8).text("政党");
-  tableG.append("text").attr("class", "shading-legend-label").attr("x", 140).attr("y", 8).attr("text-anchor", "end").text("小選挙区");
-  tableG.append("text").attr("class", "shading-legend-label").attr("x", 210).attr("y", 8).attr("text-anchor", "end").text("比例代表");
-  tableG.append("text").attr("class", "shading-legend-label").attr("x", 280).attr("y", 8).attr("text-anchor", "end").text("合計議席");
+  tableG.append("text").attr("class", "shading-legend-label").attr("x", colParty).attr("y", 8).text("政党");
+  tableG.append("text").attr("class", "shading-legend-label").attr("x", colDistrict).attr("y", 8).attr("text-anchor", "end").text("小選挙区");
+  tableG.append("text").attr("class", "shading-legend-label").attr("x", colPr).attr("y", 8).attr("text-anchor", "end").text("比例代表");
+  tableG.append("text").attr("class", "shading-legend-label").attr("x", colTotal).attr("y", 8).attr("text-anchor", "end").text("合計議席");
 
   displayParties.forEach((p, idx) => {
     const rowY = 24 + idx * 16;
     tableG.append("rect")
-      .attr("x", 0)
+      .attr("x", colParty)
       .attr("y", rowY - 9)
       .attr("width", 10)
       .attr("height", 10)
@@ -1046,27 +1220,27 @@ function renderSvgLegend(prPosition) {
 
     tableG.append("text")
       .attr("class", "legend-party-name")
-      .attr("x", 16)
+      .attr("x", colParty + 15)
       .attr("y", rowY)
       .text(p.shortName);
 
     tableG.append("text")
       .attr("class", "legend-party-seats")
-      .attr("x", 140)
+      .attr("x", colDistrict)
       .attr("y", rowY)
       .text(counts.district[p.id] || 0);
 
     tableG.append("text")
       .attr("class", "legend-party-seats")
-      .attr("x", 210)
+      .attr("x", colPr)
       .attr("y", rowY)
       .text(counts.pr[p.id] || 0);
 
     tableG.append("text")
       .attr("class", "legend-party-seats")
-      .attr("x", 280)
+      .attr("x", colTotal)
       .attr("y", rowY)
-      .attr("fill", "#000000")
+      .attr("fill", "#0f172a")
       .text(counts.total[p.id] || 0);
   });
 }
@@ -1127,11 +1301,9 @@ function updateTotalSeatSummary() {
 function selectDistrict(did) {
   selectedDistrictId = did;
 
-  // 地図上の選択クラスのみを即座に更新
   polyLayer.selectAll(".district-poly")
     .classed("selected", d => d.id === did);
 
-  // 選挙区タブの一覧カードにもハイライト＆折り畳みを自動解除
   collapsedDistrictIds.delete(did);
   renderDistrictEditor();
 
@@ -1141,7 +1313,6 @@ function selectDistrict(did) {
     card.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
 
-  // クイックインスペクターを更新・表示（左下配置で右サイドパネルを邪魔しない）
   updateDistrictInspector();
   setStatus(`${districts[did]?.name || did} を選択しました`);
 }
@@ -1159,6 +1330,10 @@ function updateDistrictInspector() {
   $("#inspDistrictName").textContent = d.name;
   $("#inspDistrictId").textContent = `(${d.id})`;
   $("#inspSeatsInput").value = d.seats;
+
+  // モードピルボタン
+  $("#inspModeVotesBtn").classList.toggle("active", d.mode !== "rank");
+  $("#inspModeRankBtn").classList.toggle("active", d.mode === "rank");
 
   const listEl = $("#inspCandidateList");
   listEl.innerHTML = "";
@@ -1182,19 +1357,20 @@ function updateDistrictInspector() {
         ${parties.map(p => `<option value="${p.id}" ${p.id === c.party ? "selected" : ""}>${escapeHtml(p.shortName)}</option>`).join("")}
       </select>
       <input type="text" data-insp-action="name" data-idx="${idx}" value="${escapeHtml(c.name)}" placeholder="氏名">
-      <input class="votes-input" type="number" min="0" data-insp-action="votes" data-idx="${idx}" value="${voteVal}" placeholder="得票数(任意)">
+      <input class="votes-input" type="number" min="0" data-insp-action="votes" data-idx="${idx}" value="${voteVal}" placeholder="${d.mode === 'rank' ? '得票(非適用)' : '得票数'}">
       <button class="del-cand-btn" data-insp-action="del" data-idx="${idx}" title="削除">✕</button>
     `;
     listEl.appendChild(row);
   });
 
-  // フッターサマリー
   const winBadges = (d.winners || []).map((pid, idx) => {
     const p = partyById(pid);
     return `<span class="seat-badge" style="background:${p.color}">${idx + 1}位: ${escapeHtml(p.shortName)}</span>`;
   }).join(" ");
   $("#inspWinnersBadge").innerHTML = winBadges || "なし";
-  $("#inspShareText").textContent = d.maxPartyShare !== null ? `最多得票率: ${d.maxPartyShare.toFixed(1)}%` : "(手動順位)";
+  $("#inspShareText").textContent = (d.mode === "votes" && d.maxPartyShare !== null)
+    ? `最多得票率: ${d.maxPartyShare.toFixed(1)}%`
+    : `(順位指定・本色表示)`;
 
   // インスペクター内イベントバインド
   listEl.querySelectorAll("[data-insp-action]").forEach(el => {
@@ -1350,7 +1526,7 @@ function renderPartyEditor() {
 }
 
 /**
- * 選挙区エディタタブ描画（アコーディオン折り畳み対応）
+ * 選挙区エディタタブ描画（アコーディオン＆個別モード切替対応）
  */
 function renderDistrictEditor() {
   const container = $("#districtListContainer");
@@ -1370,13 +1546,12 @@ function renderDistrictEditor() {
     card.className = `district-card${id === selectedDistrictId ? " selected" : ""}${isCollapsed ? " collapsed" : ""}`;
     card.dataset.districtId = id;
 
-    // 当選者バッジミニ表示（折り畳み時用）
     const miniWinnerBadges = (d.winners || []).map((pid, idx) => {
       const p = partyById(pid);
       return `<span class="seat-badge" style="background:${p.color}">${idx + 1}位:${escapeHtml(p.shortName)}</span>`;
     }).join(" ");
 
-    // ヘッダー部（名称・アコーディオン開閉・個別定数）
+    // ヘッダー部（名称・アコーディオン開閉・モードピル・個別定数）
     const head = document.createElement("div");
     head.className = "district-card-head";
     head.innerHTML = `
@@ -1386,6 +1561,10 @@ function renderDistrictEditor() {
         <span class="collapsed-badge">${miniWinnerBadges || "未定"}</span>
       </div>
       <div class="district-card-seats">
+        <div class="pill-toggle-group" style="scale:0.85;">
+          <button class="pill-btn ${d.mode !== 'rank' ? 'active' : ''}" data-action="mode-votes" data-id="${id}" title="得票数順で自動判定">得票</button>
+          <button class="pill-btn ${d.mode === 'rank' ? 'active' : ''}" data-action="mode-rank" data-id="${id}" title="手動で順位指定">順位</button>
+        </div>
         <span>定数:</span>
         <input type="number" min="1" max="20" data-action="district-seats" data-id="${id}" value="${d.seats}">
       </div>
@@ -1412,7 +1591,7 @@ function renderDistrictEditor() {
           ${parties.map(p => `<option value="${p.id}" ${p.id === c.party ? "selected" : ""}>${escapeHtml(p.shortName)}</option>`).join("")}
         </select>
         <input type="text" data-action="cand-name" data-id="${id}" data-idx="${cIdx}" value="${escapeHtml(c.name)}" placeholder="候補者名">
-        <input class="votes-input" type="number" min="0" data-action="cand-votes" data-id="${id}" data-idx="${cIdx}" value="${voteVal}" placeholder="得票数(任意)">
+        <input class="votes-input" type="number" min="0" data-action="cand-votes" data-id="${id}" data-idx="${cIdx}" value="${voteVal}" placeholder="${d.mode === 'rank' ? '得票(非適用)' : '得票数(任意)'}">
         <button class="del-cand-btn" data-action="cand-del" data-id="${id}" data-idx="${cIdx}" title="候補者削除">✕</button>
       `;
       card.appendChild(row);
@@ -1435,9 +1614,9 @@ function renderDistrictEditor() {
       return `<span class="seat-badge" style="background:${p.color}">${idx + 1}位: ${escapeHtml(p.shortName)}</span>`;
     }).join(" ");
 
-    const shareInfo = d.maxPartyShare !== null
+    const shareInfo = (d.mode === "votes" && d.maxPartyShare !== null)
       ? `最多得票率: ${d.maxPartyShare.toFixed(1)}%`
-      : `<span style="color:#2563eb;">手動設定順位</span>`;
+      : `<span style="color:#2563eb;">手動設定順位（本色表示）</span>`;
 
     summaryLine.innerHTML = `
       <div class="district-winners-badge">${winnerBadges || "当選者なし"}</div>
@@ -1462,6 +1641,26 @@ function renderDistrictEditor() {
           collapsedDistrictIds.add(did);
         }
         renderDistrictEditor();
+      });
+    } else if (act === "mode-votes") {
+      el.addEventListener("click", () => {
+        pushHistory();
+        districts[did].mode = "votes";
+        recalcDistrict(did);
+        renderDistrictEditor();
+        renderMap();
+        updateDistrictInspector();
+        markDirty();
+      });
+    } else if (act === "mode-rank") {
+      el.addEventListener("click", () => {
+        pushHistory();
+        districts[did].mode = "rank";
+        recalcDistrict(did);
+        renderDistrictEditor();
+        renderMap();
+        updateDistrictInspector();
+        markDirty();
       });
     } else if (act === "district-seats") {
       el.addEventListener("change", e => {
@@ -1738,7 +1937,6 @@ function renderValidation() {
     }
   }
 
-  // 比例代表の検証
   if (prBlocks.length > 0) {
     prBlocks.forEach((b, i) => {
       const totalSeats = b.seats;
@@ -1782,6 +1980,52 @@ function bindEvents() {
     renderDistrictEditor();
   });
 
+  // 全選挙区のモード一括切替
+  $("#globalModeVotesBtn").addEventListener("click", () => {
+    pushHistory();
+    $("#globalModeVotesBtn").classList.add("active");
+    $("#globalModeRankBtn").classList.remove("active");
+    Object.values(districts).forEach(d => { d.mode = "votes"; recalcDistrict(d.id); });
+    renderDistrictEditor();
+    renderMap();
+    updateDistrictInspector();
+    markDirty();
+    notify("全選挙区を「得票数入力（自動）」モードに切り替えました");
+  });
+  $("#globalModeRankBtn").addEventListener("click", () => {
+    pushHistory();
+    $("#globalModeRankBtn").classList.add("active");
+    $("#globalModeVotesBtn").classList.remove("active");
+    Object.values(districts).forEach(d => { d.mode = "rank"; recalcDistrict(d.id); });
+    renderDistrictEditor();
+    renderMap();
+    updateDistrictInspector();
+    markDirty();
+    notify("全選挙区を「順位直接指定（手動）」モードに切り替えました");
+  });
+
+  // クイックインスペクターのモード切替ピルボタン
+  $("#inspModeVotesBtn").addEventListener("click", () => {
+    if (!selectedDistrictId || !districts[selectedDistrictId]) return;
+    pushHistory();
+    districts[selectedDistrictId].mode = "votes";
+    recalcDistrict(selectedDistrictId);
+    renderMap();
+    updateDistrictInspector();
+    renderDistrictEditor();
+    markDirty();
+  });
+  $("#inspModeRankBtn").addEventListener("click", () => {
+    if (!selectedDistrictId || !districts[selectedDistrictId]) return;
+    pushHistory();
+    districts[selectedDistrictId].mode = "rank";
+    recalcDistrict(selectedDistrictId);
+    renderMap();
+    updateDistrictInspector();
+    renderDistrictEditor();
+    markDirty();
+  });
+
   // プリセット変更
   $("#presetSelect").addEventListener("change", e => applyPreset(e.target.value));
 
@@ -1800,8 +2044,11 @@ function bindEvents() {
   $("#setupMajorPartiesBtn").addEventListener("click", setupMajorPartiesCandidates);
   $("#clearAllCandidatesBtn").addEventListener("click", clearAllCandidates);
 
+  // サンプルGeoJSONダウンロード
+  $("#downloadSampleGeoJsonBtn").addEventListener("click", downloadSampleGeoJson);
+
   // 表示設定関連
-  ["showBalls", "showDistrictNames", "showWinnerNames", "showShareText", "showLegend"].forEach(id => {
+  ["showBalls", "showDistrictNames", "showWinnerNames", "showShareText", "showLegend", "showMajorityBar"].forEach(id => {
     $("#" + id).addEventListener("change", () => {
       pushHistory();
       renderMap();
@@ -2017,6 +2264,23 @@ function switchTab(tabId) {
   $$(".tab-content").forEach(c => c.classList.toggle("active", c.id === tabId));
 }
 
+// サンプルGeoJSONダウンロード
+function downloadSampleGeoJson() {
+  if (!geoData) {
+    notify("地図データがありません");
+    return;
+  }
+  const str = JSON.stringify(geoData, null, 2);
+  const blob = new Blob([str], { type: "application/geo+json;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "okayama-sample.geojson";
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 500);
+  notify("お手本サンプルGeoJSONをダウンロードしました");
+}
+
 // --- ファイル処理 (IO & Exports) ---
 function loadGeoJsonFile(file) {
   const reader = new FileReader();
@@ -2037,6 +2301,7 @@ function loadGeoJsonFile(file) {
           id,
           name: f.properties?.name || id,
           seats: Number($("#batchSeatsInput").value) || 1,
+          mode: "votes",
           candidates: parties.slice(0, 3).map((p, idx) => ({
             id: `cand-${Math.random().toString(36).slice(2, 8)}`,
             name: `${p.shortName}候補`,
@@ -2195,6 +2460,7 @@ function exportSvgMap() {
     .legend-party-name { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif; font-size: 11px; font-weight: 600; fill: #1e293b; }
     .legend-party-seats { font-family: Consolas, monospace; font-size: 11px; font-weight: 700; text-anchor: end; fill: #0f172a; }
     .shading-legend-label { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif; font-size: 9px; fill: #64748b; }
+    .majority-line-text { font-family: Consolas, monospace; font-size: 9px; font-weight: 700; fill: #b91c1c; }
   `;
   clone.insertBefore(styleEl, clone.firstChild);
 
@@ -2205,7 +2471,7 @@ function exportSvgMap() {
   clone.insertBefore(bgRect, clone.firstChild);
 
   const meta = document.createElementNS("http://www.w3.org/2000/svg", "metadata");
-  meta.textContent = `Election Map Studio v5 Professional | Wikipedia Standard | Generated: ${new Date().toISOString()}`;
+  meta.textContent = `Election Map Studio v5.2 Professional | Wikipedia Standard | Generated: ${new Date().toISOString()}`;
   clone.insertBefore(meta, clone.firstChild);
 
   const xml = '<?xml version="1.0" encoding="UTF-8"?>\n' + new XMLSerializer().serializeToString(clone);
