@@ -3,98 +3,110 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Election Map Studio</title>
+  <meta name="theme-color" content="#10233f">
+  <title>Election Map Studio — Premium</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 </head>
 <body>
-  <header class="topbar">
-    <div>
-      <h1>Election Map Studio</h1>
-      <p>選挙区データと選挙結果から、Wikipedia風の選挙結果地図を生成</p>
-    </div>
-    <div class="top-actions">
-      <button id="sampleBtn" class="secondary">岡山県サンプル</button>
-      <button id="exportBtn" class="primary">SVGを書き出す</button>
-    </div>
-  </header>
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark">EM</div>
+    <div><h1>Election Map Studio</h1><p>選挙結果を、地図で伝える。</p></div>
+  </div>
+  <div class="top-actions">
+    <button id="loadSampleBtn" class="ghost">サンプルを開く</button>
+    <button id="exportSvgBtn" class="gold">SVGを書き出す</button>
+  </div>
+</header>
 
-  <main class="app">
-    <aside class="panel">
-      <section>
-        <h2>1. 地図</h2>
-        <label class="file-label">
-          GeoJSONを読み込む
+<main class="shell">
+  <aside class="sidebar">
+    <div class="side-scroll">
+      <section class="section">
+        <div class="section-title"><span class="step">01</span><div><b>地図データ</b><small>GeoJSON / FeatureCollection</small></div></div>
+        <label class="dropzone" id="dropzone">
           <input id="geojsonInput" type="file" accept=".geojson,.json,application/geo+json">
+          <span class="upload-icon">↑</span>
+          <strong>GeoJSONを読み込む</strong>
+          <small>クリックまたはファイルをドロップ</small>
         </label>
-        <div class="hint">GeoJSON FeatureCollection を想定。各Featureの id / properties.id / code / name を選挙区IDとして利用できます。</div>
-        <label>選挙区IDのプロパティ
+        <label>選挙区ID
           <select id="idField">
-            <option value="auto">自動判定</option>
-            <option value="id">Feature.id</option>
-            <option value="name">properties.name</option>
-            <option value="code">properties.code</option>
+            <option value="auto">自動判定</option><option value="id">Feature.id</option>
+            <option value="name">properties.name</option><option value="code">properties.code</option>
           </select>
         </label>
+        <div id="dataStatus" class="notice">岡山県サンプルを読み込み済み</div>
       </section>
 
-      <section>
-        <h2>2. 選挙制度</h2>
+      <section class="section">
+        <div class="section-title"><span class="step">02</span><div><b>選挙制度</b><small>集計ルールを設定</small></div></div>
         <label>制度
           <select id="system">
-            <option value="smd">小選挙区制（最多得票）</option>
-            <option value="mmd">複数人区（上位得票）</option>
-            <option value="pr">比例代表（D'Hondt）</option>
+            <option value="smd">小選挙区制</option>
+            <option value="mmd">複数人区</option>
+            <option value="pr">比例代表</option>
           </select>
         </label>
-        <label>選挙区あたり議席数
-          <input id="seatCount" type="number" min="1" max="20" value="2">
-        </label>
-        <label>選挙名
-          <input id="electionTitle" value="2026年 岡山県選挙・サンプル">
-        </label>
-        <div class="hint">小選挙区では1議席に固定。複数人区・比例区ではここで議席数を変更できます。</div>
+        <div class="two">
+          <label>議席数<input id="seatCount" type="number" min="1" max="50" value="2"></label>
+          <label>方式
+            <select id="allocationMethod">
+              <option value="dhondt">D'Hondt</option>
+              <option value="sainte-lague">Sainte-Laguë</option>
+            </select>
+          </label>
+        </div>
+        <div id="systemHint" class="hint">比例代表では得票数を議席に自動配分します。</div>
       </section>
 
-      <section>
-        <h2>3. 選挙結果</h2>
-        <div class="result-mode">
-          <label class="radio"><input type="radio" name="resultMode" value="winner" checked> 当選者を直接設定</label>
-          <label class="radio"><input type="radio" name="resultMode" value="votes"> 得票数から自動計算</label>
+      <section class="section">
+        <div class="section-title"><span class="step">03</span><div><b>結果入力</b><small>当選者または得票数</small></div></div>
+        <div class="segmented">
+          <button class="active" data-mode="votes">得票数</button>
+          <button data-mode="winner">当選者</button>
         </div>
         <div id="districtList" class="district-list"></div>
       </section>
 
-      <section>
-        <h2>4. 政党</h2>
+      <section class="section">
+        <div class="section-title"><span class="step">04</span><div><b>表示</b><small>地図の情報量を調整</small></div></div>
+        <label class="check"><input id="showLabels" type="checkbox" checked> 選挙区名を表示</label>
+        <label class="check"><input id="showBalls" type="checkbox" checked> 議席ボールを表示</label>
+        <label class="check"><input id="showVoteShare" type="checkbox"> 得票率を表示</label>
+        <label>地図タイトル<input id="electionTitle" value="2026年 岡山県選挙・サンプル"></label>
+      </section>
+
+      <section class="section">
+        <div class="section-title"><span class="step">05</span><div><b>政党</b><small>色と名称</small></div></div>
         <div id="partyLegend" class="party-list"></div>
       </section>
+    </div>
+    <footer class="side-footer">Election Map Studio <span>Premium Prototype</span></footer>
+  </aside>
 
-      <section class="help">
-        <strong>今回の追加機能</strong>
-        <p>得票数入力では、小選挙区は最多得票、複数人区は上位得票、比例区はD'Hondt方式で議席配分します。</p>
-        <p>複数人区・比例区では、地図上に各議席を表す色付きボールを表示します。ボールの数と色で選挙区内の議席構成を直感的に確認できます。</p>
-      </section>
-    </aside>
+  <section class="workspace">
+    <div class="workspace-bar">
+      <div><span class="live"></span><span id="status">編集内容はリアルタイム反映</span></div>
+      <div class="view-actions">
+        <button id="zoomOut" aria-label="縮小">−</button>
+        <button id="zoomReset">100%</button>
+        <button id="zoomIn" aria-label="拡大">＋</button>
+        <button id="fitMap">地図に合わせる</button>
+      </div>
+    </div>
+    <div id="mapViewport">
+      <svg id="map" viewBox="0 0 1200 820" aria-label="選挙結果地図"></svg>
+    </div>
+    <div class="summarybar">
+      <div><strong id="mapTitle"></strong><span id="mapSubtitle"></span></div>
+      <div id="seatSummary"></div>
+    </div>
+  </section>
+</main>
 
-    <section class="canvas-panel">
-      <div class="canvas-toolbar">
-        <div><span class="status-dot"></span><span id="status">岡山県サンプルを表示中</span></div>
-        <div class="small-actions">
-          <button id="zoomOut">−</button>
-          <button id="zoomReset">リセット</button>
-          <button id="zoomIn">＋</button>
-        </div>
-      </div>
-      <div id="mapWrap">
-        <svg id="map" viewBox="0 0 1000 760" role="img" aria-label="選挙結果地図"></svg>
-      </div>
-      <div class="map-footer">
-        <div id="mapTitle"></div>
-        <div id="mapLegend"></div>
-      </div>
-    </section>
-  </main>
-  <script src="app.js"></script>
+<div id="toast" class="toast"></div>
+<script src="app.js"></script>
 </body>
 </html>

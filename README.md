@@ -1,43 +1,43 @@
-# Election Map Studio v2
+# Election Map Studio — Premium Prototype
 
-GitHub Pages向けの静的な選挙結果地図ジェネレーターです。
+GitHub Pagesで動作する静的な選挙結果地図ジェネレーターです。
 
-## v2で追加したもの
+## v3 Premiumで重点的に改善
 
-- 選挙結果の設定方式を「当選者を直接設定」と「得票数から自動計算」から選択
-- 小選挙区：最多得票
-- 複数人区：上位得票
-- 比例代表：D'Hondt方式
-- 選挙区あたり議席数を変更可能
-- 複数人区・比例区で、各議席を色付きボールとして地図上に表示
-- SVG書き出し時にもボールを含めて保存
-- 既存のGeoJSON読み込み・ズーム機能を維持
+- UIを全面整理：5段階の設定フロー、状態表示、レスポンシブ対応
+- GeoJSONのクリック読み込み＋ドラッグ＆ドロップ
+- 得票数入力 / 当選者直接設定を明確に切替
+- 小選挙区・複数人区・比例代表
+- 比例代表：D'Hondt / Sainte-Laguë
+- 議席ボール表示、選挙区名、得票率表示の個別ON/OFF
+- 地図選択時の強調表示
+- ズーム、100%リセット、地図フィット
+- SVG書き出し時に表示用CSSもSVG内部へ埋め込み
+- LF固定用 `.gitattributes`
 
-## GitHub Pages
+## 配置
 
-`index.html` がリポジトリのルートに来るように配置してください。
+`index.html` をGitHubリポジトリのルートに置きます。
 
 ```text
 repo/
 ├── index.html
 ├── app.js
 ├── style.css
-├── README.md
+├── .gitattributes
 ├── .nojekyll
 └── data/
     ├── parties.json
     └── okayama-sample.geojson
 ```
 
-Settings → Pages → Build and deployment → Deploy from a branch → `main` → `/ (root)`。
-
 ## 注意
 
-現在の岡山県サンプルの地図は動作確認用の簡略化データです。実際の選挙区境界ではありません。
+現在の岡山県サンプルはデモ用の簡略化GeoJSONであり、実際の選挙区境界ではありません。
 
-また、比例代表の配分は現在「選挙区単位のD'Hondt」を実装したデモです。将来的に全国比例、ブロック比例、名簿、当選者名、惜敗率、得票率などへ拡張できます。
+また、比例代表の現在の計算は「各GeoJSON選挙区を比例単位とする」デモ実装です。全国比例・ブロック比例、名簿式、候補者別結果、惜敗率などは今後の拡張対象です。
 
-ローカルで直接 `file://` から開くと `fetch()` が制限される場合があります。必要ならローカルHTTPサーバーを使ってください。
+ローカルで `file://` から直接開くと、ブラウザのfetch制限によりデータを読み込めない場合があります。ローカルHTTPサーバーを使用してください。
 
 ```bash
 python -m http.server 8000
