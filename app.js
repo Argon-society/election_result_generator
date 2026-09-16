@@ -34,42 +34,42 @@ let dataIndex = { maps: [], projects: [] };
 
 const SAMPLE_DISTRICT_VOTES = {
   "OK-1": {
-    name: "??1?",
+    name: "\u5ca1\u5c711\u533a",
     candidates: [
-      { name: "?? ??", party: "ldp", votes: 85210 },
-      { name: "?? ??", party: "cdp", votes: 64130 },
-      { name: "?? ??", party: "jcp", votes: 12050 }
+      { name: "\u9022\u6ca2 \u4e00\u90ce", party: "ldp", votes: 85210 },
+      { name: "\u539f\u7530 \u8b19\u4ecb", party: "cdp", votes: 64130 },
+      { name: "\u4f59\u6176 \u5145\u4f38", party: "jcp", votes: 12050 }
     ]
   },
   "OK-2": {
-    name: "??2?",
+    name: "\u5ca1\u5c712\u533a",
     candidates: [
-      { name: "?? ??", party: "ldp", votes: 78540 },
-      { name: "?? ??", party: "cdp", votes: 71220 },
-      { name: "?? ??", party: "ishin", votes: 18450 }
+      { name: "\u5c71\u4e0b \u8cb4\u53f8", party: "ldp", votes: 78540 },
+      { name: "\u6d25\u6751 \u5553\u4ecb", party: "cdp", votes: 71220 },
+      { name: "\u4f4f\u5bc4 \u8061\u7f8e", party: "ishin", votes: 18450 }
     ]
   },
   "OK-3": {
-    name: "??3?",
+    name: "\u5ca1\u5c713\u533a",
     candidates: [
-      { name: "?? ??", party: "ldp", votes: 91400 },
-      { name: "?? ??", party: "cdp", votes: 38200 },
-      { name: "?? ??", party: "jcp", votes: 8900 }
+      { name: "\u52a0\u85e4 \u52dd\u4fe1", party: "ldp", votes: 91400 },
+      { name: "\u539f\u7530 \u5065\u543e", party: "cdp", votes: 38200 },
+      { name: "\u5c3e\u5d0e \u5b8f\u5b50", party: "jcp", votes: 8900 }
     ]
   },
   "OK-4": {
-    name: "??4?",
+    name: "\u5ca1\u5c714\u533a",
     candidates: [
-      { name: "?? ??", party: "cdp", votes: 83500 },
-      { name: "?? ?", party: "ldp", votes: 79200 }
+      { name: "\u67da\u6728 \u9053\u7fa9", party: "cdp", votes: 83500 },
+      { name: "\u6a4b\u672c \u5cb3", party: "ldp", votes: 79200 }
     ]
   },
   "OK-5": {
-    name: "??5?",
+    name: "\u5ca1\u5c715\u533a",
     candidates: [
-      { name: "?? ??", party: "ldp", votes: 71000 },
-      { name: "?? ???", party: "cdp", votes: 48500 },
-      { name: "?? ??", party: "ind", votes: 15300 }
+      { name: "\u52a0\u85e4 \u6d69\u5e73", party: "ldp", votes: 71000 },
+      { name: "\u306f\u305f \u3068\u3082\u3053", party: "cdp", votes: 48500 },
+      { name: "\u5c0f\u897f \u5f66\u6cbb", party: "ind", votes: 15300 }
     ]
   }
 };
@@ -77,7 +77,7 @@ const SAMPLE_DISTRICT_VOTES = {
 const SAMPLE_PR_BLOCKS = [
   {
     id: "pr-chugoku",
-    name: "????????",
+    name: "\u4e2d\u56fd\u6bd4\u4f8b\u30d6\u30ed\u30c3\u30af",
     seats: 11,
     allocationMethod: "dhondt",
     mode: "votes",
@@ -96,38 +96,38 @@ const SAMPLE_PR_BLOCKS = [
 
 const PRESETS = {
   "parallel-shugiin": {
-    name: "???????????????????",
+    name: "\u5c0f\u9078\u6319\u533a\u6bd4\u4f8b\u4ee3\u8868\u4e26\u7acb\u5236\uff08\u8846\u8b70\u9662\u30e2\u30c7\u30eb\uff09",
     defaultSeats: 1,
     allocation: "dhondt",
-    hint: "???????1????????????????????????????????????????????",
+    hint: "\u5c0f\u9078\u6319\u533a\uff08\u4e00\u5f8b1\u4eba\u533a\u30fb\u6700\u591a\u5f97\u7968\u5f53\u9078\uff09\u3068\u3001\u5730\u56f3\u5916\u306e\u6bd4\u4f8b\u4ee3\u8868\u30d6\u30ed\u30c3\u30af\uff08\u30c9\u30f3\u30c8\u5f0f\u914d\u5206\uff09\u3092\u7d44\u307f\u5408\u308f\u305b\u305f\u5236\u5ea6\u3067\u3059\u3002",
     defaultPrBlocks: () => JSON.parse(JSON.stringify(SAMPLE_PR_BLOCKS))
   },
   "smd-simple": {
-    name: "??????????1????????",
+    name: "\u5358\u7d14\u5c0f\u9078\u6319\u533a\u5236\uff08\u4e00\u5f8b1\u4eba\u533a\u30fb\u6bd4\u4f8b\u306a\u3057\uff09",
     defaultSeats: 1,
     allocation: "dhondt",
-    hint: "????1???????????FPTP????????????????????????????",
+    hint: "\u5404\u9078\u6319\u533a1\u8b70\u5e2d\u306e\u5358\u7d14\u5c0f\u9078\u6319\u533a\u5236\uff08FPTP\uff09\u3002\u6700\u591a\u5f97\u7968\u8005\u304c\u5f53\u9078\u3068\u306a\u308a\u3001\u6bd4\u4f8b\u4ee3\u8868\u533a\u306f\u8a2d\u5b9a\u3055\u308c\u307e\u305b\u3093\u3002",
     defaultPrBlocks: () => []
   },
   "mmd-sntv": {
-    name: "???????????????????????",
+    name: "\u5927\u9078\u6319\u533a\u30fb\u4e2d\u9078\u6319\u533a\u5236\uff08\u5358\u8a18\u975e\u79fb\u8b72\u5f0f\u30fb\u6bd4\u4f8b\u306a\u3057\uff09",
     defaultSeats: 3,
     allocation: "dhondt",
-    hint: "???????3?5?????????????????????????????????????????????",
+    hint: "\u8907\u6570\u4eba\u533a\uff08\u5404\u533a3\u301c5\u4eba\u533a\u306a\u3069\uff09\u306e\u5358\u8a18\u975e\u79fb\u8b72\u5f0f\u3002\u5f97\u7968\u4e0a\u4f4d\u304b\u3089\u5b9a\u6570\u5206\u304c\u5f53\u9078\u3002\u9818\u57df\u8272\u306f\u6700\u591a\u5f97\u7968\u515a\u306e\u5272\u5408\u3067\u8868\u73fe\u3057\u307e\u3059\u3002",
     defaultPrBlocks: () => []
   },
   "parallel-custom": {
-    name: "????????????????????",
+    name: "\u5927\u9078\u6319\u533a\u6bd4\u4f8b\u4ee3\u8868\u4e26\u7acb\u5236\uff08\u8907\u6570\u4eba\u533a\uff0b\u6bd4\u4f8b\uff09",
     defaultSeats: 3,
     allocation: "dhondt",
-    hint: "??????????????????????????????????????????",
+    hint: "\u5730\u57df\u9078\u6319\u533a\u304c\u8907\u6570\u4eba\u533a\uff08\u4e2d\u9078\u6319\u533a\uff09\u3067\u3001\u3055\u3089\u306b\u6bd4\u4f8b\u4ee3\u8868\u533a\u304c\u4e26\u7acb\u3059\u308b\u30cf\u30a4\u30d6\u30ea\u30c3\u30c9\u5236\u5ea6\u3067\u3059\u3002",
     defaultPrBlocks: () => JSON.parse(JSON.stringify(SAMPLE_PR_BLOCKS))
   },
   "custom": {
-    name: "????????",
+    name: "\u30ab\u30b9\u30bf\u30e0\u9078\u6319\u5236\u5ea6",
     defaultSeats: 1,
     allocation: "dhondt",
-    hint: "??????????????????????????????????",
+    hint: "\u9078\u6319\u533a\u3054\u3068\u306e\u5b9a\u6570\u3084\u6bd4\u4f8b\u533a\u306e\u6709\u7121\u30fb\u5b9a\u6570\u30fb\u65b9\u5f0f\u3092\u5b8c\u5168\u306b\u81ea\u7531\u8a2d\u5b9a\u3067\u304d\u307e\u3059\u3002",
     defaultPrBlocks: () => []
   }
 };
@@ -157,7 +157,7 @@ function safeFileName(s) {
 }
 
 function partyById(pid) {
-  return parties.find(p => p.id === pid) || { id: pid, name: pid || "??", shortName: pid || "??", color: "#64748b" };
+  return parties.find(p => p.id === pid) || { id: pid, name: pid || "\u4e0d\u660e", shortName: pid || "\u4e0d\u660e", color: "#64748b" };
 }
 
 function idOf(f) {
@@ -168,7 +168,7 @@ function idOf(f) {
   return String(f.id ?? f.properties?.id ?? f.properties?.code ?? f.properties?.name ?? "");
 }
 
-// --- ?????????? ---
+// --- \u6bd4\u4f8b\u914d\u5206\u30a2\u30eb\u30b4\u30ea\u30ba\u30e0 ---
 function calculatePrAllocation(seats, method, votesMap) {
   const partyList = parties.filter(p => (Number(votesMap[p.id]) || 0) > 0);
   const allocated = {};
@@ -203,7 +203,7 @@ function calculatePrAllocation(seats, method, votesMap) {
     return { allocated, order };
   }
 
-  // ????? (Hare / Droop)
+  // \u6700\u5927\u5270\u4f59\u5f0f (Hare / Droop)
   const totalVotes = partyList.reduce((acc, p) => acc + (Number(votesMap[p.id]) || 0), 0);
   if (totalVotes <= 0) return { allocated, order };
 
@@ -240,7 +240,7 @@ function calculatePrAllocation(seats, method, votesMap) {
   return { allocated, order };
 }
 
-// --- ????? ---
+// --- \u9078\u6319\u533a\u96c6\u8a08 ---
 function recalcDistrict(id) {
   const d = districts[id];
   if (!d) return;
@@ -251,13 +251,13 @@ function recalcDistrict(id) {
 
   const candList = (d.candidates || []).map((c, idx) => ({
     id: c.id || `cand-${Math.random().toString(36).slice(2, 7)}`,
-    name: c.name || "???",
+    name: c.name || "\u5019\u88dc\u8005",
     party: c.party || parties[0]?.id || "ldp",
     votes: (c.votes !== null && c.votes !== undefined && c.votes !== "") ? Number(c.votes) : null,
     rank: Number(c.rank) || (idx + 1)
   }));
 
-  // ??4: ????????????????????????
+  // \u8981\u4ef64: \u5019\u88dc\u8005\u6570\u3068\u5b9a\u6570\u304c\u540c\u4e00\u304b\u305d\u308c\u4ee5\u4e0b\u306e\u5834\u5408\u3001\u7121\u6295\u7968\u5f53\u9078
   d.isUncontested = (candList.length > 0 && candList.length <= seats);
 
   if (d.mode === "votes") {
@@ -295,7 +295,7 @@ function recalcDistrict(id) {
     d.maxParty = bestPid;
     d.maxPartyShare = total > 0 ? (maxV / total) * 100 : null;
   } else {
-    // ?????????
+    // \u9806\u4f4d\u76f4\u63a5\u6307\u5b9a\u30e2\u30fc\u30c9
     candList.sort((a, b) => a.rank - b.rank || a.name.localeCompare(b.name, "ja"));
     candList.forEach((c, idx) => { c.rank = idx + 1; });
 
@@ -308,7 +308,7 @@ function recalcDistrict(id) {
   }
 }
 
-// --- ????? ---
+// --- \u6bd4\u4f8b\u533a\u96c6\u8a08 ---
 function recalcPrBlock(block) {
   const seats = Math.max(1, Number(block.seats) || 1);
   block.seats = seats;
@@ -345,13 +345,13 @@ function recalcAll() {
   prBlocks.forEach(b => recalcPrBlock(b));
 }
 
-// --- ????????????5: ????????????? ---
+// --- \u30b7\u30a7\u30fc\u30c7\u30a3\u30f3\u30b0\u95a2\u6570\uff08\u8981\u4ef65: \u6700\u591a\u5f53\u9078\u515a\u306e\u515a\u6d3e\u5272\u5408\u968e\u8abf\uff09 ---
 function getDistrictFillColor(district) {
   if (!district) return "#d1d5db";
   const method = $("#shadingMethod") ? $("#shadingMethod").value : "winner-share-steps";
 
-  // ??5: ???????????????????????
-  // ?????????????????????????????????????
+  // \u8981\u4ef65: \u9806\u4f4d\u76f4\u63a5\u6307\u5b9a\u53c8\u306f\u7121\u6295\u7968\u5f53\u9078\u306e\u9078\u6319\u533a\u306b\u304a\u3044\u3066\u306f\u3001
+  // \u9078\u6319\u533a\u5185\u6700\u591a\u5f53\u9078\u515a\u306e\u515a\u6d3e\u5272\u5408\u3092\u3082\u3063\u3066\u7b2c\u4e00\u515a\u6d3e\u306e\u5f97\u7968\u7387\u306b\u63db\u3048\u3066\u30b0\u30e9\u30c7\u30fc\u30b7\u30e7\u30f3
   if (district.mode === "rank" || district.isUncontested) {
     const winners = district.winners || [];
     if (winners.length === 0) return "#d1d5db";
@@ -368,7 +368,7 @@ function getDistrictFillColor(district) {
     const baseHex = (d3.color(p.color) || d3.color("#64748b")).formatHex();
     if (method === "solid") return baseHex;
 
-    // ????????????????????????
+    // \u5f53\u9078\u8b70\u5e2d\u5272\u5408\uff08\u5b9a\u6570\u306b\u5bfe\u3059\u308b\u6700\u591a\u5f53\u9078\u515a\u306e\u8b70\u5e2d\u5272\u5408\uff09
     const seatShare = (maxWins / Math.max(1, district.seats)) * 100;
 
     if (method === "winner-share-steps") {
@@ -382,7 +382,7 @@ function getDistrictFillColor(district) {
     return d3.interpolateRgb("#ffffff", baseHex)(ratio);
   }
 
-  // ??????????
+  // \u901a\u5e38\u5f97\u7968\u6570\u5165\u529b\u30e2\u30fc\u30c9
   if (!district.maxParty) return "#d1d5db";
   const p = partyById(district.maxParty);
   const baseHex = (d3.color(p.color) || d3.color("#64748b")).formatHex();
@@ -402,41 +402,41 @@ function getDistrictFillColor(district) {
   return d3.interpolateRgb("#ffffff", baseHex)(ratio);
 }
 
-// --- ??????????????1: ?????????????????????? ---
-function computeBallLayout(n, boundsW, boundsH) {
-  if (n <= 0) return { cols: 1, rows: 1, ballR: 7, gap: 18 };
+// --- \u30dc\u30fc\u30eb\u914d\u7f6e\u306e\u8907\u6570\u5217\u8a08\u7b97\uff08\u8981\u4ef61: \u9078\u6319\u533a\u67a0\u5185\u306f\u307f\u51fa\u3057\u9632\u6b62\uff09 ---
+function computeBallLayout(n, availW, availH) {
+  if (n <= 0) return { cols: 1, rows: 1, ballR: 6, gap: 16, gridW: 0, gridH: 0 };
 
-  let ballR = 7;
-  let gap = 18;
+  let ballR = 6.5;
+  let gap = 16;
 
-  // ????????????????????????????
-  if (boundsW < 50 || boundsH < 50) {
+  // \u5229\u7528\u53ef\u80fd\u306a\u9ad8\u3055\u30fb\u5e45\u304c\u72ed\u3044\u5834\u5408\u306f\u30dc\u30fc\u30eb\u30b5\u30a4\u30ba\u3092\u7e2e\u5c0f
+  if (availH < 35 || availW < 45) {
+    ballR = 3.5;
+    gap = 9;
+  } else if (availH < 55 || availW < 70) {
     ballR = 4.5;
-    gap = 11;
-  } else if (boundsW < 80 || boundsH < 80) {
+    gap = 12;
+  } else if (availH < 75 || availW < 95) {
     ballR = 5.5;
     gap = 14;
   }
 
-  // ??????????????????
-  let cols = Math.max(1, Math.min(n, Math.floor((boundsW * 0.75) / gap)));
-  const aspect = boundsW / (boundsH || 1);
+  // \u5e45\u306b\u5408\u308f\u305b\u305f\u5217\u6570\u8a08\u7b97
+  let cols = Math.max(1, Math.min(n, Math.floor(availW / gap)));
+  const aspect = availW / (availH || 1);
 
-  if (aspect > 2.0) {
-    // ????: ??????
-    cols = Math.min(n, Math.max(cols, Math.ceil(Math.sqrt(n) * 1.4)));
+  if (aspect > 1.8) {
+    cols = Math.min(n, Math.max(cols, Math.ceil(Math.sqrt(n) * 1.5)));
   } else if (aspect < 0.6) {
-    // ????: ???1?2?????
     cols = Math.min(cols, Math.max(1, Math.floor(Math.sqrt(n) * 0.7)));
   } else {
-    // ????: ????????
     cols = Math.min(n, Math.max(cols, Math.ceil(Math.sqrt(n))));
   }
 
-  // ????????????
-  while (cols > 1 && (cols - 1) * gap > boundsW * 0.82) {
-    if (ballR > 4) {
-      ballR--;
+  // \u5e45\u30aa\u30fc\u30d0\u30fc\u306e\u5834\u5408\u306f\u7e2e\u5c0f
+  while (cols > 1 && (cols - 1) * gap + ballR * 2 > availW) {
+    if (ballR > 3.2) {
+      ballR -= 0.5;
       gap = ballR * 2 + 2;
     } else {
       cols--;
@@ -444,16 +444,19 @@ function computeBallLayout(n, boundsW, boundsH) {
   }
 
   let rows = Math.ceil(n / cols);
-  // ????????????
-  while (rows > 1 && (rows - 1) * gap > boundsH * 0.82 && ballR > 4) {
-    ballR--;
+  // \u9ad8\u3055\u30aa\u30fc\u30d0\u30fc\u306e\u5834\u5408\u306f\u3055\u3089\u306b\u7e2e\u5c0f
+  while (rows > 1 && (rows - 1) * gap + ballR * 2 > availH && ballR > 3.2) {
+    ballR -= 0.5;
     gap = ballR * 2 + 2;
   }
 
-  return { cols, rows, ballR, gap };
+  const gridW = cols > 1 ? (cols - 1) * gap : 0;
+  const gridH = rows > 1 ? (rows - 1) * gap : 0;
+
+  return { cols, rows, ballR, gap, gridW, gridH };
 }
 
-// --- ???? & LocalStorage ---
+// --- \u5c65\u6b74\u7ba1\u7406 & LocalStorage ---
 function pushHistory() {
   if (isHistoryLocked) return;
   const snap = snapshot();
@@ -471,7 +474,7 @@ function undo() {
   isHistoryLocked = true;
   restore(prev);
   isHistoryLocked = false;
-  notify("?????????????");
+  notify("\u76f4\u524d\u306e\u64cd\u4f5c\u3092\u53d6\u308a\u6d88\u3057\u307e\u3057\u305f");
 }
 
 function redo() {
@@ -481,7 +484,7 @@ function redo() {
   isHistoryLocked = true;
   restore(next);
   isHistoryLocked = false;
-  notify("??????????");
+  notify("\u64cd\u4f5c\u3092\u3084\u308a\u76f4\u3057\u307e\u3057\u305f");
 }
 
 function saveToLocalStorage() {
@@ -533,7 +536,7 @@ function snapshot() {
 
 function restore(s) {
   if (!s) return;
-  if ($("#electionTitle")) $("#electionTitle").value = s.title || "??????";
+  if ($("#electionTitle")) $("#electionTitle").value = s.title || "\u9078\u6319\u7d50\u679c\u5730\u56f3";
   if ($("#electionSubtitle")) $("#electionSubtitle").value = s.subtitle || "";
   currentPreset = s.preset || "custom";
   if ($("#presetSelect")) $("#presetSelect").value = currentPreset;
@@ -563,14 +566,14 @@ function restore(s) {
   recalcAll();
   renderAll();
   updateDistrictInspector();
-  setStatus("?????????");
+  setStatus("\u72b6\u614b\u3092\u5fa9\u5143\u3057\u307e\u3057\u305f");
 }
 
 function markDirty() {
   isDirty = true;
   const el = $("#saveState");
   if (el) {
-    el.textContent = "????????";
+    el.textContent = "\u672a\u4fdd\u5b58\u306e\u5909\u66f4\u3042\u308a";
     el.style.color = "#b45309";
   }
 }
@@ -579,31 +582,30 @@ function markClean() {
   isDirty = false;
   const el = $("#saveState");
   if (el) {
-    el.textContent = "????";
+    el.textContent = "\u4fdd\u5b58\u6e08\u307f";
     el.style.color = "#059669";
   }
 }
 
-// --- ??? ---
+// --- \u521d\u671f\u5316 ---
 async function init() {
   const partiesData = await fetch("data/parties.json").then(r => r.json()).catch(() => ({
     parties: [
-      { id: "ldp", name: "?????", shortName: "??", color: "#dc2626" },
-      { id: "cdp", name: "?????", shortName: "??", color: "#2563eb" },
-      { id: "ishin", name: "??????", shortName: "??", color: "#16a34a" },
-      { id: "komei", name: "???", shortName: "??", color: "#ea580c" },
-      { id: "dpp", name: "?????", shortName: "??", color: "#ca8a04" },
-      { id: "jcp", name: "?????", shortName: "??", color: "#991b1b" },
-      { id: "reiwa", name: "??????", shortName: "???", color: "#db2777" },
-      { id: "sansei", name: "???", shortName: "??", color: "#f97316" },
-      { id: "sdp", name: "?????", shortName: "??", color: "#4f46e5" },
-      { id: "cpj", name: "?????", shortName: "??", color: "#1e3a8a" },
-      { id: "ind", name: "???????", shortName: "???", color: "#64748b" }
+      { id: "ldp", name: "\u81ea\u7531\u6c11\u4e3b\u515a", shortName: "\u81ea\u6c11", color: "#dc2626" },
+      { id: "cdp", name: "\u7acb\u61bad\u6c11\u4e3b\u515a", shortName: "\u7acb\u61bad", color: "#2563eb" },
+      { id: "ishin", name: "\u65e5\u672c\u7dad\u65b0\u306e\u4f1a", shortName: "\u7dad\u65b0", color: "#16a34a" },
+      { id: "komei", name: "\u516c\u660e\u515a", shortName: "\u516c\u660e", color: "#ea580c" },
+      { id: "dpp", name: "\u56fd\u6c11\u6c11\u4e3b\u515a", shortName: "\u56fd\u6c11", color: "#ca8a04" },
+      { id: "jcp", name: "\u65e5\u672c\u5171\u7523\u515a", shortName: "\u5171\u7523", color: "#991b1b" },
+      { id: "reiwa", name: "\u308c\u3044\u308f\u65b0\u9078\u7d44", shortName: "\u308c\u3044\u308f", color: "#db2777" },
+      { id: "sansei", name: "\u53c2\u653f\u515a", shortName: "\u53c2\u653f", color: "#f97316" },
+      { id: "sdp", name: "\u793e\u4f1a\u6c11\u4e3b\u515a", shortName: "\u793e\u6c11", color: "#4f46e5" },
+      { id: "cpj", name: "\u65e5\u672c\u4fdd\u5b88\u515a", shortName: "\u4fdd\u5b88", color: "#1e3a8a" },
+      { id: "ind", name: "\u7121\u6240\u5c5e\u30fb\u305d\u306e\u4ed6", shortName: "\u7121\u6240\u5c5e", color: "#64748b" }
     ]
   }));
   parties = partiesData.parties;
 
-  // ???????????????
   dataIndex = await fetch("data/index.json").then(r => r.json()).catch(() => ({ maps: [], projects: [] }));
 
   const restored = loadFromLocalStorage();
@@ -617,7 +619,7 @@ async function init() {
   recalcAll();
   renderAll();
   markClean();
-  setStatus("?????????");
+  setStatus("\u30b7\u30b9\u30c6\u30e0\u521d\u671f\u5316\u5b8c\u4e86");
 }
 
 async function loadSampleData(makeHistory = true) {
@@ -625,7 +627,7 @@ async function loadSampleData(makeHistory = true) {
   geoData = d;
   districts = {};
   selectedDistrictId = null;
-  collapsedDistrictIds = new Set(); // ??2: ?????????
+  collapsedDistrictIds = new Set(); // \u8981\u4ef62: \u30c7\u30d5\u30a9\u30eb\u30c8\u6298\u308a\u7573\u307f
 
   d.features.forEach(f => {
     const id = idOf(f);
@@ -640,7 +642,7 @@ async function loadSampleData(makeHistory = true) {
         }))
       : parties.slice(0, 3).map((p, idx) => ({
           id: `cand-${Math.random().toString(36).slice(2, 8)}`,
-          name: `${p.shortName}??`,
+          name: `${p.shortName}\u5019\u88dc`,
           party: p.id,
           votes: 50000 - idx * 12000,
           rank: idx + 1
@@ -654,7 +656,7 @@ async function loadSampleData(makeHistory = true) {
       candidates: candList
     };
 
-    // ??2: ????????????????????
+    // \u8981\u4ef62: \u5404\u9078\u6319\u533a\u306f\u30c7\u30d5\u30a9\u30eb\u30c8\u3067\u6298\u308a\u7573\u307f\u72b6\u614b\u3068\u3059\u308b
     collapsedDistrictIds.add(id);
   });
 
@@ -663,10 +665,9 @@ async function loadSampleData(makeHistory = true) {
   if (makeHistory) pushHistory();
   recalcAll();
   renderAll();
-  if ($("#dataStatus")) $("#dataStatus").textContent = "????????5?????????????";
+  if ($("#dataStatus")) $("#dataStatus").textContent = "\u5ca1\u5c71\u770c\u30b5\u30f3\u30d7\u30eb\uff085\u9078\u6319\u533a\uff0b\u6bd4\u4f8b\u4e2d\u56fd\u30d6\u30ed\u30c3\u30af\uff09";
 }
 
-// --- ??????? ---
 function applyPreset(presetId) {
   const p = PRESETS[presetId];
   if (!p) return;
@@ -690,7 +691,7 @@ function applyPreset(presetId) {
   recalcAll();
   renderAll();
   updateDistrictInspector();
-  notify(`????????${p.name}????????`);
+  notify(`\u5236\u5ea6\u30d7\u30ea\u30bb\u30c3\u30c8\u300c${p.name}\u300d\u3092\u9069\u7528\u3057\u307e\u3057\u305f`);
 }
 
 function updatePresetHint() {
@@ -698,7 +699,6 @@ function updatePresetHint() {
   if ($("#presetHint")) $("#presetHint").textContent = p.hint;
 }
 
-// --- ??????? ---
 function updateBatchPartyOptions() {
   const sel = $("#batchPartySelect");
   if (!sel) return;
@@ -718,7 +718,7 @@ function batchAddPartyCandidates(partyId) {
     if (!exists) {
       d.candidates.push({
         id: `cand-${Math.random().toString(36).slice(2, 8)}`,
-        name: `${p.shortName}??`,
+        name: `${p.shortName}\u5019\u88dc`,
         party: partyId,
         votes: null,
         rank: d.candidates.length + 1
@@ -731,11 +731,11 @@ function batchAddPartyCandidates(partyId) {
   renderDistrictEditor();
   renderMap();
   updateDistrictInspector();
-  notify(`??????${p.shortName}???????? (${addCount}???)`);
+  notify(`\u5168\u9078\u6319\u533a\u306b\u300c${p.shortName}\u300d\u5019\u88dc\u3092\u4e00\u62ec\u8ffd\u52a0 (${addCount}\u540d\u8ffd\u52a0)`);
 }
 
 function batchRemovePartyCandidates(partyId) {
-  if (!confirm(`???????${partyById(partyId).shortName}?????????????`)) return;
+  if (!confirm(`\u5168\u9078\u6319\u533a\u304b\u3089\u300c${partyById(partyId).shortName}\u300d\u306e\u5019\u88dc\u8005\u3092\u524a\u9664\u3057\u307e\u3059\u304b\uff1f`)) return;
   pushHistory();
   let delCount = 0;
 
@@ -750,18 +750,18 @@ function batchRemovePartyCandidates(partyId) {
   renderDistrictEditor();
   renderMap();
   updateDistrictInspector();
-  notify(`???????${partyById(partyId).shortName}???????? (${delCount}???)`);
+  notify(`\u5168\u9078\u6319\u533a\u304b\u3089\u300c${partyById(partyId).shortName}\u300d\u306e\u5019\u88dc\u8005\u3092\u524a\u9664 (${delCount}\u540d\u524a\u9664)`);
 }
 
 function setupMajorPartiesCandidates() {
-  if (!confirm("???????????????????????")) return;
+  if (!confirm("\u5168\u9078\u6319\u533a\u306b\u4e3b\u8981\u653f\u515a\u306e\u5019\u88dc\u8005\u3092\u4e00\u62ec\u5c55\u958b\u3057\u307e\u3059\u304b\uff1f")) return;
   pushHistory();
 
   const majorParties = parties.slice(0, 4);
   Object.values(districts).forEach(d => {
     d.candidates = majorParties.map((p, idx) => ({
       id: `cand-${Math.random().toString(36).slice(2, 8)}`,
-      name: `${p.shortName}??`,
+      name: `${p.shortName}\u5019\u88dc`,
       party: p.id,
       votes: null,
       rank: idx + 1
@@ -772,18 +772,18 @@ function setupMajorPartiesCandidates() {
   renderDistrictEditor();
   renderMap();
   updateDistrictInspector();
-  notify("?????????????????");
+  notify("\u4e3b\u8981\u653f\u515a\u306e\u5019\u88dc\u8005\u3092\u4e00\u62ec\u5c55\u958b\u3057\u307e\u3057\u305f");
 }
 
 function clearAllCandidates() {
-  if (!confirm("?????????????????")) return;
+  if (!confirm("\u5168\u9078\u6319\u533a\u306e\u5019\u88dc\u8005\u3092\u30af\u30ea\u30a2\u3057\u307e\u3059\u304b\uff1f")) return;
   pushHistory();
   Object.values(districts).forEach(d => { d.candidates = []; });
   recalcAll();
   renderDistrictEditor();
   renderMap();
   updateDistrictInspector();
-  notify("????????????");
+  notify("\u5168\u5019\u88dc\u8005\u3092\u30af\u30ea\u30a2\u3057\u307e\u3057\u305f");
 }
 
 function batchSetDistrictSeats(seats) {
@@ -794,10 +794,10 @@ function batchSetDistrictSeats(seats) {
   renderDistrictEditor();
   renderMap();
   updateDistrictInspector();
-  notify(`???????? ${val} ?????????`);
+  notify(`\u5168\u9078\u6319\u533a\u306e\u5b9a\u6570\u3092 ${val} \u8b70\u5e2d\u306b\u8a2d\u5b9a\u3057\u307e\u3057\u305f`);
 }
 
-// --- ???????? ---
+// --- \u5730\u56f3\u30ec\u30f3\u30c0\u30ea\u30f3\u30b0\uff08\u8981\u4ef6\uff1a\u91cd\u306a\u308a\u30bc\u30ed\u30fb\u52d5\u7684\u30b9\u30bf\u30c3\u30af\u914d\u7f6e\uff09 ---
 function renderMap() {
   if (!geoData) return;
 
@@ -805,6 +805,7 @@ function renderMap() {
   const showBalls = $("#showBalls") ? $("#showBalls").checked : true;
   const ballStyle = $("#ballStyle") ? $("#ballStyle").value : "simple";
   const showShare = $("#showShareText") ? $("#showShareText").checked : true;
+  const showNames = $("#showDistrictNames") ? $("#showDistrictNames").checked : true;
   const showLegend = $("#showLegend") ? $("#showLegend").checked : true;
   const showMajorityBar = $("#showMajorityBar") ? $("#showMajorityBar").checked : true;
 
@@ -827,20 +828,20 @@ function renderMap() {
   legendGroup.selectAll("*").remove();
   headerGroup.selectAll("*").remove();
 
-  // 1. ????
-  const title = $("#electionTitle") ? $("#electionTitle").value : "??????";
+  // 1. \u30bf\u30a4\u30c8\u30eb
+  const title = $("#electionTitle") ? $("#electionTitle").value : "\u9078\u6319\u7d50\u679c\u5730\u56f3";
   const subtitle = $("#electionSubtitle") ? $("#electionSubtitle").value : "";
   headerGroup.append("text").attr("class", "map-svg-title").attr("x", 40).attr("y", 42).text(title);
   if (subtitle) {
     headerGroup.append("text").attr("class", "map-svg-subtitle").attr("x", 40).attr("y", 60).text(subtitle);
   }
 
-  // 2. ?????????
+  // 2. \u904e\u534a\u6570\u7a4d\u307f\u4e0a\u3052\u30d0\u30fc
   if (showMajorityBar) {
     renderMajoritySeatBar();
   }
 
-  // 3. ??????
+  // 3. \u5404\u9078\u6319\u533a\u30c7\u30fc\u30bf\u306e\u69cb\u7bc9
   const features = geoData.features;
   const districtList = features.map(f => {
     const id = idOf(f);
@@ -868,6 +869,7 @@ function renderMap() {
     };
   });
 
+  // \u30dd\u30ea\u30b4\u30f3\u63cf\u753b
   polyLayer.selectAll("path")
     .data(districtList, d => d.id)
     .join("path")
@@ -880,100 +882,106 @@ function renderMap() {
     })
     .append("title")
     .text(d => {
-      const pName = d.maxParty ? partyById(d.maxParty).name : "?????";
+      const pName = d.maxParty ? partyById(d.maxParty).name : "\u5f53\u9078\u8005\u306a\u3057";
       let shareStr = "";
-      if (d.isUncontested) shareStr = " (?????)";
+      if (d.isUncontested) shareStr = " (\u7121\u6295\u7968\u5f53\u9078)";
       else if (d.maxPartyShare !== null) shareStr = ` (${d.maxPartyShare.toFixed(1)}%)`;
-      else shareStr = " (????)";
-      return `${d.name} (?? ${d.seats})\n?????: ${pName}${shareStr}`;
+      else shareStr = " (\u9806\u4f4d\u6307\u5b9a)";
+      return `${d.name} (\u5b9a\u6570 ${d.seats})\n\u6700\u591a\u5f53\u9078\u515a: ${pName}${shareStr}`;
     });
 
-  // 4. ???????
-  if ($("#showDistrictNames") && $("#showDistrictNames").checked) {
-    textLayer.selectAll(".district-label-text")
-      .data(districtList, d => d.id)
-      .join("text")
-      .attr("class", "district-label-text")
-      .attr("x", d => d.cx)
-      .attr("y", d => d.cy - (showBalls ? 12 : 2))
-      .text(d => d.name);
-  }
+  // 4. \u30c6\u30ad\u30b9\u30c8\u30fb\u30dc\u30fc\u30eb\u306e\u7d76\u5bfe\u91cd\u306a\u308a\u30bc\u30ed\u30fb\u52d5\u7684\u30b9\u30bf\u30c3\u30af\u914d\u7f6e\uff08\u8981\u4ef6\u6539\u5584\uff09
+  districtList.forEach(d => {
+    const hasName = showNames;
+    const isUncontested = d.isUncontested;
+    let shareText = "";
+    if (showShare) {
+      if (isUncontested) shareText = "\u7121\u6295\u7968\u5f53\u9078";
+      else if (d.mode === "rank") shareText = "";
+      else if (d.maxPartyShare !== null) shareText = `${d.maxPartyShare.toFixed(1)}%`;
+    }
+    const hasShareText = shareText.length > 0;
+    const hasBalls = showBalls && d.seats > 0;
 
-  // 5. ??????????3: ?????????4, 5: ?????????????
-  if (showShare) {
-    textLayer.selectAll(".district-share-text")
-      .data(districtList, d => d.id)
-      .join("text")
-      .attr("class", "district-share-text")
-      .attr("x", d => d.cx)
-      .attr("y", d => d.cy + (showBalls ? 30 : 18))
-      .text(d => {
-        if (d.isUncontested) {
-          return "?????"; // ??4
-        }
-        if (d.mode === "rank") {
-          return ""; // ??5: ?????????
-        }
-        return d.maxPartyShare !== null ? `${d.maxPartyShare.toFixed(1)}%` : "";
-      });
-  }
+    const nameH = hasName ? 14 : 0;
+    const shareH = hasShareText ? 11 : 0;
+    const textReserve = nameH + shareH;
 
-  // 6. ??????????????1: ??????????
-  if (showBalls) {
-    const balls = [];
-    districtList.forEach(d => {
-      const n = Math.max(1, d.seats);
-      const layout = computeBallLayout(n, d.boundsW, d.boundsH);
-      const { cols, rows, ballR, gap } = layout;
+    const availW = Math.max(16, d.boundsW * 0.78);
+    const availH = Math.max(12, (d.boundsH - textReserve) * 0.75);
 
-      const totalW = cols > 1 ? (cols - 1) * gap : 0;
-      const totalH = rows > 1 ? (rows - 1) * gap : 0;
-      const startX = d.cx - totalW / 2;
-      const startY = d.cy - totalH / 2 + 4;
+    const ballLayout = computeBallLayout(d.seats, availW, availH);
+    const ballsH = hasBalls ? ballLayout.gridH + ballLayout.ballR * 2 : 0;
 
-      for (let i = 0; i < n; i++) {
+    const gap1 = (hasName && (hasBalls || hasShareText)) ? 4 : 0;
+    const gap2 = (hasBalls && hasShareText) ? 4 : 0;
+
+    const totalStackH = nameH + gap1 + ballsH + gap2 + shareH;
+    let curY = d.cy - totalStackH / 2;
+
+    // A. \u9078\u6319\u533a\u540d\u30e9\u30d9\u30eb\uff08\u6700\u4e0a\u6bb5\uff09
+    if (hasName) {
+      const textBaselineY = curY + nameH / 2 + 3;
+      textLayer.append("text")
+        .attr("class", "district-label-text")
+        .attr("x", d.cx)
+        .attr("y", textBaselineY)
+        .text(d.name);
+      curY += nameH + gap1;
+    }
+
+    // B. \u8b70\u5e2d\u30dc\u30fc\u30eb\u7fa4\uff08\u4e2d\u6bb5\uff09
+    if (hasBalls) {
+      const { cols, rows, ballR, gap, gridW, gridH } = ballLayout;
+      const startX = d.cx - gridW / 2;
+      const startY = curY + ballR;
+
+      for (let i = 0; i < d.seats; i++) {
         const col = i % cols;
         const row = Math.floor(i / cols);
         const pid = d.winners[i] || null;
 
-        balls.push({
-          districtId: d.id,
-          seatIndex: i + 1,
-          partyId: pid,
-          x: startX + col * gap,
-          y: startY + row * gap,
-          r: ballR
-        });
+        const bx = startX + col * gap;
+        const by = startY + row * gap;
+
+        const bg = ballLayer.append("g")
+          .attr("class", "seat-ball-group")
+          .attr("transform", `translate(${bx},${by})`);
+
+        bg.append("circle")
+          .attr("class", "seat-ball-circle")
+          .attr("r", ballR)
+          .attr("fill", pid ? partyById(pid).color : "#94a3b8")
+          .append("title")
+          .text(`${i + 1}\u4f4d\u5f53\u9078: ${pid ? partyById(pid).name : "\u672a\u5b9a"}`);
+
+        if (ballStyle === "number") {
+          bg.append("text")
+            .attr("class", "seat-ball-number")
+            .style("font-size", `${Math.max(5.5, ballR * 1.15)}px`)
+            .text(i + 1);
+        }
       }
-    });
-
-    const ballNodes = ballLayer.selectAll(".seat-ball-group")
-      .data(balls, d => `${d.districtId}-${d.seatIndex}`)
-      .join("g")
-      .attr("class", "seat-ball-group")
-      .attr("transform", d => `translate(${d.x},${d.y})`);
-
-    ballNodes.append("circle")
-      .attr("class", "seat-ball-circle")
-      .attr("r", d => d.r)
-      .attr("fill", d => d.partyId ? partyById(d.partyId).color : "#94a3b8")
-      .append("title")
-      .text(d => `${d.seatIndex}???: ${d.partyId ? partyById(d.partyId).name : "??"}`);
-
-    if (ballStyle === "number") {
-      ballNodes.append("text")
-        .attr("class", "seat-ball-number")
-        .style("font-size", d => `${Math.max(6, d.r * 1.1)}px`)
-        .text(d => d.seatIndex);
+      curY += ballsH + gap2;
     }
-  }
 
-  // 7. ????????
+    // C. \u5f97\u7968\u7387\u30c6\u30ad\u30b9\u30c8\uff08\u6700\u4e0b\u6bb5\uff09
+    if (hasShareText) {
+      const shareBaselineY = curY + shareH / 2 + 2;
+      textLayer.append("text")
+        .attr("class", "district-share-text")
+        .attr("x", d.cx)
+        .attr("y", shareBaselineY)
+        .text(shareText);
+    }
+  });
+
+  // 5. \u6bd4\u4f8b\u4ee3\u8868\u30d6\u30ed\u30c3\u30af
   if (prPosition !== "none" && prBlocks.length > 0) {
     renderPrSvgBlocks(prPosition);
   }
 
-  // 8. ?????6: ????????
+  // 6. \u51e1\u4f8b\uff08\u8981\u4ef66: \u6bd4\u4f8b\u533a\u306a\u3057\u5bfe\u5fdc\uff09
   if (showLegend) {
     renderSvgLegend(prPosition);
   }
@@ -981,7 +989,7 @@ function renderMap() {
   updateTotalSeatSummary();
 }
 
-// --- ????????? ---
+// --- \u904e\u534a\u6570\u7a4d\u307f\u4e0a\u3052\u30d0\u30fc ---
 function renderMajoritySeatBar() {
   const counts = computeTotalSeats();
   const activeParties = parties.filter(p => (counts.total[p.id] || 0) > 0);
@@ -1011,7 +1019,7 @@ function renderMajoritySeatBar() {
         .attr("width", segW).attr("height", barH)
         .attr("fill", p.color)
         .append("title")
-        .text(`${p.name}: ${seats}?? (${((seats / grandTotal) * 100).toFixed(1)}%)`);
+        .text(`${p.name}: ${seats}\u8b70\u5e2d (${((seats / grandTotal) * 100).toFixed(1)}%)`);
 
       if (segW > 22) {
         g.append("text")
@@ -1036,10 +1044,10 @@ function renderMajoritySeatBar() {
     .attr("class", "majority-line-text")
     .attr("x", majX).attr("y", -5)
     .attr("text-anchor", "middle")
-    .text(`???: ${majorityThreshold} / ${grandTotal}`);
+    .text(`\u904e\u534a\u6570: ${majorityThreshold} / ${grandTotal}`);
 }
 
-// --- ????SVG?????? ---
+// --- \u6bd4\u4f8b\u4ee3\u8868SVG\u30d6\u30ed\u30c3\u30af ---
 let lastPrLayout = null;
 
 function renderPrSvgBlocks(position) {
@@ -1062,7 +1070,7 @@ function renderPrSvgBlocks(position) {
     .attr("class", "pr-panel-title")
     .attr("x", startX + 14)
     .attr("y", startY + 24)
-    .text(`???????? ?? ${totalPrSeats} ???`);
+    .text(`\u6bd4\u4f8b\u4ee3\u8868\u30d6\u30ed\u30c3\u30af \uff08\u8a08 ${totalPrSeats} \u8b70\u5e2d\uff09`);
 
   let curY = startY + 38;
   let curX = startX + 12;
@@ -1101,22 +1109,22 @@ function renderPrSvgBlocks(position) {
       .attr("rx", 2);
 
     const methodLabel = {
-      "dhondt": "????",
-      "sainte-lague": "??????",
-      "largest-remainder-hare": "????(Hare)",
-      "largest-remainder-droop": "????(Droop)"
-    }[block.allocationMethod] || "????";
+      "dhondt": "\u30c9\u30f3\u30c8\u5f0f",
+      "sainte-lague": "\u30b5\u30f3\uff1d\u30e9\u30b0\u5f0f",
+      "largest-remainder-hare": "\u6700\u5927\u5270\u4f59(Hare)",
+      "largest-remainder-droop": "\u6700\u5927\u5270\u4f59(Droop)"
+    }[block.allocationMethod] || "\u30c9\u30f3\u30c8\u5f0f";
 
     blockG.append("text")
       .attr("class", "pr-block-name")
       .attr("x", 10).attr("y", 18)
-      .text(block.name || `??? ${bIdx + 1}`);
+      .text(block.name || `\u6bd4\u4f8b\u533a ${bIdx + 1}`);
 
     blockG.append("text")
       .attr("class", "pr-block-meta")
       .attr("x", blockW - 10).attr("y", 18)
       .attr("text-anchor", "end")
-      .text(`?? ${block.seats} / ${methodLabel}`);
+      .text(`\u5b9a\u6570 ${block.seats} / ${methodLabel}`);
 
     const ballLayerG = blockG.append("g").attr("transform", "translate(12, 34)");
     seatOrder.forEach((pid, idx) => {
@@ -1129,25 +1137,25 @@ function renderPrSvgBlocks(position) {
         .attr("stroke", "#ffffff")
         .attr("stroke-width", 1.2)
         .append("title")
-        .text(`${idx + 1}???: ${partyById(pid).name}`);
+        .text(`${idx + 1}\u8b70\u5e2d\u76ee: ${partyById(pid).name}`);
     });
 
     const summaryG = blockG.append("g").attr("transform", `translate(10, ${summaryStartY})`);
     if (activeParties.length === 0) {
-      summaryG.append("text").attr("class", "pr-seat-label").text("??????");
+      summaryG.append("text").attr("class", "pr-seat-label").text("\u8b70\u5e2d\u914d\u5206\u306a\u3057");
     } else {
       const row1Parties = activeParties.slice(0, 5);
       const row2Parties = activeParties.slice(5);
 
       summaryG.append("text")
         .attr("class", "pr-seat-label")
-        .text(row1Parties.map(p => `${p.shortName} ${block.allocated[p.id]}`).join("?"));
+        .text(row1Parties.map(p => `${p.shortName} ${block.allocated[p.id]}`).join("\u3000"));
 
       if (row2Parties.length > 0) {
         summaryG.append("text")
           .attr("class", "pr-seat-label")
           .attr("y", 14)
-          .text(row2Parties.map(p => `${p.shortName} ${block.allocated[p.id]}`).join("?"));
+          .text(row2Parties.map(p => `${p.shortName} ${block.allocated[p.id]}`).join("\u3000"));
       }
     }
 
@@ -1173,7 +1181,7 @@ function renderPrSvgBlocks(position) {
   }
 }
 
-// --- ?????6: ???????????????????? ---
+// --- \u51e1\u4f8b\uff08\u8981\u4ef66: \u6bd4\u4f8b\u533a\u306a\u3057\u5bfe\u5fdc\uff09 ---
 function renderSvgLegend(prPosition) {
   const counts = computeTotalSeats();
   const hasPr = prBlocks.length > 0;
@@ -1224,9 +1232,8 @@ function renderSvgLegend(prPosition) {
   g.append("text")
     .attr("class", "legend-heading")
     .attr("x", 10).attr("y", 16)
-    .text("??????" + (showShadingSteps ? "????????" : ""));
+    .text("\u8b70\u5e2d\u7372\u5f97\u72b6\u6cc1" + (showShadingSteps ? "\u304a\u3088\u3073\u5f97\u7968\u7387\u968e\u8abf" : ""));
 
-  // ?????????
   if (showShadingSteps) {
     const steps = [
       { label: "<40%", share: 35 },
@@ -1240,7 +1247,7 @@ function renderSvgLegend(prPosition) {
     shadeG.append("text")
       .attr("class", "shading-legend-label")
       .attr("x", 0).attr("y", 0)
-      .text("?????:");
+      .text("\u5f97\u7968\u7387\u968e\u8abf:");
 
     steps.forEach((st, idx) => {
       const sx = 65 + idx * 48;
@@ -1257,7 +1264,7 @@ function renderSvgLegend(prPosition) {
     });
   }
 
-  // ????????????6: ?????????????
+  // \u515a\u6d3e\u5225\u8b70\u5e2d\u30c6\u30fc\u30d6\u30eb
   const tableTop = 14 + shadingH + 6;
   const tableG = g.append("g").attr("transform", `translate(10, ${tableTop})`);
   const colW = legW - 20;
@@ -1268,10 +1275,10 @@ function renderSvgLegend(prPosition) {
     const colPr = Math.floor(colW * 0.74);
     const colTotal = colW;
 
-    tableG.append("text").attr("class", "shading-legend-label").attr("x", colParty).attr("y", 6).text("??");
-    tableG.append("text").attr("class", "shading-legend-label").attr("x", colDistrict).attr("y", 6).attr("text-anchor", "end").text("???");
-    tableG.append("text").attr("class", "shading-legend-label").attr("x", colPr).attr("y", 6).attr("text-anchor", "end").text("??");
-    tableG.append("text").attr("class", "shading-legend-label").attr("x", colTotal).attr("y", 6).attr("text-anchor", "end").text("??");
+    tableG.append("text").attr("class", "shading-legend-label").attr("x", colParty).attr("y", 6).text("\u653f\u515a");
+    tableG.append("text").attr("class", "shading-legend-label").attr("x", colDistrict).attr("y", 6).attr("text-anchor", "end").text("\u9078\u6319\u533a");
+    tableG.append("text").attr("class", "shading-legend-label").attr("x", colPr).attr("y", 6).attr("text-anchor", "end").text("\u6bd4\u4f8b");
+    tableG.append("text").attr("class", "shading-legend-label").attr("x", colTotal).attr("y", 6).attr("text-anchor", "end").text("\u5408\u8a08");
 
     displayParties.forEach((p, idx) => {
       const rowY = 20 + idx * 15;
@@ -1302,12 +1309,12 @@ function renderSvgLegend(prPosition) {
         .text(counts.total[p.id] || 0);
     });
   } else {
-    // ?????: ??? ? ???? ??
+    // \u6bd4\u4f8b\u533a\u306a\u3057\uff1a\u653f\u515a\u3068\u7372\u5f97\u8b70\u5e2d\u306e\u307f
     const colParty = 0;
     const colSeats = colW;
 
-    tableG.append("text").attr("class", "shading-legend-label").attr("x", colParty).attr("y", 6).text("??");
-    tableG.append("text").attr("class", "shading-legend-label").attr("x", colSeats).attr("y", 6).attr("text-anchor", "end").text("????");
+    tableG.append("text").attr("class", "shading-legend-label").attr("x", colParty).attr("y", 6).text("\u653f\u515a");
+    tableG.append("text").attr("class", "shading-legend-label").attr("x", colSeats).attr("y", 6).attr("text-anchor", "end").text("\u7372\u5f97\u8b70\u5e2d");
 
     displayParties.forEach((p, idx) => {
       const rowY = 20 + idx * 15;
@@ -1330,7 +1337,7 @@ function renderSvgLegend(prPosition) {
   }
 }
 
-// --- ???? ---
+// --- \u8b70\u5e2d\u96c6\u8a08 ---
 function computeTotalSeats() {
   const districtCounts = {};
   const prCounts = {};
@@ -1372,7 +1379,7 @@ function updateTotalSeatSummary() {
       chip.innerHTML = `
         <span class="seat-chip-dot" style="background:${p.color}"></span>
         <strong>${escapeHtml(p.shortName)}</strong>
-        <span>${tot}??</span>
+        <span>${tot}\u8b70\u5e2d</span>
       `;
       summaryEl.appendChild(chip);
     }
@@ -1383,7 +1390,7 @@ function updateTotalSeatSummary() {
   if ($("#documentTitle")) $("#documentTitle").textContent = $("#electionTitle") ? $("#electionTitle").value : "";
 }
 
-// --- ????????????????? ---
+// --- \u9078\u6319\u533a\u9078\u629e\u3068\u30af\u30a4\u30c3\u30af\u30a4\u30f3\u30b9\u30c1\u30a7\u30af\u30bf\u30fc ---
 function selectDistrict(did) {
   selectedDistrictId = did;
 
@@ -1400,7 +1407,7 @@ function selectDistrict(did) {
   }
 
   updateDistrictInspector();
-  setStatus(`${districts[did]?.name || did} ???????`);
+  setStatus(`${districts[did]?.name || did} \u3092\u9078\u629e\u3057\u307e\u3057\u305f`);
 }
 
 function updateDistrictInspector() {
@@ -1437,33 +1444,32 @@ function updateDistrictInspector() {
     row.innerHTML = `
       <span class="rank-badge ${isWin ? "winner" : ""}">${c.rank}</span>
       <div class="rank-btn-group">
-        <button class="rank-btn" data-insp-action="up" data-idx="${idx}" ${idx === 0 ? "disabled" : ""}>?</button>
-        <button class="rank-btn" data-insp-action="down" data-idx="${idx}" ${idx === candList.length - 1 ? "disabled" : ""}>?</button>
+        <button class="rank-btn" data-insp-action="up" data-idx="${idx}" ${idx === 0 ? "disabled" : ""}>\u25b2</button>
+        <button class="rank-btn" data-insp-action="down" data-idx="${idx}" ${idx === candList.length - 1 ? "disabled" : ""}>\u25bc</button>
       </div>
       <select data-insp-action="party" data-idx="${idx}">
         ${parties.map(p => `<option value="${p.id}" ${p.id === c.party ? "selected" : ""}>${escapeHtml(p.shortName)}</option>`).join("")}
       </select>
-      <input type="text" data-insp-action="name" data-idx="${idx}" value="${escapeHtml(c.name)}" placeholder="??">
-      <input class="votes-input" type="number" min="0" data-insp-action="votes" data-idx="${idx}" value="${voteVal}" placeholder="${d.mode === 'rank' ? '????' : '???'}">
-      <button class="del-cand-btn" data-insp-action="del" data-idx="${idx}" title="??">?</button>
+      <input type="text" data-insp-action="name" data-idx="${idx}" value="${escapeHtml(c.name)}" placeholder="\u6c0f\u540d">
+      <input class="votes-input" type="number" min="0" data-insp-action="votes" data-idx="${idx}" value="${voteVal}" placeholder="${d.mode === 'rank' ? '\u9806\u4f4d\u512a\u5148' : '\u5f97\u7968\u6570'}">
+      <button class="del-cand-btn" data-insp-action="del" data-idx="${idx}" title="\u524a\u9664">\u2715</button>
     `;
     listEl.appendChild(row);
   });
 
   const winBadges = (d.winners || []).map((pid, idx) => {
     const p = partyById(pid);
-    return `<span class="seat-badge" style="background:${p.color}">${idx + 1}?: ${escapeHtml(p.shortName)}</span>`;
+    return `<span class="seat-badge" style="background:${p.color}">${idx + 1}\u4f4d: ${escapeHtml(p.shortName)}</span>`;
   }).join(" ");
-  $("#inspWinnersBadge").innerHTML = winBadges || "??";
+  $("#inspWinnersBadge").innerHTML = winBadges || "\u306a\u3057";
 
   let shareLabel = "";
-  if (d.isUncontested) shareLabel = "?????????????????";
-  else if (d.mode === "rank") shareLabel = "????????????????";
-  else shareLabel = d.maxPartyShare !== null ? `?????: ${d.maxPartyShare.toFixed(1)}%` : "???";
+  if (d.isUncontested) shareLabel = "\u7121\u6295\u7968\u5f53\u9078\uff08\u6700\u591a\u515a\u306e\u515a\u6d3e\u5272\u5408\u968e\u8abf\uff09";
+  else if (d.mode === "rank") shareLabel = "\u9806\u4f4d\u6307\u5b9a\uff08\u6700\u591a\u515a\u306e\u515a\u6d3e\u5272\u5408\u968e\u8abf\uff09";
+  else shareLabel = d.maxPartyShare !== null ? `\u6700\u591a\u5f97\u7968\u7387: ${d.maxPartyShare.toFixed(1)}%` : "\u672a\u8a08\u7b97";
 
   $("#inspShareText").textContent = shareLabel;
 
-  // ????????
   listEl.querySelectorAll("[data-insp-action]").forEach(el => {
     const act = el.dataset.inspAction;
     const idx = Number(el.dataset.idx);
@@ -1541,7 +1547,6 @@ function updateDistrictInspector() {
   });
 }
 
-// --- ??UI?????? ---
 function renderAll() {
   renderPartyEditor();
   renderDistrictEditor();
@@ -1551,7 +1556,6 @@ function renderAll() {
   renderMap();
 }
 
-// --- ?????? ---
 function renderPartyEditor() {
   const container = $("#partyListContainer");
   if (!container) return;
@@ -1562,9 +1566,9 @@ function renderPartyEditor() {
     card.className = "party-edit-card";
     card.innerHTML = `
       <input type="color" data-action="party-color" data-idx="${idx}" value="${p.color}">
-      <input type="text" data-action="party-name" data-idx="${idx}" value="${escapeHtml(p.name)}" placeholder="???">
-      <input type="text" data-action="party-short" data-idx="${idx}" value="${escapeHtml(p.shortName)}" placeholder="??">
-      <button class="party-del-btn" data-action="party-del" data-idx="${idx}" title="?????">?</button>
+      <input type="text" data-action="party-name" data-idx="${idx}" value="${escapeHtml(p.name)}" placeholder="\u653f\u515a\u540d">
+      <input type="text" data-action="party-short" data-idx="${idx}" value="${escapeHtml(p.shortName)}" placeholder="\u7565\u79f0">
+      <button class="party-del-btn" data-action="party-del" data-idx="${idx}" title="\u653f\u515a\u3092\u524a\u9664">\u2715</button>
     `;
     container.appendChild(card);
   });
@@ -1585,7 +1589,7 @@ function renderPartyEditor() {
     } else if (act === "party-name") {
       el.addEventListener("change", e => {
         pushHistory();
-        parties[idx].name = e.target.value.trim() || `??${idx + 1}`;
+        parties[idx].name = e.target.value.trim() || `\u653f\u515a${idx + 1}`;
         renderMap();
         updateBatchPartyOptions();
         renderStatsTab();
@@ -1594,7 +1598,7 @@ function renderPartyEditor() {
     } else if (act === "party-short") {
       el.addEventListener("change", e => {
         pushHistory();
-        parties[idx].shortName = e.target.value.trim() || `?${idx + 1}`;
+        parties[idx].shortName = e.target.value.trim() || `\u515a${idx + 1}`;
         renderMap();
         updateBatchPartyOptions();
         updateDistrictInspector();
@@ -1604,7 +1608,7 @@ function renderPartyEditor() {
     } else if (act === "party-del") {
       el.addEventListener("click", () => {
         if (parties.length <= 1) {
-          notify("?????1?????????");
+          notify("\u5c11\u306a\u304f\u3068\u30821\u3064\u306e\u653f\u515a\u304c\u5fc5\u8981\u3067\u3059");
           return;
         }
         pushHistory();
@@ -1618,7 +1622,6 @@ function renderPartyEditor() {
   });
 }
 
-// --- ??????????2: ???????????? ---
 function renderDistrictEditor() {
   const container = $("#districtListContainer");
   if (!container) return;
@@ -1640,23 +1643,23 @@ function renderDistrictEditor() {
 
     const miniWinnerBadges = (d.winners || []).map((pid, idx) => {
       const p = partyById(pid);
-      return `<span class="seat-badge" style="background:${p.color}">${idx + 1}?:${escapeHtml(p.shortName)}</span>`;
+      return `<span class="seat-badge" style="background:${p.color}">${idx + 1}\u4f4d:${escapeHtml(p.shortName)}</span>`;
     }).join(" ");
 
     const head = document.createElement("div");
     head.className = "district-card-head";
     head.innerHTML = `
       <div class="district-head-left" data-action="toggle-accordion" data-id="${id}">
-        <span class="accordion-toggle-icon">?</span>
+        <span class="accordion-toggle-icon">\u25bc</span>
         <span class="district-card-title">${escapeHtml(d.name)} <small>(${escapeHtml(id)})</small></span>
-        <span class="collapsed-badge">${d.isUncontested ? '<span style="color:#b45309;font-weight:700;">[???]</span>' : ''} ${miniWinnerBadges || "??"}</span>
+        <span class="collapsed-badge">${d.isUncontested ? '<span style="color:#b45309;font-weight:700;">[\u7121\u6295\u7968]</span>' : ''} ${miniWinnerBadges || "\u672a\u5b9a"}</span>
       </div>
       <div class="district-card-seats">
         <div class="pill-toggle-group" style="scale:0.85;">
-          <button class="pill-btn ${d.mode !== 'rank' ? 'active' : ''}" data-action="mode-votes" data-id="${id}" title="?????????">??</button>
-          <button class="pill-btn ${d.mode === 'rank' ? 'active' : ''}" data-action="mode-rank" data-id="${id}" title="???????">??</button>
+          <button class="pill-btn ${d.mode !== 'rank' ? 'active' : ''}" data-action="mode-votes" data-id="${id}" title="\u5f97\u7968\u6570\u9806\u3067\u81ea\u52d5\u5224\u5b9a">\u5f97\u7968</button>
+          <button class="pill-btn ${d.mode === 'rank' ? 'active' : ''}" data-action="mode-rank" data-id="${id}" title="\u624b\u52d5\u3067\u9806\u4f4d\u6307\u5b9a">\u9806\u4f4d</button>
         </div>
-        <span>??:</span>
+        <span>\u5b9a\u6570:</span>
         <input type="number" min="1" max="20" data-action="district-seats" data-id="${id}" value="${d.seats}">
       </div>
     `;
@@ -1674,22 +1677,22 @@ function renderDistrictEditor() {
       row.innerHTML = `
         <span class="rank-badge ${isWin ? "winner" : ""}">${c.rank}</span>
         <div class="rank-btn-group">
-          <button class="rank-btn" data-action="cand-up" data-id="${id}" data-idx="${cIdx}" ${cIdx === 0 ? "disabled" : ""}>?</button>
-          <button class="rank-btn" data-action="cand-down" data-id="${id}" data-idx="${cIdx}" ${cIdx === candList.length - 1 ? "disabled" : ""}>?</button>
+          <button class="rank-btn" data-action="cand-up" data-id="${id}" data-idx="${cIdx}" ${cIdx === 0 ? "disabled" : ""}>\u25b2</button>
+          <button class="rank-btn" data-action="cand-down" data-id="${id}" data-idx="${cIdx}" ${cIdx === candList.length - 1 ? "disabled" : ""}>\u25bc</button>
         </div>
         <select data-action="cand-party" data-id="${id}" data-idx="${cIdx}">
           ${parties.map(p => `<option value="${p.id}" ${p.id === c.party ? "selected" : ""}>${escapeHtml(p.shortName)}</option>`).join("")}
         </select>
-        <input type="text" data-action="cand-name" data-id="${id}" data-idx="${cIdx}" value="${escapeHtml(c.name)}" placeholder="????">
-        <input class="votes-input" type="number" min="0" data-action="cand-votes" data-id="${id}" data-idx="${cIdx}" value="${voteVal}" placeholder="${d.mode === 'rank' ? '????' : '???'}">
-        <button class="del-cand-btn" data-action="cand-del" data-id="${id}" data-idx="${cIdx}" title="??">?</button>
+        <input type="text" data-action="cand-name" data-id="${id}" data-idx="${cIdx}" value="${escapeHtml(c.name)}" placeholder="\u5019\u88dc\u8005\u540d">
+        <input class="votes-input" type="number" min="0" data-action="cand-votes" data-id="${id}" data-idx="${cIdx}" value="${voteVal}" placeholder="${d.mode === 'rank' ? '\u9806\u4f4d\u512a\u5148' : '\u5f97\u7968\u6570'}">
+        <button class="del-cand-btn" data-action="cand-del" data-id="${id}" data-idx="${cIdx}" title="\u524a\u9664">\u2715</button>
       `;
       card.appendChild(row);
     });
 
     const addCandBtn = document.createElement("button");
     addCandBtn.className = "small-btn district-add-cand-btn";
-    addCandBtn.textContent = "? ??????";
+    addCandBtn.textContent = "\uff0b \u5019\u88dc\u8005\u3092\u8ffd\u52a0";
     addCandBtn.dataset.action = "cand-add";
     addCandBtn.dataset.id = id;
     card.appendChild(addCandBtn);
@@ -1698,16 +1701,16 @@ function renderDistrictEditor() {
     summaryLine.className = "district-summary-line";
     const winnerBadges = (d.winners || []).map((pid, idx) => {
       const p = partyById(pid);
-      return `<span class="seat-badge" style="background:${p.color}">${idx + 1}?: ${escapeHtml(p.shortName)}</span>`;
+      return `<span class="seat-badge" style="background:${p.color}">${idx + 1}\u4f4d: ${escapeHtml(p.shortName)}</span>`;
     }).join(" ");
 
     let shareInfo = "";
-    if (d.isUncontested) shareInfo = `<span style="color:#b45309;font-weight:700;">??????????????</span>`;
-    else if (d.mode === "rank") shareInfo = `<span style="color:#1a56db;">?????????????</span>`;
-    else shareInfo = d.maxPartyShare !== null ? `?????: ${d.maxPartyShare.toFixed(1)}%` : "???";
+    if (d.isUncontested) shareInfo = `<span style="color:#b45309;font-weight:700;">\u7121\u6295\u7968\u5f53\u9078\uff08\u6700\u591a\u515a\u5272\u5408\u968e\u8abf\uff09</span>`;
+    else if (d.mode === "rank") shareInfo = `<span style="color:#1a56db;">\u9806\u4f4d\u6307\u5b9a\uff08\u6700\u591a\u515a\u5272\u5408\u968e\u8abf\uff09</span>`;
+    else shareInfo = d.maxPartyShare !== null ? `\u6700\u591a\u5f97\u7968\u7387: ${d.maxPartyShare.toFixed(1)}%` : "\u672a\u96c6\u8a08";
 
     summaryLine.innerHTML = `
-      <div class="district-winners-badge">${winnerBadges || "?????"}</div>
+      <div class="district-winners-badge">${winnerBadges || "\u5f53\u9078\u8005\u306a\u3057"}</div>
       <span>${shareInfo}</span>
     `;
     card.appendChild(summaryLine);
@@ -1845,7 +1848,7 @@ function renderDistrictEditor() {
         if (!districts[did].candidates) districts[did].candidates = [];
         districts[did].candidates.push({
           id: `cand-${Math.random().toString(36).slice(2, 8)}`,
-          name: "????",
+          name: "\u65b0\u5019\u88dc\u8005",
           party: parties[0]?.id || "ldp",
           votes: null,
           rank: districts[did].candidates.length + 1
@@ -1861,7 +1864,7 @@ function renderDistrictEditor() {
   });
 }
 
-// --- ??????? ---
+// --- \u6bd4\u4f8b\u533a\u30a8\u30c7\u30a3\u30bf ---
 function renderPrBlockEditor() {
   const container = $("#prBlockListContainer");
   if (!container) return;
@@ -1870,8 +1873,8 @@ function renderPrBlockEditor() {
   if (prBlocks.length === 0) {
     container.innerHTML = `
       <div class="info-box">
-        ????????????????????????????<br>
-        ???? ??????????????????????????????
+        \u73fe\u5728\u3001\u6bd4\u4f8b\u4ee3\u8868\u533a\u306f\u8a2d\u5b9a\u3055\u308c\u3066\u3044\u307e\u305b\u3093\uff08\u5c0f\u9078\u6319\u533a\u5236\u306a\u3069\uff09\u3002<br>
+        \u4e0a\u306e\u300c\uff0b \u65b0\u3057\u3044\u6bd4\u4f8b\u533a\u3092\u8ffd\u52a0\u300d\u30dc\u30bf\u30f3\u304b\u3089\u6bd4\u4f8b\u533a\u30d6\u30ed\u30c3\u30af\u3092\u4f5c\u6210\u3067\u304d\u307e\u3059\u3002
       </div>
     `;
     return;
@@ -1885,28 +1888,28 @@ function renderPrBlockEditor() {
     card.innerHTML = `
       <div class="pr-block-card-head">
         <input type="text" data-pr-action="name" data-idx="${bIdx}" value="${escapeHtml(block.name)}" style="font-weight:700;font-size:12px;width:180px;">
-        <button class="pr-block-del-btn" data-pr-action="del" data-idx="${bIdx}">??</button>
+        <button class="pr-block-del-btn" data-pr-action="del" data-idx="${bIdx}">\u524a\u9664</button>
       </div>
 
       <div class="field-grid-2">
         <label class="field">
-          <span>????</span>
+          <span>\u500b\u5225\u5b9a\u6570</span>
           <input type="number" min="1" max="200" data-pr-action="seats" data-idx="${bIdx}" value="${block.seats}">
         </label>
         <label class="field">
-          <span>????</span>
+          <span>\u914d\u5206\u65b9\u5f0f</span>
           <select data-pr-action="allocation" data-idx="${bIdx}">
-            <option value="dhondt" ${block.allocationMethod === "dhondt" ? "selected" : ""}>????</option>
-            <option value="sainte-lague" ${block.allocationMethod === "sainte-lague" ? "selected" : ""}>??????</option>
-            <option value="largest-remainder-hare" ${block.allocationMethod === "largest-remainder-hare" ? "selected" : ""}>?????(Hare)</option>
-            <option value="largest-remainder-droop" ${block.allocationMethod === "largest-remainder-droop" ? "selected" : ""}>?????(Droop)</option>
+            <option value="dhondt" ${block.allocationMethod === "dhondt" ? "selected" : ""}>\u30c9\u30f3\u30c8\u5f0f</option>
+            <option value="sainte-lague" ${block.allocationMethod === "sainte-lague" ? "selected" : ""}>\u30b5\u30f3\uff1d\u30e9\u30b0\u5f0f</option>
+            <option value="largest-remainder-hare" ${block.allocationMethod === "largest-remainder-hare" ? "selected" : ""}>\u6700\u5927\u5270\u4f59\u5f0f(Hare)</option>
+            <option value="largest-remainder-droop" ${block.allocationMethod === "largest-remainder-droop" ? "selected" : ""}>\u6700\u5927\u5270\u4f59\u5f0f(Droop)</option>
           </select>
         </label>
       </div>
 
       <div class="pill-toggle-group" style="margin-bottom:6px;">
-        <button class="pill-btn ${block.mode !== 'shares' ? 'active' : ''}" data-pr-action="mode-votes" data-idx="${bIdx}">?????</button>
-        <button class="pill-btn ${block.mode === 'shares' ? 'active' : ''}" data-pr-action="mode-shares" data-idx="${bIdx}">???(%)??</button>
+        <button class="pill-btn ${block.mode !== 'shares' ? 'active' : ''}" data-pr-action="mode-votes" data-idx="${bIdx}">\u5f97\u7968\u6570\u5165\u529b</button>
+        <button class="pill-btn ${block.mode === 'shares' ? 'active' : ''}" data-pr-action="mode-shares" data-idx="${bIdx}">\u5f97\u7968\u7387(%)\u5165\u529b</button>
       </div>
 
       <div class="pr-party-table">
@@ -1918,7 +1921,7 @@ function renderPrBlockEditor() {
               <span class="party-label" style="color:${p.color};">${escapeHtml(p.shortName)}</span>
               <input type="number" min="0" step="${block.mode === "shares" ? "0.01" : "1"}"
                 data-pr-action="input-val" data-idx="${bIdx}" data-pid="${p.id}" value="${val}">
-              <span class="pr-seat-chip">${seatCount} ??</span>
+              <span class="pr-seat-chip">${seatCount} \u8b70\u5e2d</span>
             </div>
           `;
         }).join("")}
@@ -1928,7 +1931,6 @@ function renderPrBlockEditor() {
     container.appendChild(card);
   });
 
-  // ????????
   container.querySelectorAll("[data-pr-action]").forEach(el => {
     const act = el.dataset.prAction;
     const idx = Number(el.dataset.idx);
@@ -1936,7 +1938,7 @@ function renderPrBlockEditor() {
     if (act === "name") {
       el.addEventListener("change", e => {
         pushHistory();
-        prBlocks[idx].name = e.target.value.trim() || `???${idx + 1}`;
+        prBlocks[idx].name = e.target.value.trim() || `\u6bd4\u4f8b\u533a${idx + 1}`;
         renderMap();
         renderStatsTab();
         markDirty();
@@ -2014,7 +2016,7 @@ function renderPrBlockEditor() {
   });
 }
 
-// --- ???? ---
+// --- \u691c\u8a3c\u30bf\u30d6 ---
 function renderValidation() {
   const container = $("#validationContainer");
   if (!container) return;
@@ -2025,22 +2027,22 @@ function renderValidation() {
   const dups = ids.filter((id, i) => ids.indexOf(id) !== i);
 
   if (!ids.length) {
-    items.push(["error", "GeoJSON?????????????????"]);
+    items.push(["error", "GeoJSON\u5730\u56f3\u30c7\u30fc\u30bf\u304c\u8aad\u307f\u8fbc\u307e\u308c\u3066\u3044\u307e\u305b\u3093\u3002"]);
   } else {
     if (ids.some(x => !x)) {
-      items.push(["error", "???ID????????????ID?????????????????"]);
+      items.push(["error", "\u9078\u6319\u533aID\u304c\u7a7a\u306e\u8981\u7d20\u304c\u5b58\u5728\u3057\u307e\u3059\u3002ID\u30d5\u30a3\u30fc\u30eb\u30c9\u8a2d\u5b9a\u3092\u78ba\u8a8d\u3057\u3066\u304f\u3060\u3055\u3044\u3002"]);
     }
     if (dups.length) {
-      items.push(["error", `???????ID?????: ${[...new Set(dups)].join(", ")}`]);
+      items.push(["error", `\u91cd\u8907\u3059\u308b\u9078\u6319\u533aID\u304c\u3042\u308a\u307e\u3059: ${[...new Set(dups)].join(", ")}`]);
     }
     if (!dups.length && !ids.some(x => !x)) {
-      items.push(["ok", `??????: ${ids.length}????????????`]);
+      items.push(["ok", `\u9078\u6319\u533a\u30c7\u30fc\u30bf: ${ids.length}\u4ef6\u3001\u91cd\u8907\u306a\u3057\u3067\u6b63\u5e38\u3067\u3059\u3002`]);
     }
   }
 
   const uncontestedDistricts = Object.values(districts).filter(d => d.isUncontested);
   if (uncontestedDistricts.length > 0) {
-    items.push(["warn", `?????????? ${uncontestedDistricts.length} ??????${uncontestedDistricts.map(d => d.name).join("?")}??????????????????????`]);
+    items.push(["warn", `\u7121\u6295\u7968\u5f53\u9078\u306e\u9078\u6319\u533a\u304c ${uncontestedDistricts.length} \u533a\u3042\u308a\u307e\u3059\uff08${uncontestedDistricts.map(d => d.name).join("\u3001")}\uff09\u3002\u5730\u56f3\u4e0a\u3067\u306f\u300c\u7121\u6295\u7968\u5f53\u9078\u300d\u3068\u8868\u793a\u3055\u308c\u307e\u3059\u3002`]);
   }
 
   if (prBlocks.length > 0) {
@@ -2048,9 +2050,9 @@ function renderValidation() {
       const totalSeats = b.seats;
       const assigned = Object.values(b.allocated || {}).reduce((a, c) => a + c, 0);
       if (assigned !== totalSeats) {
-        items.push(["warn", `????${b.name || i + 1}?: ??${totalSeats}?????????${assigned}?????????????????????????`]);
+        items.push(["warn", `\u6bd4\u4f8b\u533a\u300c${b.name || i + 1}\u300d: \u5b9a\u6570${totalSeats}\u306b\u5bfe\u3057\u3001\u914d\u5206\u7d50\u679c\u304c${assigned}\u8b70\u5e2d\u3067\u3059\uff08\u5f97\u7968\u6570\u307e\u305f\u306f\u5f97\u7968\u7387\u3092\u78ba\u8a8d\u3057\u3066\u304f\u3060\u3055\u3044\uff09\u3002`]);
       } else {
-        items.push(["ok", `????${b.name || i + 1}?: ??${totalSeats}?????????????????`]);
+        items.push(["ok", `\u6bd4\u4f8b\u533a\u300c${b.name || i + 1}\u300d: \u5b9a\u6570${totalSeats}\u8b70\u5e2d\u306e\u914d\u5206\u304c\u5b8c\u5168\u306b\u6574\u5408\u3057\u3066\u3044\u307e\u3059\u3002`]);
       }
     });
   }
@@ -2060,7 +2062,7 @@ function renderValidation() {
   `).join("");
 }
 
-// --- ???? & ?????????8? ---
+// --- \u7d71\u8a08\u8a08\u7b97 & \u7d71\u8a08\u30bf\u30d6\u8868\u793a\uff08\u8981\u4ef68\uff09 ---
 function computeElectionStats() {
   const stats = {};
   parties.forEach(p => {
@@ -2167,35 +2169,35 @@ function renderStatsTab() {
     <div class="stats-summary-grid">
       <div class="stats-card">
         <div class="stats-card-num">${t.grandSeats}</div>
-        <div class="stats-card-label">??? (???: ${t.districtSeats} / ??: ${t.prSeats})</div>
+        <div class="stats-card-label">\u7dcf\u5b9a\u6570 (\u9078\u6319\u533a: ${t.districtSeats} / \u6bd4\u4f8b: ${t.prSeats})</div>
       </div>
       <div class="stats-card">
         <div class="stats-card-num">${t.majorityThreshold}</div>
-        <div class="stats-card-label">???????????</div>
+        <div class="stats-card-label">\u904e\u534a\u6570\u30e9\u30a4\u30f3\uff08\u8b70\u5e2d\u6570\uff09</div>
       </div>
       <div class="stats-card">
         <div class="stats-card-num">${t.districtVotes.toLocaleString()}</div>
-        <div class="stats-card-label">???? ??????</div>
+        <div class="stats-card-label">\u5c0f\u9078\u6319\u533a \u6709\u52b9\u7dcf\u6295\u7968\u6570</div>
       </div>
       <div class="stats-card">
         <div class="stats-card-num">${t.uncontestedCount} / ${t.districtCount}</div>
-        <div class="stats-card-label">????? (${t.districtCount > 0 ? ((t.uncontestedCount / t.districtCount) * 100).toFixed(1) : 0}%)</div>
+        <div class="stats-card-label">\u7121\u6295\u7968\u533a\u6570 (${t.districtCount > 0 ? ((t.uncontestedCount / t.districtCount) * 100).toFixed(1) : 0}%)</div>
       </div>
     </div>
 
-    <div class="stats-section-title">??? ??????</div>
+    <div class="stats-section-title">\u515a\u6d3e\u5225 \u9078\u6319\u7d71\u8a08\u4e00\u89a7</div>
     <div style="overflow-x:auto;">
       <table class="stats-table">
         <thead>
           <tr>
-            <th>??</th>
-            <th>????</th>
-            <th>???</th>
-            <th>???</th>
-            <th>?????</th>
-            <th>?????</th>
-            ${prBlocks.length > 0 ? '<th>?????</th><th>?????</th>' : ''}
-            <th>???</th>
+            <th>\u653f\u515a</th>
+            <th>\u7372\u5f97\u8b70\u5e2d</th>
+            <th>\u8b70\u5e2d\u7387</th>
+            <th>\u5019\u88dc\u6570</th>
+            <th>\u5c0f\u9078\u5f97\u7968\u6570</th>
+            <th>\u5c0f\u9078\u5f97\u7968\u7387</th>
+            ${prBlocks.length > 0 ? '<th>\u6bd4\u4f8b\u5f97\u7968\u6570</th><th>\u6bd4\u4f8b\u5f97\u7968\u7387</th>' : ''}
+            <th>\u5f53\u9078\u7387</th>
           </tr>
         </thead>
         <tbody>
@@ -2227,11 +2229,11 @@ function exportStatsCsv() {
   const data = computeElectionStats();
   const hasPr = prBlocks.length > 0;
 
-  const headers = ["???", "??", "?????", "?????", "????", "?????(%)", "?????", "???????", "???????(%)"];
+  const headers = ["\u653f\u515a\u540d", "\u7565\u79f0", "\u7372\u5f97\u7dcf\u8b70\u5e2d", "\u9078\u6319\u533a\u8b70\u5e2d", "\u6bd4\u4f8b\u8b70\u5e2d", "\u8b70\u5e2d\u5360\u6709\u7387(%)", "\u64c1\u7acb\u5019\u88dc\u6570", "\u5c0f\u9078\u6319\u533a\u5f97\u7968\u6570", "\u5c0f\u9078\u6319\u533a\u5f97\u7968\u7387(%)"];
   if (hasPr) {
-    headers.push("?????", "?????(%)", "????", "?????(%)");
+    headers.push("\u6bd4\u4f8b\u5f97\u7968\u6570", "\u6bd4\u4f8b\u5f97\u7968\u7387(%)", "\u7dcf\u5f97\u7968\u6570", "\u5168\u4f53\u5f97\u7968\u7387(%)");
   }
-  headers.push("???(%)");
+  headers.push("\u5f53\u9078\u7387(%)");
 
   const rows = [headers];
   parties.forEach(p => {
@@ -2262,10 +2264,10 @@ function exportStatsCsv() {
   a.download = `${safeFileName($("#electionTitle")?.value || "election-stats")}.csv`;
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 500);
-  notify("????????CSV??????????");
+  notify("\u9078\u6319\u7d71\u8a08\u30c7\u30fc\u30bf\u3092CSV\u5f62\u5f0f\u3067\u66f8\u304d\u51fa\u3057\u307e\u3057\u305f");
 }
 
-// --- ??????????????7? ---
+// --- \u5185\u8535\u30c7\u30fc\u30bf\u9078\u629e\u30e2\u30fc\u30c0\u30eb\uff08\u8981\u4ef67\uff09 ---
 function openDataSelectModal() {
   const modal = $("#dataSelectModal");
   const body = $("#dataSelectModalBody");
@@ -2274,7 +2276,7 @@ function openDataSelectModal() {
   const maps = dataIndex.maps || [];
   if (maps.length === 0) {
     body.innerHTML = `
-      <div class="info-box">????????????????????????</div>
+      <div class="info-box">\u5229\u7528\u53ef\u80fd\u306a\u5185\u8535\u5730\u56f3\u30c7\u30fc\u30bf\u304c\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f\u3002</div>
     `;
   } else {
     body.innerHTML = `
@@ -2287,7 +2289,7 @@ function openDataSelectModal() {
             </div>
             <div style="display:flex;align-items:center;gap:8px;">
               <span class="data-item-preview">${escapeHtml(m.preview || m.type)}</span>
-              <button class="btn-primary small-btn" data-load-map-idx="${idx}">??</button>
+              <button class="btn-primary small-btn" data-load-map-idx="${idx}">\u8aad\u8fbc</button>
             </div>
           </div>
         `).join("")}
@@ -2301,7 +2303,7 @@ function openDataSelectModal() {
         if (!targetMap) return;
 
         try {
-          setStatus(`${targetMap.name} ??????...`);
+          setStatus(`${targetMap.name} \u3092\u8aad\u307f\u8fbc\u307f\u4e2d...`);
           const res = await fetch(targetMap.file);
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const geojson = await res.json();
@@ -2310,7 +2312,7 @@ function openDataSelectModal() {
           geoData = geojson;
           districts = {};
           selectedDistrictId = null;
-          collapsedDistrictIds = new Set(); // ??2: ?????????
+          collapsedDistrictIds = new Set(); // \u8981\u4ef62: \u30c7\u30d5\u30a9\u30eb\u30c8\u6298\u308a\u7573\u307f
 
           geojson.features.forEach(f => {
             const id = idOf(f);
@@ -2322,7 +2324,7 @@ function openDataSelectModal() {
                 }))
               : parties.slice(0, 3).map((p, i) => ({
                   id: `cand-${Math.random().toString(36).slice(2, 8)}`,
-                  name: `${p.shortName}??`, party: p.id, votes: null, rank: i + 1
+                  name: `${p.shortName}\u5019\u88dc`, party: p.id, votes: null, rank: i + 1
                 }));
 
             districts[id] = {
@@ -2333,18 +2335,18 @@ function openDataSelectModal() {
               candidates: candList
             };
 
-            collapsedDistrictIds.add(id); // ????
+            collapsedDistrictIds.add(id); // \u6298\u308a\u7573\u307f
           });
 
-          if ($("#dataStatus")) $("#dataStatus").textContent = `${targetMap.name} ?${geojson.features.length} ????`;
+          if ($("#dataStatus")) $("#dataStatus").textContent = `${targetMap.name} \uff08${geojson.features.length} \u9078\u6319\u533a\uff09`;
           recalcAll();
           renderAll();
           updateDistrictInspector();
           modal.classList.remove("show");
-          notify(`?${targetMap.name}?????????`);
+          notify(`\u300c${targetMap.name}\u300d\u3092\u8aad\u307f\u8fbc\u307f\u307e\u3057\u305f`);
           markDirty();
         } catch (err) {
-          notify(`???????: ${err.message}`);
+          notify(`\u5730\u56f3\u8aad\u8fbc\u30a8\u30e9\u30fc: ${err.message}`);
         }
       });
     });
@@ -2353,7 +2355,7 @@ function openDataSelectModal() {
   modal.classList.add("show");
 }
 
-// --- ???????? ---
+// --- \u30a4\u30d9\u30f3\u30c8\u30d0\u30a4\u30f3\u30c9 ---
 function bindEvents() {
   $$(".tab-btn").forEach(btn => {
     btn.addEventListener("click", () => switchTab(btn.dataset.tab));
@@ -2403,7 +2405,7 @@ function bindEvents() {
       updateDistrictInspector();
       renderStatsTab();
       markDirty();
-      notify("???????????????????????????");
+      notify("\u5168\u9078\u6319\u533a\u3092\u300c\u5f97\u7968\u6570\u5165\u529b\uff08\u81ea\u52d5\uff09\u300d\u30e2\u30fc\u30c9\u306b\u5207\u308a\u66ff\u3048\u307e\u3057\u305f");
     });
   }
   if ($("#globalModeRankBtn")) {
@@ -2417,7 +2419,7 @@ function bindEvents() {
       updateDistrictInspector();
       renderStatsTab();
       markDirty();
-      notify("????????????????????????????");
+      notify("\u5168\u9078\u6319\u533a\u3092\u300c\u9806\u4f4d\u76f4\u63a5\u6307\u5b9a\uff08\u624b\u52d5\uff09\u300d\u30e2\u30fc\u30c9\u306b\u5207\u308a\u66ff\u3048\u307e\u3057\u305f");
     });
   }
 
@@ -2463,7 +2465,6 @@ function bindEvents() {
 
   if ($("#downloadSampleGeoJsonBtn")) $("#downloadSampleGeoJsonBtn").addEventListener("click", downloadSampleGeoJson);
 
-  // ??3: showWinnerNames ???
   ["showBalls", "showDistrictNames", "showShareText", "showLegend", "showMajorityBar"].forEach(id => {
     const el = $("#" + id);
     if (el) {
@@ -2509,7 +2510,7 @@ function bindEvents() {
 
       prBlocks.push({
         id: `pr-block-${Math.random().toString(36).slice(2, 7)}`,
-        name: `?${newIdx}??????`,
+        name: `\u7b2c${newIdx}\u6bd4\u4f8b\u30d6\u30ed\u30c3\u30af`,
         seats: 10,
         allocationMethod: "dhondt",
         mode: "votes",
@@ -2523,20 +2524,20 @@ function bindEvents() {
       renderMap();
       renderStatsTab();
       markDirty();
-      notify("????????????");
+      notify("\u6bd4\u4f8b\u4ee3\u8868\u533a\u3092\u8ffd\u52a0\u3057\u307e\u3057\u305f");
     });
   }
 
   if ($("#clearPrBlocksBtn")) {
     $("#clearPrBlocksBtn").addEventListener("click", () => {
-      if (!confirm("?????????????????")) return;
+      if (!confirm("\u3059\u3079\u3066\u306e\u6bd4\u4f8b\u4ee3\u8868\u533a\u3092\u6d88\u53bb\u3057\u307e\u3059\u304b\uff1f")) return;
       pushHistory();
       prBlocks = [];
       renderPrBlockEditor();
       renderMap();
       renderStatsTab();
       markDirty();
-      notify("???????????");
+      notify("\u6bd4\u4f8b\u533a\u3092\u5168\u6d88\u53bb\u3057\u307e\u3057\u305f");
     });
   }
 
@@ -2548,21 +2549,21 @@ function bindEvents() {
       const pid = `p_${Math.random().toString(36).slice(2, 7)}`;
       parties.push({
         id: pid,
-        name: `???${parties.length + 1}`,
-        shortName: `??${parties.length + 1}`,
+        name: `\u65b0\u653f\u515a${parties.length + 1}`,
+        shortName: `\u65b0\u515a${parties.length + 1}`,
         color: col
       });
       recalcAll();
       renderAll();
       updateBatchPartyOptions();
       markDirty();
-      notify("?????????");
+      notify("\u653f\u515a\u3092\u8ffd\u52a0\u3057\u307e\u3057\u305f");
     });
   }
 
   if ($("#resetPartiesBtn")) {
     $("#resetPartiesBtn").addEventListener("click", async () => {
-      if (!confirm("???????????????????")) return;
+      if (!confirm("\u653f\u515a\u4e00\u89a7\u3092\u6a19\u6e96\u8a2d\u5b9a\u306b\u30ea\u30handle\u30c3\u30c8\u3057\u307e\u3059\u304b\uff1f")) return;
       pushHistory();
       const partiesData = await fetch("data/parties.json").then(r => r.json());
       parties = partiesData.parties;
@@ -2570,7 +2571,7 @@ function bindEvents() {
       renderAll();
       updateBatchPartyOptions();
       markDirty();
-      notify("???????????");
+      notify("\u653f\u515a\u3092\u30ea\u30bb\u30c3\u30c8\u3057\u307e\u3057\u305f");
     });
   }
 
@@ -2582,7 +2583,7 @@ function bindEvents() {
   if ($("#refreshStatsBtn")) $("#refreshStatsBtn").addEventListener("click", () => {
     recalcAll();
     renderStatsTab();
-    notify("????????????");
+    notify("\u7d71\u8a08\u30c7\u30fc\u30bf\u3092\u66f4\u65b0\u3057\u307e\u3057\u305f");
   });
 
   if ($("#geojsonInput")) {
@@ -2620,7 +2621,7 @@ function bindEvents() {
       if (!d.candidates) d.candidates = [];
       d.candidates.push({
         id: `cand-${Math.random().toString(36).slice(2, 8)}`,
-        name: "????",
+        name: "\u65b0\u5019\u88dc\u8005",
         party: parties[0]?.id || "ldp",
         votes: null,
         rank: d.candidates.length + 1
@@ -2661,12 +2662,12 @@ function bindEvents() {
 
   if ($("#newProjectBtn")) {
     $("#newProjectBtn").addEventListener("click", () => {
-      if (!confirm("?????????????????????????????")) return;
+      if (!confirm("\u65b0\u898f\u30d7\u30ed\u30b8\u30a7\u30af\u30c8\u3092\u4f5c\u6210\u3057\u307e\u3059\u304b\uff1f\u672a\u4fdd\u5b58\u306e\u5909\u66f4\u306f\u5931\u308f\u308c\u307e\u3059\u3002")) return;
       pushHistory();
-      if ($("#electionTitle")) $("#electionTitle").value = "????????";
-      if ($("#electionSubtitle")) $("#electionSubtitle").value = "???????????????";
+      if ($("#electionTitle")) $("#electionTitle").value = "\u65b0\u898f\u9078\u6319\u7d50\u679c\u5730\u56f3";
+      if ($("#electionSubtitle")) $("#electionSubtitle").value = "\u5404\u7a2e\u9078\u6319\u5236\u5ea6\u30fb\u524d\u63d0\u306b\u57fa\u3065\u304f\u96c6\u8a08";
       loadSampleData(false);
-      notify("??????????????");
+      notify("\u65b0\u898f\u30d7\u30ed\u30b8\u30a7\u30af\u30c8\u3092\u958b\u304d\u307e\u3057\u305f");
     });
   }
   if ($("#saveProjectBtn")) $("#saveProjectBtn").addEventListener("click", saveProjectFile);
@@ -2692,7 +2693,7 @@ function bindEvents() {
     $("#fitMap").addEventListener("click", () => {
       svg.transition().duration(250).call(zoom.transform, d3.zoomIdentity);
       renderMap();
-      setStatus("?????????");
+      setStatus("\u5168\u4f53\u8868\u793a\u306b\u30ea\u30bb\u30c3\u30c8");
     });
   }
 
@@ -2723,7 +2724,7 @@ function switchTab(tabId) {
 
 function downloadSampleGeoJson() {
   if (!geoData) {
-    notify("???????????");
+    notify("\u5730\u56f3\u30c7\u30fc\u30bf\u304c\u3042\u308a\u307e\u305b\u3093");
     return;
   }
   const str = JSON.stringify(geoData, null, 2);
@@ -2734,7 +2735,7 @@ function downloadSampleGeoJson() {
   a.download = "okayama-sample.geojson";
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 500);
-  notify("????GeoJSON???????????");
+  notify("\u30b5\u30f3\u30d7\u30ebGeoJSON\u3092\u30c0\u30a6\u30f3\u30ed\u30fc\u30c9\u3057\u307e\u3057\u305f");
 }
 
 function loadGeoJsonFile(file) {
@@ -2743,13 +2744,13 @@ function loadGeoJsonFile(file) {
     try {
       const d = JSON.parse(reader.result);
       if (d.type !== "FeatureCollection" || !Array.isArray(d.features)) {
-        throw new Error("???GeoJSON (FeatureCollection) ???????");
+        throw new Error("\u6709\u52b9\u306aGeoJSON (FeatureCollection) \u3067\u306f\u3042\u308a\u307e\u305b\u3093");
       }
       pushHistory();
       geoData = d;
       districts = {};
       selectedDistrictId = null;
-      collapsedDistrictIds = new Set(); // ??2: ?????????
+      collapsedDistrictIds = new Set();
 
       d.features.forEach(f => {
         const id = idOf(f);
@@ -2760,7 +2761,7 @@ function loadGeoJsonFile(file) {
           mode: "votes",
           candidates: parties.slice(0, 3).map((p, idx) => ({
             id: `cand-${Math.random().toString(36).slice(2, 8)}`,
-            name: `${p.shortName}??`,
+            name: `${p.shortName}\u5019\u88dc`,
             party: p.id,
             votes: null,
             rank: idx + 1
@@ -2769,14 +2770,14 @@ function loadGeoJsonFile(file) {
         collapsedDistrictIds.add(id);
       });
 
-      if ($("#dataStatus")) $("#dataStatus").textContent = `${file.name} ?${d.features.length} ????`;
+      if ($("#dataStatus")) $("#dataStatus").textContent = `${file.name} \uff08${d.features.length} \u9078\u6319\u533a\uff09`;
       recalcAll();
       renderAll();
       updateDistrictInspector();
-      notify(`?????????? (${d.features.length}???)`);
+      notify(`\u5730\u56f3\u3092\u8aad\u307f\u8fbc\u307f\u307e\u3057\u305f (${d.features.length}\u9078\u6319\u533a)`);
       markDirty();
     } catch (err) {
-      notify(`???????: ${err.message}`);
+      notify(`\u5730\u56f3\u8aad\u8fbc\u30a8\u30e9\u30fc: ${err.message}`);
     }
   };
   reader.readAsText(file);
@@ -2792,7 +2793,7 @@ function saveProjectFile() {
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 500);
   markClean();
-  notify("?????????????");
+  notify("\u30d7\u30ed\u30b8\u30a7\u30af\u30c8\u3092\u4fdd\u5b58\u3057\u307e\u3057\u305f");
 }
 
 function loadProjectFile(file) {
@@ -2800,13 +2801,13 @@ function loadProjectFile(file) {
   reader.onload = () => {
     try {
       const s = JSON.parse(reader.result);
-      if (!s.geoData || !s.districts) throw new Error("??????????????????");
+      if (!s.geoData || !s.districts) throw new Error("\u6709\u52b9\u306a\u30d7\u30ed\u30b8\u30a7\u30af\u30c8\u5f62\u5f0f\u3067\u306f\u3042\u308a\u307e\u305b\u3093");
       pushHistory();
       restore(s);
       markClean();
-      notify("??????????????");
+      notify("\u30d7\u30ed\u30b8\u30a7\u30af\u30c8\u3092\u8aad\u307f\u8fbc\u307f\u307e\u3057\u305f");
     } catch (err) {
-      notify(`??????????: ${err.message}`);
+      notify(`\u30d7\u30ed\u30b8\u30a7\u30af\u30c8\u8aad\u8fbc\u5931\u6557: ${err.message}`);
     }
   };
   reader.readAsText(file);
@@ -2816,7 +2817,7 @@ function exportSystemDefinition() {
   const systemData = {
     type: "election-system-definition",
     version: 1,
-    name: PRESETS[currentPreset]?.name || "????????",
+    name: PRESETS[currentPreset]?.name || "\u30ab\u30b9\u30bf\u30e0\u9078\u6319\u5236\u5ea6",
     preset: currentPreset,
     districtSeatsMap: Object.fromEntries(Object.entries(districts).map(([id, d]) => [id, d.seats])),
     prBlocksDefinition: prBlocks.map(b => ({
@@ -2833,7 +2834,7 @@ function exportSystemDefinition() {
   a.download = `${safeFileName(systemData.name)}.emsys.json`;
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 500);
-  notify("?????????????");
+  notify("\u9078\u6319\u5236\u5ea6\u5b9a\u7fa9\u3092\u4fdd\u5b58\u3057\u307e\u3057\u305f");
 }
 
 function importSystemDefinition(file) {
@@ -2842,7 +2843,7 @@ function importSystemDefinition(file) {
     try {
       const s = JSON.parse(reader.result);
       if (s.type !== "election-system-definition") {
-        throw new Error("????????????????????");
+        throw new Error("\u6709\u52b9\u306a\u9078\u6319\u5236\u5ea6\u5b9a\u7fa9\u30c4\u30a1\u30a4\u30eb\u3067\u306f\u3042\u308a\u307e\u305b\u3093");
       }
       pushHistory();
       if (s.preset && PRESETS[s.preset]) {
@@ -2878,16 +2879,16 @@ function importSystemDefinition(file) {
       recalcAll();
       renderAll();
       updateDistrictInspector();
-      notify(`?????${s.name || "??????"}????????`);
+      notify(`\u5236\u5ea6\u5b9a\u7fa9\u300c${s.name || "\u30ab\u30b9\u30bf\u30e0\u5236\u5ea6"}\u300d\u3092\u9069\u7528\u3057\u307e\u3057\u305f`);
       markDirty();
     } catch (err) {
-      notify(`???????: ${err.message}`);
+      notify(`\u5236\u5ea6\u8aad\u8fbc\u30a8\u30e9\u30fc: ${err.message}`);
     }
   };
   reader.readAsText(file);
 }
 
-// --- ???SVG???????Wikipedia????? ---
+// --- SVG \u30a8\u30af\u30b9\u30dd\u30fc\u30c8 ---
 function exportSvgMap() {
   const clone = svg.node().cloneNode(true);
   clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
@@ -2937,7 +2938,7 @@ function exportSvgMap() {
   a.download = `${safeFileName($("#electionTitle")?.value || "election-map")}.svg`;
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 500);
-  notify("SVG??????????");
+  notify("SVG\u5730\u56f3\u3092\u66f8\u304d\u51fa\u3057\u307e\u3057\u305f");
 }
 
 function exportPngMap() {
@@ -2975,14 +2976,14 @@ function exportPngMap() {
       a.click();
       URL.revokeObjectURL(u);
       URL.revokeObjectURL(url);
-      notify("????PNG????????");
+      notify("\u9ad8\u89e3\u50cf\u5ea6PNG\u3092\u66f8\u304d\u51fa\u3057\u307e\u3057\u305f");
     }, "image/png");
   };
   img.src = url;
 }
 
-// ????
+// \u5b9f\u884c\u958b\u59cb
 init().catch(err => {
   console.error(err);
-  notify(`??????: ${err.message}`);
+  notify(`\u521d\u671f\u5316\u30a8\u30e9\u30fc: ${err.message}`);
 });
