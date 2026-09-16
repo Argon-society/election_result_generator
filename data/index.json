@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "description": "Election Map Studio — 内蔵サンプルデータ一覧",
+  "maps": [
+    {
+      "id": "okayama-sample",
+      "name": "岡山県 衆議院小選挙区（5区）",
+      "description": "第50回衆議院議員総選挙・岡山県小選挙区サンプル地図（得票数データ付き）",
+      "file": "data/okayama-sample.geojson",
+      "type": "geojson",
+      "preview": "5選挙区・得票データ初期設定"
+    },
+    {
+      "id": "okayama-kengisen",
+      "name": "岡山県 議会議員選挙区",
+      "description": "岡山県議選の選挙区地図（複数人区・中選挙区制対応）",
+      "file": "data/okayama-kengisen.geojson",
+      "type": "geojson",
+      "preview": "県議選選挙区（多数区・定数1〜複数人区）"
+    }
+  ],
+  "projects": []
+}
